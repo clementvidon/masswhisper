@@ -8,6 +8,7 @@ packages:
   - xz-utils
   - gnupg
   - nginx
+  - certbot
 
 runcmd:
   - |
@@ -53,3 +54,7 @@ runcmd:
     nginx -t
     systemctl enable nginx
     systemctl restart nginx
+  - |
+    set -eu
+    echo "[cloud-init] configure certbot"
+    install -d -m 755 /var/www/certbot/.well-known/acme-challenge

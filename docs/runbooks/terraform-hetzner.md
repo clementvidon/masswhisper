@@ -39,10 +39,9 @@ terraform -chdir=infra/terraform plan \
 
 Expected result:
 
-- the Hetzner HTTP firewall is created or reused
-- the Hetzner SSH key is created or reused
-- the Hetzner server is created or replaced as needed
-- the server public IPv4 is exposed as an output
+- the Hetzner `firewall`, `SSH` key, and `server` are created or updated as needed
+- the server public `IPv4` is exposed as an output
+- inbound tcp `22`, `80`, and `443` are allowed
 
 ## 5. Apply The Plan
 
@@ -71,6 +70,8 @@ ssh "root@$server_ip" '
   printf "nginx site: "; test -f /etc/nginx/sites-available/api.masswhisper.com.conf && echo "ok" || echo "fail"
   printf "nginx link: "; test -L /etc/nginx/sites-enabled/api.masswhisper.com.conf && echo "ok" || echo "fail"
   printf "nginx config: "; nginx -t >/dev/null 2>&1 && echo "ok" || echo "fail"
+  printf "certbot installed: "; certbot --version >/dev/null 2>&1 && echo "ok" || echo "fail"
+  printf "acme webroot exists: "; test -d /var/www/certbot/.well-known/acme-challenge && echo "ok" || echo "fail"
 '
 ```
 
@@ -94,3 +95,7 @@ terraform -chdir=infra/terraform apply -replace=hcloud_server.vm \
 - SSH access works
 - the backend runtime is bootstrapped
 - secrets, migrations, and service start are still manual
+
+Next step:
+
+- follow `docs/runbooks/backend-vm-bootstrap.md` to complete the backend setup

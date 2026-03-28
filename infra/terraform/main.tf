@@ -39,6 +39,14 @@ resource "hcloud_firewall" "public_http" {
     source_ips = ["0.0.0.0/0", "::/0"]
     description = "allow http"
   }
+
+  rule {
+    direction  = "in"
+    protocol   = "tcp"
+    port       = "443"
+    source_ips = ["0.0.0.0/0", "::/0"]
+    description = "allow https"
+  }
 }
 
 resource "hcloud_server" "vm" {

@@ -137,3 +137,7 @@ curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
 - `/health` responds locally and through Nginx
 - the public proxy surface is limited to `/health`
 - DNS/TLS and cron are not configured yet
+
+Next step:
+
+- follow `docs/runbooks/backend-api-dns-tls.md` to attach `api.masswhisper.com` and enable TLS
