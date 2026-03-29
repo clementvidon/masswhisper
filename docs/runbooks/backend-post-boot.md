@@ -2,6 +2,8 @@
 
 This runbook completes the `masswhisper` backend setup on a VM already bootstrapped by Terraform + cloud-init, then enables the local capture scheduler.
 
+Estimated hands-on time: 5 minutes
+
 It assumes:
 
 - Ubuntu 24.04
@@ -159,6 +161,7 @@ curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
 Run the capture wrapper once as `masswhisper` and verify that one new snapshot is persisted.
 
 ```bash
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
   set -a
@@ -236,26 +239,22 @@ ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" "sudo -n true" >/d
   && echo ok || echo fail
 ```
 
-## 12. Lock Root SSH Access
+## 12. Enable DNS And TLS
+
+Follow `docs/runbooks/backend-api-dns-tls.md` to attach `api.masswhisper.com` and enable TLS.
+
+## 13. Lock Root SSH Access
 
 Once massops access is validated, disable root SSH login entirely.
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
- set -eu
- install -D -m 0644 /opt/masswhisper/deploy/ssh/sshd_config.final.conf /etc/ssh/sshd_config.d/99-masswhisper.conf
- sshd -t
- systemctl reload ssh
+  set -eu
+  install -D -m 0644 /opt/masswhisper/deploy/ssh/sshd_config.final.conf /etc/ssh/sshd_config.d/99-masswhisper.conf
+  sshd -t
+  systemctl reload ssh
 '
-```
-
-## 13. Verify Final SSH Hardening
-
-Verify that the ops user still works and that root SSH access is now denied.
-
-```bash
-server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 
 printf "ops ssh access still works: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
@@ -265,6 +264,16 @@ printf "root ssh access is denied: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
   && echo fail || echo ok
 ```
+
+## 14. Closure Criteria
+
+Consider the runtime closed only after a fresh end-to-end replay confirms that:
+
+- the replay starts from a clean state, typically after `terraform destroy`
+- the Terraform Hetzner runbook passes
+- the backend post-boot runbook passes
+- the DNS and TLS runbook passes
+- the backend service, proxy, scheduler, SSH hardening, and public API all work together on the final runtime
 
 ## State After This Runbook
 
@@ -276,8 +285,4 @@ ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 
 - local capture is configured through `cron` and `flock`
 - routine SSH access goes through massops
 - root SSH login is disabled after ops access validation
-- DNS/TLS are not configured yet
-
-Next step:
-
-- follow `docs/runbooks/backend-api-dns-tls.md` to attach `api.masswhisper.com` and enable TLS
+- DNS/TLS are configured after the dedicated runbook is completed

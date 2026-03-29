@@ -2,6 +2,8 @@
 
 This runbook provisions a Hetzner VM for the `masswhisper backend` and bootstraps the machine with cloud-init.
 
+Estimated hands-on time: 5 minutes
+
 It assumes:
 
 - Terraform is installed locally
@@ -33,8 +35,7 @@ terraform -chdir=infra/terraform init
 ## 4. Review The Plan
 
 ```bash
-terraform -chdir=infra/terraform plan \
-  -var-file=generated/fr-dev-job-market-prod.tfvars.json
+terraform -chdir=infra/terraform plan -var-file=generated/fr-dev-job-market-prod.tfvars.json
 ```
 
 Expected result:
@@ -46,8 +47,7 @@ Expected result:
 ## 5. Apply The Plan
 
 ```bash
-terraform -chdir=infra/terraform apply \
-  -var-file=generated/fr-dev-job-market-prod.tfvars.json
+terraform -chdir=infra/terraform apply -var-file=generated/fr-dev-job-market-prod.tfvars.json
 ```
 
 Expected result:
@@ -60,6 +60,7 @@ Expected result:
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
+  cloud-init status --wait
 
   echo "[cloud-init] prepare ops user"
   printf "ops user: "; id -u massops >/dev/null 2>&1 && echo ok || echo fail

@@ -2,6 +2,8 @@
 
 This runbook attaches `api.masswhisper.com` to the already bootstrapped backend VM and enables TLS on the public API.
 
+Estimated hands-on time: 5 minutes
+
 It assumes:
 
 - the Terraform and backend VM post-boot runbooks are already completed
@@ -56,9 +58,7 @@ ssh "root@$server_ip" '
   set -eu
   printf ok > /var/www/certbot/.well-known/acme-challenge/ping
 '
-```
 
-```bash
 printf "acme challenge served over http: "
 curl -s "http://api.masswhisper.com/.well-known/acme-challenge/ping" \
   | grep -qx ok && echo ok || echo fail
@@ -79,11 +79,7 @@ ssh "root@$server_ip" "
   certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m "$my_email" \
     --webroot -w /var/www/certbot -d api.masswhisper.com
 "
-```
 
-```bash
-server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-my_email='cvidon@student.42.fr'
 ssh "root@$server_ip" "
   printf 'staging certificate issued: '
   openssl x509 -in /etc/letsencrypt/live/api.masswhisper.com/fullchain.pem -noout -issuer \
@@ -103,11 +99,7 @@ ssh "root@$server_ip" "
   certbot certonly --non-interactive --agree-tos --no-eff-email -m "$my_email" \
     --webroot -w /var/www/certbot -d api.masswhisper.com --force-renewal
 "
-```
 
-```bash
-server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-my_email='cvidon@student.42.fr'
 ssh "root@$server_ip" "
   printf 'production certificate issued: '
   openssl x509 -in /etc/letsencrypt/live/api.masswhisper.com/fullchain.pem -noout -issuer \
@@ -127,10 +119,7 @@ ssh "root@$server_ip" '
   printf "%s\n" "#!/bin/sh" "systemctl reload nginx" > /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
   chmod 755 /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
 '
-```
 
-```bash
-server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   printf "certbot deploy hook installed: "
   test -x /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && \
@@ -151,10 +140,7 @@ ssh "root@$server_ip" '
   nginx -t
   systemctl reload nginx
 '
-```
 
-```bash
-server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   printf "nginx TLS config active: "
   nginx -t >/dev/null 2>&1 && \
@@ -200,7 +186,7 @@ Dry-run renewal to ensure certificates can be renewed automatically.
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" 'certbot renew --dry-run'
+ssh "root@$server_ip" 'certbot renew --dry-run --no-random-sleep-on-renew -v'
 ```
 
 ## Fallback If DNS Is Not Ready
