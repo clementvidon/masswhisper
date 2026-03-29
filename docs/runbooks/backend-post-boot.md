@@ -68,7 +68,7 @@ ssh "root@$server_ip" '
   systemctl start masswhisper-topic
   systemctl status masswhisper-topic
 
-  printf "masswhisper-topic service active: "
+  printf 'masswhisper-topic service active: '
   systemctl is-active --quiet masswhisper-topic && echo ok || echo fail
 '
 ```
@@ -85,7 +85,7 @@ ssh "root@$server_ip" '
   systemctl start cron
   systemctl status cron
 
-  printf "cron service active: "
+  printf 'cron service active: '
   systemctl is-active --quiet cron && echo ok || echo fail
 '
 ```
@@ -101,39 +101,41 @@ ssh "root@$server_ip" 'journalctl -u masswhisper-topic -n 100'
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+api_domain="$(terraform -chdir=infra/terraform output -raw api_domain)"
+ssh "root@$server_ip" "
 
-  printf "node binds local port 3000: "
-  ss -ltnp | grep -E "127\.0\.0\.1:3000.*node" >/dev/null 2>&1 && echo ok || echo fail
+  printf 'node binds local port 3000: '
+  ss -ltnp | grep -E \"127\.0\.0\.1:3000.*node\" >/dev/null 2>&1 && echo ok || echo fail
 
-  printf "local health endpoint reachable: "
+  printf 'local health endpoint reachable: '
   curl -s -i http://127.0.0.1:3000/health \
-    | grep -q "^HTTP/1.1 200" && echo ok || echo fail
+    | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
 
-  printf "nginx local health route works: "
-  curl -s -i -H "Host: api.masswhisper.com" http://127.0.0.1/health \
-    | grep -q "^HTTP/1.1 200" && echo ok || echo fail
+  printf 'nginx local health route works: '
+  curl -s -i -H \"Host: $api_domain\" http://127.0.0.1/health \
+    | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
 
-  printf "nginx local report route blocked: "
-  curl -s -i -H "Host: api.masswhisper.com" http://127.0.0.1/report \
-    | grep -q "^HTTP/1.1 404" && echo ok || echo fail
-'
+  printf 'nginx local report route blocked: '
+  curl -s -i -H \"Host: $api_domain\" http://127.0.0.1/report \
+    | grep -q \"^HTTP/1.1 404\" && echo ok || echo fail
+"
 ```
 
 ## 7. Verify Proxied Health
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+api_domain="$(terraform -chdir=infra/terraform output -raw api_domain)"
 
-printf "public health endpoint reachable: "
-curl -s -i -H "Host: api.masswhisper.com" "http://$server_ip/health" \
+printf 'public health endpoint reachable: '
+curl -s -i -H "Host: $api_domain" "http://$server_ip/health" \
   | grep -q "^HTTP/1.1 200" && echo ok || echo fail
 
-printf "public report endpoint blocked: "
-curl -s -i -H "Host: api.masswhisper.com" "http://$server_ip/report" \
+printf 'public report endpoint blocked: '
+curl -s -i -H "Host: $api_domain" "http://$server_ip/report" \
   | grep -q "^HTTP/1.1 404" && echo ok || echo fail
 
-printf "public node port stays closed: "
+printf 'public node port stays closed: '
 curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
   && echo fail || echo ok
 ```
@@ -142,16 +144,17 @@ curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+api_domain="$(terraform -chdir=infra/terraform output -raw api_domain)"
 
-printf "public tcp/22 reachable: "
+printf 'public tcp/22 reachable: '
 ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
   && echo ok || echo fail
 
-printf "public tcp/80 reachable: "
-curl -s --max-time 5 -o /dev/null -H "Host: api.masswhisper.com" "http://$server_ip/health" \
+printf 'public tcp/80 reachable: '
+curl -s --max-time 5 -o /dev/null -H "Host: $api_domain" "http://$server_ip/health" \
   && echo ok || echo fail
 
-printf "public tcp/3000 blocked: "
+printf 'public tcp/3000 blocked: '
 curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
   && echo fail || echo ok
 ```
@@ -180,7 +183,7 @@ ssh "root@$server_ip" '
   before=$(grep -c "\"id\":" "$before_file")
   after=$(grep -c "\"id\":" "$after_file")
 
-  printf "manual capture adds a snapshot: "
+  printf 'manual capture adds a snapshot: '
   test "$after" -gt "$before" && echo ok || echo fail
 '
 ```
@@ -212,10 +215,10 @@ ssh "root@$server_ip" '
   before=$(grep -c "\"id\":" "$before_file")
   after=$(grep -c "\"id\":" "$after_file")
 
-  printf "locked capture exits without new snapshot: "
+  printf 'locked capture exits without new snapshot: '
   test "$after" = "$before" && echo ok || echo fail
 
-  printf "lock skip is logged: "
+  printf 'lock skip is logged: '
   journalctl -t masswhisper-capture --since "2 minutes ago" \
     | grep -q "capture skipped: lock held" && echo ok || echo fail
 
@@ -230,18 +233,18 @@ Verify that the dedicated ops user can connect over SSH and use sudo without a p
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 
-printf "ops ssh access works: "
+printf 'ops ssh access works: '
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
   && echo ok || echo fail
 
-printf "ops passwordless sudo works: "
+printf 'ops passwordless sudo works: '
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" "sudo -n true" >/dev/null 2>&1 \
   && echo ok || echo fail
 ```
 
 ## 12. Enable DNS And TLS
 
-Follow `docs/runbooks/backend-api-dns-tls.md` to attach `api.masswhisper.com` and enable TLS.
+Follow `docs/runbooks/backend-api-dns-tls.md` to attach the current Terraform `api_domain` and enable TLS.
 
 ## 13. Lock Root SSH Access
 
@@ -256,11 +259,11 @@ ssh "root@$server_ip" '
   systemctl reload ssh
 '
 
-printf "ops ssh access still works: "
+printf 'ops ssh access still works: '
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
   && echo ok || echo fail
 
-printf "root ssh access is denied: "
+printf 'root ssh access is denied: '
 ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
   && echo fail || echo ok
 ```

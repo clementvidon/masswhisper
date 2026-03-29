@@ -11,6 +11,16 @@ packages:
   - certbot
   - cron
 
+write_files:
+  - path: /etc/nginx/sites-available/public-api.conf
+    permissions: '0644'
+    content: |
+${indent(6, nginx_public_api_conf)}
+  - path: /etc/masswhisper/public-api.tls.conf
+    permissions: '0644'
+    content: |
+${indent(6, nginx_public_api_tls_conf)}
+
 runcmd:
   - |
     set -eu
@@ -72,9 +82,8 @@ runcmd:
   - |
     set -eu
     echo "[cloud-init] configure nginx vhost"
-    install -D -m 0644 ${repo_dir}/deploy/proxy/api.masswhisper.com.conf /etc/nginx/sites-available/api.masswhisper.com.conf
     rm -f /etc/nginx/sites-enabled/default
-    ln -sf /etc/nginx/sites-available/api.masswhisper.com.conf /etc/nginx/sites-enabled/api.masswhisper.com.conf
+    ln -sf /etc/nginx/sites-available/public-api.conf /etc/nginx/sites-enabled/public-api.conf
     nginx -t
     systemctl enable nginx
     systemctl restart nginx

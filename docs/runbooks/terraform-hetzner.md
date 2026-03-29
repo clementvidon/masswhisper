@@ -42,6 +42,7 @@ Expected result:
 
 - the Hetzner `firewall`, `SSH` key, and `server` are created or updated as needed
 - the server public `IPv4` is exposed as an output
+- the backend `api_domain` is exposed as an output
 - inbound tcp `22`, `80`, and `443` are allowed
 
 ## 5. Apply The Plan
@@ -54,6 +55,7 @@ Expected result:
 
 - the VM exists after apply
 - the server public IPv4 is available in the Terraform outputs
+- the backend `api_domain` is available in the Terraform outputs
 
 ## 6. Verify Cloud-Init Output
 
@@ -63,38 +65,38 @@ ssh "root@$server_ip" '
   cloud-init status --wait
 
   echo "[cloud-init] prepare ops user"
-  printf "ops user: "; id -u massops >/dev/null 2>&1 && echo ok || echo fail
-  printf "ops authorized key: "; test -s /home/massops/.ssh/authorized_keys && echo ok || echo fail
-  printf "ops sudoers file: "; test -s /etc/sudoers.d/90-massops && echo ok || echo fail
+  printf 'ops user: '; id -u massops >/dev/null 2>&1 && echo ok || echo fail
+  printf 'ops authorized key: '; test -s /home/massops/.ssh/authorized_keys && echo ok || echo fail
+  printf 'ops sudoers file: '; test -s /etc/sudoers.d/90-massops && echo ok || echo fail
 
   echo "[cloud-init] install Node"
-  printf "node: "; node -v 2>/dev/null || echo fail
-  printf "npm: "; npm -v 2>/dev/null || echo fail
+  printf 'node: '; node -v 2>/dev/null || echo fail
+  printf 'npm: '; npm -v 2>/dev/null || echo fail
 
   echo "[cloud-init] bootstrap repo"
-  printf "user: "; id -u masswhisper >/dev/null 2>&1 && echo ok || echo fail
-  printf "repo: "; test -d /opt/masswhisper && echo ok || echo fail
+  printf 'user: '; id -u masswhisper >/dev/null 2>&1 && echo ok || echo fail
+  printf 'repo: '; test -d /opt/masswhisper && echo ok || echo fail
 
   echo "[cloud-init] prepare runtime"
-  printf "env: "; test -f /etc/masswhisper/backend.env && stat -c "%U:%G %a %n" /etc/masswhisper/backend.env || echo fail
-  printf "unit: "; test -s /etc/systemd/system/masswhisper-topic.service && echo ok || echo fail
+  printf 'env: '; test -f /etc/masswhisper/backend.env && stat -c "%U:%G %a %n" /etc/masswhisper/backend.env || echo fail
+  printf 'unit: '; test -s /etc/systemd/system/masswhisper-topic.service && echo ok || echo fail
 
   echo "[cloud-init] prepare scheduler"
-  printf "capture wrapper installed: "; test -x /usr/local/bin/run-capture.sh && echo ok || echo fail
-  printf "cron file installed: "; test -s /etc/cron.d/masswhisper-topic && echo ok || echo fail
+  printf 'capture wrapper installed: '; test -x /usr/local/bin/run-capture.sh && echo ok || echo fail
+  printf 'cron file installed: '; test -s /etc/cron.d/masswhisper-topic && echo ok || echo fail
 
   echo "[cloud-init] harden ssh"
-  printf "ssh drop-in installed: "; test -f /etc/ssh/sshd_config.d/99-masswhisper.conf && echo ok || echo fail
-  printf "sshd config valid: "; sshd -t >/dev/null 2>&1 && echo ok || echo fail
+  printf 'ssh drop-in installed: '; test -f /etc/ssh/sshd_config.d/99-masswhisper.conf && echo ok || echo fail
+  printf 'sshd config valid: '; sshd -t >/dev/null 2>&1 && echo ok || echo fail
 
   echo "[cloud-init] configure Nginx"
-  printf "nginx site: "; test -s /etc/nginx/sites-available/api.masswhisper.com.conf && echo ok || echo fail
-  printf "nginx link: "; test -L /etc/nginx/sites-enabled/api.masswhisper.com.conf && echo ok || echo fail
-  printf "nginx config: "; nginx -t >/dev/null 2>&1 && echo ok || echo fail
+  printf 'nginx site: '; test -s /etc/nginx/sites-available/public-api.conf && echo ok || echo fail
+  printf 'nginx link: '; test -L /etc/nginx/sites-enabled/public-api.conf && echo ok || echo fail
+  printf 'nginx config: '; nginx -t >/dev/null 2>&1 && echo ok || echo fail
 
   echo "[cloud-init] configure certbot"
-  printf "certbot installed: "; certbot --version >/dev/null 2>&1 && echo ok || echo fail
-  printf "acme webroot exists: "; test -d /var/www/certbot/.well-known/acme-challenge && echo ok || echo fail
+  printf 'certbot installed: '; certbot --version >/dev/null 2>&1 && echo ok || echo fail
+  printf 'acme webroot exists: '; test -d /var/www/certbot/.well-known/acme-challenge && echo ok || echo fail
 '
 ```
 
