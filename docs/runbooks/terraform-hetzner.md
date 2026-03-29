@@ -61,6 +61,11 @@ Expected result:
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
 
+  echo "[cloud-init] prepare ops user"
+  printf "ops user: "; id -u massops >/dev/null 2>&1 && echo ok || echo fail
+  printf "ops authorized key: "; test -s /home/massops/.ssh/authorized_keys && echo ok || echo fail
+  printf "ops sudoers file: "; test -s /etc/sudoers.d/90-massops && echo ok || echo fail
+
   echo "[cloud-init] install Node"
   printf "node: "; node -v 2>/dev/null || echo fail
   printf "npm: "; npm -v 2>/dev/null || echo fail
@@ -71,14 +76,18 @@ ssh "root@$server_ip" '
 
   echo "[cloud-init] prepare runtime"
   printf "env: "; test -f /etc/masswhisper/backend.env && stat -c "%U:%G %a %n" /etc/masswhisper/backend.env || echo fail
-  printf "unit: "; test -f /etc/systemd/system/masswhisper-topic.service && echo ok || echo fail
+  printf "unit: "; test -s /etc/systemd/system/masswhisper-topic.service && echo ok || echo fail
 
   echo "[cloud-init] prepare scheduler"
   printf "capture wrapper installed: "; test -x /usr/local/bin/run-capture.sh && echo ok || echo fail
-  printf "cron file installed: "; test -f /etc/cron.d/masswhisper-topic && echo ok || echo fail
+  printf "cron file installed: "; test -s /etc/cron.d/masswhisper-topic && echo ok || echo fail
+
+  echo "[cloud-init] harden ssh"
+  printf "ssh drop-in installed: "; test -f /etc/ssh/sshd_config.d/99-masswhisper.conf && echo ok || echo fail
+  printf "sshd config valid: "; sshd -t >/dev/null 2>&1 && echo ok || echo fail
 
   echo "[cloud-init] configure Nginx"
-  printf "nginx site: "; test -f /etc/nginx/sites-available/api.masswhisper.com.conf && echo ok || echo fail
+  printf "nginx site: "; test -s /etc/nginx/sites-available/api.masswhisper.com.conf && echo ok || echo fail
   printf "nginx link: "; test -L /etc/nginx/sites-enabled/api.masswhisper.com.conf && echo ok || echo fail
   printf "nginx config: "; nginx -t >/dev/null 2>&1 && echo ok || echo fail
 

@@ -200,14 +200,10 @@ ssh "root@$server_ip" '
   trap "rm -f \"$before_file\" \"$after_file\"" EXIT
 
   npm --workspace backend run export -- "$before_file" >/dev/null 2>&1
-
   su -s /bin/bash masswhisper -c "flock -n /tmp/masswhisper-topic-capture.lock sleep 15" &
   lock_holder=$!
-
   sleep 1
-
   su -s /bin/bash masswhisper -c "/usr/local/bin/run-capture.sh"
-
   npm --workspace backend run export -- "$after_file" >/dev/null 2>&1
 
   before=$(grep -c "\"id\":" "$before_file")
@@ -224,6 +220,52 @@ ssh "root@$server_ip" '
 '
 ```
 
+## 11. Verify Ops User Access
+
+Verify that the dedicated ops user can connect over SSH and use sudo without a password.
+
+```bash
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+
+printf "ops ssh access works: "
+ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
+  && echo ok || echo fail
+
+printf "ops passwordless sudo works: "
+ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" "sudo -n true" >/dev/null 2>&1 \
+  && echo ok || echo fail
+```
+
+## 12. Lock Root SSH Access
+
+Once massops access is validated, disable root SSH login entirely.
+
+```bash
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+ssh "root@$server_ip" '
+ set -eu
+ install -D -m 0644 /opt/masswhisper/deploy/ssh/sshd_config.final.conf /etc/ssh/sshd_config.d/99-masswhisper.conf
+ sshd -t
+ systemctl reload ssh
+'
+```
+
+## 13. Verify Final SSH Hardening
+
+Verify that the ops user still works and that root SSH access is now denied.
+
+```bash
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+
+printf "ops ssh access still works: "
+ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
+  && echo ok || echo fail
+
+printf "root ssh access is denied: "
+ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
+  && echo fail || echo ok
+```
+
 ## State After This Runbook
 
 - the backend runs as a long-lived service
@@ -232,6 +274,8 @@ ssh "root@$server_ip" '
 - `/health` responds locally and through Nginx
 - the public proxy surface is limited to `/health`
 - local capture is configured through `cron` and `flock`
+- routine SSH access goes through massops
+- root SSH login is disabled after ops access validation
 - DNS/TLS are not configured yet
 
 Next step:

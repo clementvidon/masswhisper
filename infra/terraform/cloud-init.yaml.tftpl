@@ -14,7 +14,18 @@ packages:
 runcmd:
   - |
     set -eu
-    echo "[cloud-init] install Node"
+    echo "[cloud-init] setup admin user: ${admin_user}"
+    id -u ${admin_user} >/dev/null 2>&1 || adduser --disabled-password --gecos "" ${admin_user}
+    usermod -aG sudo ${admin_user}
+    install -d -m 700 -o ${admin_user} -g ${admin_user} /home/${admin_user}/.ssh
+    printf "%s\n" "${ssh_public_key}" > /home/${admin_user}/.ssh/authorized_keys
+    chown ${admin_user}:${admin_user} /home/${admin_user}/.ssh/authorized_keys
+    chmod 600 /home/${admin_user}/.ssh/authorized_keys
+    printf "%s\n" "${admin_user} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-${admin_user}
+    chmod 440 /etc/sudoers.d/90-${admin_user}
+  - |
+    set -eu
+    echo "[cloud-init] install node.js ${node_version} (${node_arch})"
     NODE_VERSION="v${node_version}"
     NODE_ARCH="${node_arch}"
     NODE_BASENAME="node-$${NODE_VERSION}-$${NODE_ARCH}"
@@ -34,27 +45,33 @@ runcmd:
     npm -v
   - |
     set -eu
-    echo "[cloud-init] bootstrap repo"
+    echo "[cloud-init] clone and build repo: ${repo_url}"
     id -u ${service_user} >/dev/null 2>&1 || adduser --system --group --home ${repo_dir} ${service_user}
     test -d ${repo_dir}/.git || git clone ${repo_url} ${repo_dir}
     chown -R ${service_user}:${service_user} ${repo_dir}
     su - ${service_user} -s /bin/bash -c 'cd ${repo_dir} && HUSKY=0 npm ci && npm run build-shared'
   - |
     set -eu
-    echo "[cloud-init] prepare runtime"
+    echo "[cloud-init] deploy systemd service: ${service_name}"
     install -d -m 755 /etc/masswhisper
     install -m 640 -o root -g ${service_user} /dev/null /etc/masswhisper/backend.env
     install -D -m 0644 ${repo_dir}/deploy/systemd/${service_name}.service /etc/systemd/system/${service_name}.service
   - |
     set -eu
-    echo "[cloud-init] prepare scheduler"
+    echo "[cloud-init] setup cron scheduler: ${capture_schedule}"
     install -D -m 0755 ${repo_dir}/deploy/scripts/run-capture.sh /usr/local/bin/run-capture.sh
     printf "%s %s %s\n" "${capture_schedule}" "${service_user}" "/usr/local/bin/run-capture.sh" > "/etc/cron.d/${service_name}"
     chmod 0644 "/etc/cron.d/${service_name}"
     systemctl daemon-reload
   - |
     set -eu
-    echo "[cloud-init] configure Nginx"
+    echo "[cloud-init] harden ssh security"
+    install -D -m 0644 ${repo_dir}/deploy/ssh/sshd_config.transition.conf /etc/ssh/sshd_config.d/99-masswhisper.conf
+    sshd -t
+    systemctl reload ssh
+  - |
+    set -eu
+    echo "[cloud-init] configure nginx vhost"
     install -D -m 0644 ${repo_dir}/deploy/proxy/api.masswhisper.com.conf /etc/nginx/sites-available/api.masswhisper.com.conf
     rm -f /etc/nginx/sites-enabled/default
     ln -sf /etc/nginx/sites-available/api.masswhisper.com.conf /etc/nginx/sites-enabled/api.masswhisper.com.conf
@@ -63,5 +80,5 @@ runcmd:
     systemctl restart nginx
   - |
     set -eu
-    echo "[cloud-init] configure certbot"
+    echo "[cloud-init] prepare certbot webroot"
     install -d -m 755 /var/www/certbot/.well-known/acme-challenge
