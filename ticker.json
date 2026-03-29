@@ -6,7 +6,7 @@
   },
   {
     "title": "Combien d'entre vous envisagent de quitter l'informatique?",
-    "weight": "4",
+    "weight": "3",
     "itemRef": "https://reddit.com/comments/1s4nkds"
   },
   {
@@ -15,13 +15,13 @@
     "itemRef": "https://reddit.com/comments/1s4hbhg"
   },
   {
-    "title": "Où sont les offres d'emplois des boîtes \"prestigieuses\" ?",
+    "title": "Suis-je destiné à bosser en agence toute ma vie ?",
     "weight": "2",
-    "itemRef": "https://reddit.com/comments/1s27ks8"
+    "itemRef": "https://reddit.com/comments/1s4f3tq"
   },
   {
-    "title": "Je ne sais plus quoi faire",
+    "title": "Existe t'il des postes de dev cobol pour les juniors ?",
     "weight": "2",
-    "itemRef": "https://reddit.com/comments/1s4533x"
+    "itemRef": "https://reddit.com/comments/1s567dh"
   }
 ]
