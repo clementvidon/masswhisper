@@ -55,23 +55,36 @@ Expected result:
 - the VM exists after apply
 - the server public IPv4 is available in the Terraform outputs
 
-## 6. Verify Cloud-Init And Bootstrap
+## 6. Verify Cloud-Init Output
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
-  set -u
-  printf "node: "; node -v 2>/dev/null || echo "fail"
-  printf "npm: "; npm -v 2>/dev/null || echo "fail"
-  printf "user: "; id -u masswhisper >/dev/null 2>&1 && echo "ok" || echo "fail"
-  printf "repo: "; test -d /opt/masswhisper && echo "ok" || echo "fail"
-  printf "env: "; test -f /etc/masswhisper/backend.env && stat -c "%U:%G %a %n" /etc/masswhisper/backend.env || echo "fail"
-  printf "unit: "; test -f /etc/systemd/system/masswhisper-topic.service && echo "ok" || echo "fail"
-  printf "nginx site: "; test -f /etc/nginx/sites-available/api.masswhisper.com.conf && echo "ok" || echo "fail"
-  printf "nginx link: "; test -L /etc/nginx/sites-enabled/api.masswhisper.com.conf && echo "ok" || echo "fail"
-  printf "nginx config: "; nginx -t >/dev/null 2>&1 && echo "ok" || echo "fail"
-  printf "certbot installed: "; certbot --version >/dev/null 2>&1 && echo "ok" || echo "fail"
-  printf "acme webroot exists: "; test -d /var/www/certbot/.well-known/acme-challenge && echo "ok" || echo "fail"
+
+  echo "[cloud-init] install Node"
+  printf "node: "; node -v 2>/dev/null || echo fail
+  printf "npm: "; npm -v 2>/dev/null || echo fail
+
+  echo "[cloud-init] bootstrap repo"
+  printf "user: "; id -u masswhisper >/dev/null 2>&1 && echo ok || echo fail
+  printf "repo: "; test -d /opt/masswhisper && echo ok || echo fail
+
+  echo "[cloud-init] prepare runtime"
+  printf "env: "; test -f /etc/masswhisper/backend.env && stat -c "%U:%G %a %n" /etc/masswhisper/backend.env || echo fail
+  printf "unit: "; test -f /etc/systemd/system/masswhisper-topic.service && echo ok || echo fail
+
+  echo "[cloud-init] prepare scheduler"
+  printf "capture wrapper installed: "; test -x /usr/local/bin/run-capture.sh && echo ok || echo fail
+  printf "cron file installed: "; test -f /etc/cron.d/masswhisper-topic && echo ok || echo fail
+
+  echo "[cloud-init] configure Nginx"
+  printf "nginx site: "; test -f /etc/nginx/sites-available/api.masswhisper.com.conf && echo ok || echo fail
+  printf "nginx link: "; test -L /etc/nginx/sites-enabled/api.masswhisper.com.conf && echo ok || echo fail
+  printf "nginx config: "; nginx -t >/dev/null 2>&1 && echo ok || echo fail
+
+  echo "[cloud-init] configure certbot"
+  printf "certbot installed: "; certbot --version >/dev/null 2>&1 && echo ok || echo fail
+  printf "acme webroot exists: "; test -d /var/www/certbot/.well-known/acme-challenge && echo ok || echo fail
 '
 ```
 
@@ -79,7 +92,7 @@ If the step fails, inspect the cloud-init logs first:
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" 'journalctl -u cloud-init -u cloud-final -n 40 --no-pager'
+ssh "root@$server_ip" 'journalctl -u cloud-init -u cloud-final -n 40'
 ```
 
 If cloud-init must be replayed after a template fix, recreate the server:
@@ -98,4 +111,4 @@ terraform -chdir=infra/terraform apply -replace=hcloud_server.vm \
 
 Next step:
 
-- follow `docs/runbooks/backend-vm-bootstrap.md` to complete the backend setup
+- follow `docs/runbooks/backend-post-boot.md` to complete the backend setup

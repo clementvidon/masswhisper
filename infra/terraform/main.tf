@@ -13,6 +13,7 @@ locals {
     repo_url     = "https://github.com/clementvidon/masswhisper"
     repo_dir     = "/opt/masswhisper"
     service_name = "masswhisper-topic"
+    capture_schedule = var.topic_backend.schedule
   }
 }
 

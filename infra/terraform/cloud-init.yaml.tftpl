@@ -9,11 +9,12 @@ packages:
   - gnupg
   - nginx
   - certbot
+  - cron
 
 runcmd:
   - |
     set -eu
-    echo "1. install Node"
+    echo "[cloud-init] install Node"
     NODE_VERSION="v${node_version}"
     NODE_ARCH="${node_arch}"
     NODE_BASENAME="node-$${NODE_VERSION}-$${NODE_ARCH}"
@@ -44,10 +45,16 @@ runcmd:
     install -d -m 755 /etc/masswhisper
     install -m 640 -o root -g ${service_user} /dev/null /etc/masswhisper/backend.env
     install -D -m 0644 ${repo_dir}/deploy/systemd/${service_name}.service /etc/systemd/system/${service_name}.service
+  - |
+    set -eu
+    echo "[cloud-init] prepare scheduler"
+    install -D -m 0755 ${repo_dir}/deploy/scripts/run-capture.sh /usr/local/bin/run-capture.sh
+    printf "%s %s %s\n" "${capture_schedule}" "${service_user}" "/usr/local/bin/run-capture.sh" > "/etc/cron.d/${service_name}"
+    chmod 0644 "/etc/cron.d/${service_name}"
     systemctl daemon-reload
   - |
     set -eu
-    echo "[cloud-init] configure nginx"
+    echo "[cloud-init] configure Nginx"
     install -D -m 0644 ${repo_dir}/deploy/proxy/api.masswhisper.com.conf /etc/nginx/sites-available/api.masswhisper.com.conf
     rm -f /etc/nginx/sites-enabled/default
     ln -sf /etc/nginx/sites-available/api.masswhisper.com.conf /etc/nginx/sites-enabled/api.masswhisper.com.conf

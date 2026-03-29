@@ -38,10 +38,10 @@ Verify that public DNS resolvers return the expected IPv4 address.
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 
 printf "cloudflare A record matches server IPv4: "
-dig +short A api.masswhisper.com @1.1.1.1 | grep -qx "$server_ip" && echo "ok" || echo "fail"
+dig +short A api.masswhisper.com @1.1.1.1 | grep -qx "$server_ip" && echo ok || echo fail
 
 printf "google A record matches server IPv4: "
-dig +short A api.masswhisper.com @8.8.8.8 | grep -qx "$server_ip" && echo "ok" || echo "fail"
+dig +short A api.masswhisper.com @8.8.8.8 | grep -qx "$server_ip" && echo ok || echo fail
 ```
 
 If both checks fail, wait a few minutes for DNS propagation and retry.
@@ -55,11 +55,13 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
   printf ok > /var/www/certbot/.well-known/acme-challenge/ping
-
-  printf "acme challenge served over http: "
-  curl -s "http://api.masswhisper.com/.well-known/acme-challenge/ping" \
-    | grep -qx "ok" && echo "ok" || echo "fail"
 '
+```
+
+```bash
+printf "acme challenge served over http: "
+curl -s "http://api.masswhisper.com/.well-known/acme-challenge/ping" \
+  | grep -qx ok && echo ok || echo fail
 ```
 
 This is the required preflight check.
@@ -74,9 +76,15 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 my_email='cvidon@student.42.fr'
 ssh "root@$server_ip" "
   set -eu
-  certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m \"$my_email\" \
+  certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m "$my_email" \
     --webroot -w /var/www/certbot -d api.masswhisper.com
+"
+```
 
+```bash
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+my_email='cvidon@student.42.fr'
+ssh "root@$server_ip" "
   printf 'staging certificate issued: '
   openssl x509 -in /etc/letsencrypt/live/api.masswhisper.com/fullchain.pem -noout -issuer \
     | grep -q \"(STAGING) Let's Encrypt\" && echo ok || echo fail
@@ -92,9 +100,15 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 my_email='cvidon@student.42.fr'
 ssh "root@$server_ip" "
   set -eu
-  certbot certonly --non-interactive --agree-tos --no-eff-email -m \"$my_email\" \
+  certbot certonly --non-interactive --agree-tos --no-eff-email -m "$my_email" \
     --webroot -w /var/www/certbot -d api.masswhisper.com --force-renewal
+"
+```
 
+```bash
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+my_email='cvidon@student.42.fr'
+ssh "root@$server_ip" "
   printf 'production certificate issued: '
   openssl x509 -in /etc/letsencrypt/live/api.masswhisper.com/fullchain.pem -noout -issuer \
     | grep -q \"O = Let's Encrypt\" && echo ok || echo fail
@@ -112,7 +126,12 @@ ssh "root@$server_ip" '
   install -d -m 755 /etc/letsencrypt/renewal-hooks/deploy
   printf "%s\n" "#!/bin/sh" "systemctl reload nginx" > /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
   chmod 755 /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
+'
+```
 
+```bash
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+ssh "root@$server_ip" '
   printf "certbot deploy hook installed: "
   test -x /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && \
   grep -qx "systemctl reload nginx" /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && \
@@ -131,7 +150,12 @@ ssh "root@$server_ip" '
   install -D -m 0644 /opt/masswhisper/deploy/proxy/api.masswhisper.com.tls.conf /etc/nginx/sites-available/api.masswhisper.com.conf
   nginx -t
   systemctl reload nginx
+'
+```
 
+```bash
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+ssh "root@$server_ip" '
   printf "nginx TLS config active: "
   nginx -t >/dev/null 2>&1 && \
   grep -q "ssl_certificate" /etc/nginx/sites-available/api.masswhisper.com.conf && \
@@ -146,15 +170,15 @@ Verify that HTTP requests are redirected to HTTPS and that routing behaves as ex
 ```bash
 printf "http redirects to https: "
 curl -s -i http://api.masswhisper.com/health \
-  | grep -Eq "^HTTP/[0-9.]+ 301" && echo "ok" || echo "fail"
+  | grep -Eq "^HTTP/[0-9.]+ 301" && echo ok || echo fail
 
 printf "https health endpoint reachable: "
 curl -s -i https://api.masswhisper.com/health \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo "ok" || echo "fail"
+  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 
 printf "https report endpoint blocked: "
 curl -s -i https://api.masswhisper.com/report \
-  | grep -Eq "^HTTP/[0-9.]+ 404" && echo "ok" || echo "fail"
+  | grep -Eq "^HTTP/[0-9.]+ 404" && echo ok || echo fail
 ```
 
 ## 9. Inspect The Presented Certificate
