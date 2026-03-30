@@ -1,8 +1,10 @@
 # Public API Surface
 
-This document defines the intended public HTTP surface for the client/server phase of MassWhisper.
+This document defines the public HTTP surface of Shared Platform.
 
 Its purpose is to freeze what is publicly reachable, what stays private, and where the MVP intentionally draws the line.
+
+It does not describe Dedicated Deployment.
 
 ## Goal
 
@@ -97,10 +99,9 @@ Rules:
 - `/status` reports last known topic execution state
 - `pipeline_runs` is internal storage or read-side backing, not a public endpoint by itself
 
-## Current Implementation Gap
+## Implementation Boundary
 
-This document defines the intended target public surface.
+This document freezes the intended public contract of the shared platform design.
 
-Current local backend code may still expose development-oriented routes that are not part of the target public contract.
-
-Those routes must not be treated as part of the final public API surface.
+Current backend, proxy, and frontend code do not implement this contract end to end yet.
+Treat this document as target design until the cutover from static runtime is actually completed.

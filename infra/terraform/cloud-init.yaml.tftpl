@@ -15,11 +15,11 @@ write_files:
   - path: /etc/nginx/sites-available/public-api.conf
     permissions: '0644'
     content: |
-${indent(6, nginx_public_api_conf)}
+      ${indent(6, nginx_public_api_conf)}
   - path: /etc/masswhisper/public-api.tls.conf
     permissions: '0644'
     content: |
-${indent(6, nginx_public_api_tls_conf)}
+      ${indent(6, nginx_public_api_tls_conf)}
 
 runcmd:
   - |
@@ -38,19 +38,19 @@ runcmd:
     echo "[cloud-init] install node.js ${node_version} (${node_arch})"
     NODE_VERSION="v${node_version}"
     NODE_ARCH="${node_arch}"
-    NODE_BASENAME="node-$${NODE_VERSION}-$${NODE_ARCH}"
-    BASE_URL="https://nodejs.org/dist/$${NODE_VERSION}"
+    NODE_BASENAME="node-$NODE_VERSION-$NODE_ARCH"
+    BASE_URL="https://nodejs.org/dist/$NODE_VERSION"
     TMP_DIR="$(mktemp -d)"
-    curl -fsSLo "$${TMP_DIR}/$${NODE_BASENAME}.tar.xz" "$${BASE_URL}/$${NODE_BASENAME}.tar.xz"
-    curl -fsSLo "$${TMP_DIR}/SHASUMS256.txt.asc" "$${BASE_URL}/SHASUMS256.txt.asc"
-    git clone --depth=1 https://github.com/nodejs/release-keys.git "$${TMP_DIR}/release-keys"
-    GNUPGHOME="$${TMP_DIR}/release-keys/gpg" gpg --batch --verify "$${TMP_DIR}/SHASUMS256.txt.asc"
+    curl -fsSLo "$TMP_DIR/$NODE_BASENAME.tar.xz" "$BASE_URL/$NODE_BASENAME.tar.xz"
+    curl -fsSLo "$TMP_DIR/SHASUMS256.txt.asc" "$BASE_URL/SHASUMS256.txt.asc"
+    git clone --depth=1 https://github.com/nodejs/release-keys.git "$TMP_DIR/release-keys"
+    GNUPGHOME="$TMP_DIR/release-keys/gpg" gpg --batch --verify "$TMP_DIR/SHASUMS256.txt.asc"
     (
-      cd "$${TMP_DIR}"
-      grep " $${NODE_BASENAME}\.tar\.xz$" SHASUMS256.txt.asc | sha256sum -c -
+      cd "$TMP_DIR"
+      grep " $NODE_BASENAME\.tar\.xz$" SHASUMS256.txt.asc | sha256sum -c -
     )
-    tar -xJf "$${TMP_DIR}/$${NODE_BASENAME}.tar.xz" -C /usr/local --strip-components=1 --no-same-owner
-    rm -rf "$${TMP_DIR}"
+    tar -xJf "$TMP_DIR/$NODE_BASENAME.tar.xz" -C /usr/local --strip-components=1 --no-same-owner
+    rm -rf "$TMP_DIR"
     node -v
     npm -v
   - |

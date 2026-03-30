@@ -1,8 +1,10 @@
 # Routing Model
 
-This document defines the target frontend routing model for the client/server phase of MassWhisper.
+This document defines the frontend routing model of Shared Platform.
 
 Its purpose is to freeze how public frontend URLs are resolved before Vercel cutover.
+
+It does not describe Dedicated Deployment.
 
 ## Goal
 
@@ -26,7 +28,7 @@ Rules:
 - the first path segment is the topic slug
 - the frontend reads the slug from the browser URL
 - the frontend uses that slug to query the backend API
-- the current product contract is path-based, not subdomain-based
+- the product contract is path-based, not subdomain-based
 
 ## SPA Fallback Model
 
@@ -59,7 +61,7 @@ Rules:
 - a non-reserved but unconfigured slug still loads the SPA
 - the frontend then calls the backend API for that slug
 - if the backend returns `404`, the frontend shows an application-level 404 page
-- a true frontend HTTP `404` would require frontend-side or edge-side knowledge of configured slugs, which remains out of scope for this phase
+- a true frontend HTTP `404` would require frontend-side or edge-side knowledge of configured slugs, which remains out of scope for this design
 
 ## API Routing Contract
 

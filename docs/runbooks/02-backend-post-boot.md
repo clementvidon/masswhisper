@@ -1,4 +1,4 @@
-# Backend VM Post-Boot Runbook
+# 02 - Backend VM Post-Boot Runbook
 
 This runbook completes the `masswhisper` backend setup on a VM already bootstrapped by Terraform + cloud-init, then enables the local capture scheduler.
 
@@ -11,6 +11,12 @@ It assumes:
 - the repository is reachable from the VM
 - the dedicated Neon database already exists
 - the backend secrets are available outside git
+
+Operator variables:
+
+```bash
+export PASS_SECRET_PATH=masswhisper/runtime/fr-dev-job-market-prod/backend.env
+```
 
 ## 1. Transfer The Runtime Env File Securely
 
@@ -26,7 +32,8 @@ Secure approach example:
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-pass show masswhisper/runtime/fr-dev-job-market-prod/backend.env | \
+
+pass show "$PASS_SECRET_PATH" | \
   ssh "root@$server_ip" '
     set -eu
     install -d -m 755 /etc/masswhisper
@@ -68,7 +75,7 @@ ssh "root@$server_ip" '
   systemctl start masswhisper-topic
   systemctl status masswhisper-topic
 
-  printf 'masswhisper-topic service active: '
+  printf "masswhisper-topic service active: "
   systemctl is-active --quiet masswhisper-topic && echo ok || echo fail
 '
 ```
@@ -85,7 +92,7 @@ ssh "root@$server_ip" '
   systemctl start cron
   systemctl status cron
 
-  printf 'cron service active: '
+  printf "cron service active: "
   systemctl is-active --quiet cron && echo ok || echo fail
 '
 ```
@@ -101,7 +108,7 @@ ssh "root@$server_ip" 'journalctl -u masswhisper-topic -n 100'
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-api_domain="$(terraform -chdir=infra/terraform output -raw api_domain)"
+public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 ssh "root@$server_ip" "
 
   printf 'node binds local port 3000: '
@@ -112,11 +119,11 @@ ssh "root@$server_ip" "
     | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
 
   printf 'nginx local health route works: '
-  curl -s -i -H \"Host: $api_domain\" http://127.0.0.1/health \
+  curl -s -i -H \"Host: $public_api_domain\" http://127.0.0.1/health \
     | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
 
   printf 'nginx local report route blocked: '
-  curl -s -i -H \"Host: $api_domain\" http://127.0.0.1/report \
+  curl -s -i -H \"Host: $public_api_domain\" http://127.0.0.1/report \
     | grep -q \"^HTTP/1.1 404\" && echo ok || echo fail
 "
 ```
@@ -125,17 +132,17 @@ ssh "root@$server_ip" "
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-api_domain="$(terraform -chdir=infra/terraform output -raw api_domain)"
+public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
-printf 'public health endpoint reachable: '
-curl -s -i -H "Host: $api_domain" "http://$server_ip/health" \
+printf "public health endpoint reachable: "
+curl -s -i -H "Host: $public_api_domain" "http://$server_ip/health" \
   | grep -q "^HTTP/1.1 200" && echo ok || echo fail
 
-printf 'public report endpoint blocked: '
-curl -s -i -H "Host: $api_domain" "http://$server_ip/report" \
+printf "public report endpoint blocked: "
+curl -s -i -H "Host: $public_api_domain" "http://$server_ip/report" \
   | grep -q "^HTTP/1.1 404" && echo ok || echo fail
 
-printf 'public node port stays closed: '
+printf "public node port stays closed: "
 curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
   && echo fail || echo ok
 ```
@@ -144,17 +151,17 @@ curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
 
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-api_domain="$(terraform -chdir=infra/terraform output -raw api_domain)"
+public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
-printf 'public tcp/22 reachable: '
+printf "public tcp/22 reachable: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
   && echo ok || echo fail
 
-printf 'public tcp/80 reachable: '
-curl -s --max-time 5 -o /dev/null -H "Host: $api_domain" "http://$server_ip/health" \
+printf "public tcp/80 reachable: "
+curl -s --max-time 5 -o /dev/null -H "Host: $public_api_domain" "http://$server_ip/health" \
   && echo ok || echo fail
 
-printf 'public tcp/3000 blocked: '
+printf "public tcp/3000 blocked: "
 curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
   && echo fail || echo ok
 ```
@@ -183,7 +190,7 @@ ssh "root@$server_ip" '
   before=$(grep -c "\"id\":" "$before_file")
   after=$(grep -c "\"id\":" "$after_file")
 
-  printf 'manual capture adds a snapshot: '
+  printf "manual capture adds a snapshot: "
   test "$after" -gt "$before" && echo ok || echo fail
 '
 ```
@@ -215,10 +222,10 @@ ssh "root@$server_ip" '
   before=$(grep -c "\"id\":" "$before_file")
   after=$(grep -c "\"id\":" "$after_file")
 
-  printf 'locked capture exits without new snapshot: '
+  printf "locked capture exits without new snapshot: "
   test "$after" = "$before" && echo ok || echo fail
 
-  printf 'lock skip is logged: '
+  printf "lock skip is logged: "
   journalctl -t masswhisper-capture --since "2 minutes ago" \
     | grep -q "capture skipped: lock held" && echo ok || echo fail
 
@@ -233,18 +240,18 @@ Verify that the dedicated ops user can connect over SSH and use sudo without a p
 ```bash
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 
-printf 'ops ssh access works: '
+printf "ops ssh access works: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
   && echo ok || echo fail
 
-printf 'ops passwordless sudo works: '
+printf "ops passwordless sudo works: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" "sudo -n true" >/dev/null 2>&1 \
   && echo ok || echo fail
 ```
 
 ## 12. Enable DNS And TLS
 
-Follow `docs/runbooks/backend-api-dns-tls.md` to attach the current Terraform `api_domain` and enable TLS.
+Follow `docs/runbooks/03-backend-api-dns-tls.md` to attach the current Terraform `public_api_domain` and enable TLS.
 
 ## 13. Lock Root SSH Access
 
@@ -259,11 +266,11 @@ ssh "root@$server_ip" '
   systemctl reload ssh
 '
 
-printf 'ops ssh access still works: '
+printf "ops ssh access still works: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
   && echo ok || echo fail
 
-printf 'root ssh access is denied: '
+printf "root ssh access is denied: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
   && echo fail || echo ok
 ```

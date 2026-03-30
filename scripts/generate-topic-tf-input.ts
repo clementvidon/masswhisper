@@ -18,6 +18,7 @@ const ManifestSchema = z.object({
   sources: z.array(SourceSchema).min(1),
   prompt_variant: z.string().min(1),
   database_name: z.string().min(1),
+  domain: z.string().min(1),
 });
 
 function deriveTfInput(manifest: z.infer<typeof ManifestSchema>) {
@@ -30,6 +31,7 @@ function deriveTfInput(manifest: z.infer<typeof ManifestSchema>) {
       sources: manifest.sources,
       prompt_variant: manifest.prompt_variant,
       database_name: manifest.database_name,
+      domain: manifest.domain,
     },
   };
 }

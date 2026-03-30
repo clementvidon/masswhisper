@@ -7,3 +7,4 @@ sources:
     url: https://oauth.reddit.com/r/developpeurs/top.json?limit=100&t=week&raw_json=1
 prompt_variant: fr-dev-job-market
 database_name: fr_dev_job_market_prod
+domain: fr-dev-job-market.masswhisper.com

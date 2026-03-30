@@ -1,34 +1,29 @@
-module "topic_backend_instance" {
-  source        = "./modules/topic-backend"
-  topic_backend = var.topic_backend
-}
-
 locals {
-  app_name       = "masswhisper"
-  server_name    = "${local.app_name}-${module.topic_backend_instance.service_name}"
-  ssh_public_key = trimspace(file(pathexpand(var.ssh_public_key_path)))
-  api_domain     = "api.masswhisper.com"
+  app_name          = "masswhisper"
+  server_name       = "${local.app_name}-api-${var.topic_backend.topic_slug}-${var.topic_backend.environment}"
+  ssh_public_key    = trimspace(file(pathexpand(var.ssh_public_key_path)))
+  public_api_domain = "api.${var.topic_backend.domain}"
 
   bootstrap = {
-    node_version     = "22.22.2"
-    node_arch        = "linux-x64"
-    service_user     = local.app_name
-    admin_user       = "massops"
-    repo_url         = "https://github.com/clementvidon/masswhisper"
-    repo_dir         = "/opt/masswhisper"
-    service_name     = "masswhisper-topic"
-    capture_schedule = var.topic_backend.schedule
-    ssh_public_key   = local.ssh_public_key
-    api_domain       = local.api_domain
+    node_version      = "22.22.2"
+    node_arch         = "linux-x64"
+    service_user      = local.app_name
+    admin_user        = "massops"
+    repo_url          = "https://github.com/clementvidon/masswhisper"
+    repo_dir          = "/opt/masswhisper"
+    service_name      = "masswhisper-topic"
+    capture_schedule  = var.topic_backend.schedule
+    ssh_public_key    = local.ssh_public_key
+    public_api_domain = local.public_api_domain
 
     nginx_public_api_conf = templatefile(
       "${path.module}/../../deploy/proxy/public-api.conf.tftpl",
-      { api_domain = local.api_domain }
+      { public_api_domain = local.public_api_domain }
     )
 
     nginx_public_api_tls_conf = templatefile(
       "${path.module}/../../deploy/proxy/public-api.tls.conf.tftpl",
-      { api_domain = local.api_domain }
+      { public_api_domain = local.public_api_domain }
     )
   }
 }
@@ -79,6 +74,6 @@ resource "hcloud_server" "vm" {
 
   public_net {
     ipv4_enabled = true
-    ipv6_enabled = true
+    ipv6_enabled = false
   }
 }

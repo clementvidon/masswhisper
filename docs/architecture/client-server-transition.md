@@ -1,14 +1,14 @@
 # Client-Server Transition
 
-This document freezes the target client/server shape before implementation.
+This document freezes the client/server design and its relation to the static runtime.
 
-Its goal is to make the current-to-target transition easy to explain and defend.
+Its goal is to make the two deployment designs and their relationship easy to explain and defend.
 
 ## Diagram
 
 ```mermaid
 flowchart LR
-  subgraph CURRENT["Current"]
+  subgraph STATIC["Static Runtime"]
     GH_PAGES["GitHub Pages frontend"]
     GH_ACTIONS["GitHub Actions cron"]
     LOCAL_BACKEND["Backend CLI / local runs"]
@@ -19,7 +19,7 @@ flowchart LR
     GH_PAGES --> JSON
   end
 
-  subgraph TARGET["Target"]
+  subgraph CONTRACT["Client-Server Contract"]
     USER["Browser"]
     VERCEL["Vercel SPA\nmasswhisper.com/<topic-slug>"]
     NGINX["Nginx reverse proxy\napi.masswhisper.com"]
@@ -41,7 +41,7 @@ flowchart LR
   end
 ```
 
-## Current
+## Static Runtime
 
 - frontend is a static site published on GitHub Pages
 - backend runs through GitHub Actions or local CLI entrypoints
@@ -50,7 +50,7 @@ flowchart LR
 - scheduling is handled by GitHub Actions cron
 - secrets are carried by GitHub Secrets and local `.env`
 
-## Target
+## Client-Server Contract
 
 - frontend is public on `masswhisper.com/<topic-slug>`
 - frontend is deployed on Vercel as a SPA
@@ -63,6 +63,24 @@ flowchart LR
 - each production topic has its own Neon database
 - instance configuration is defined by an immutable manifest at `instances/<topic-slug>/prod.yaml`
 
+## Deployment Modes
+
+### Shared Platform
+
+- a shared platform serves multiple topics through:
+  - `masswhisper.com/<topic-slug>`
+  - `api.masswhisper.com/api/v1/topics/<topic-slug>/...`
+- topics are application-level data, not infrastructure resources
+
+### Dedicated Deployment
+
+- a dedicated deployment provisions one backend runtime on one VM
+- one topic is injected through the manifest
+- the public frontend is exposed on `<domain>`
+- the public API is exposed on `api.<domain>`
+- the dedicated frontend is wired to the dedicated backend
+- this mode is the infrastructure proof and the isolated deployment story
+
 ## What Changes
 
 - runtime moves from static JSON publishing to frontend + API
@@ -73,15 +91,16 @@ flowchart LR
 
 ## What Stays Intentionally Simple
 
-- only one real topic is deployed end to end in this phase
-- only `prod` is actually deployed
+- only one real topic is deployed end to end in the dedicated deployment path
+- only `prod` is deployed in Dedicated Deployment
 - multi-topic is proven mainly by the model, naming conventions, manifest shape, and Terraform structure
+- Shared Platform is opened after Dedicated Deployment is closed end to end
 - API stays read-only
 - no public write or admin endpoints
-- frontend implementation stays fixed for now
-- frontend hosting stays fixed on Vercel for now
-- database provider stays fixed on Neon for now
-- LLM provider and model choice stay fixed for now
+- frontend implementation stays fixed
+- frontend hosting stays fixed on Vercel
+- database provider stays fixed on Neon
+- LLM provider and model choice stay fixed
 - no multi-VM backend stack
 - no dedicated worker split yet
 
@@ -98,10 +117,14 @@ flowchart LR
 
 - `topic_slug` must be URL-safe and stable
 - `environment` is modeled as `dev|prod`
-- only `prod` is deployed in this phase
-- `frontend_path` is derived from `topic_slug`
-- `backend_api_prefix` is derived from `topic_slug`
-- `service_name` is derived from `topic_slug` and `environment`
+- only `prod` is deployed in the dedicated deployment path
+- `frontend_path` and `backend_api_prefix` belong to routing contracts, not to infrastructure naming
+- infrastructure naming derives from a stable deployment identity
+- Terraform derives that deployment identity locally from stable inputs
+- for the MVP, those inputs are `domain`, `topic_slug`, and `environment`
+- the manifest does not carry a separate infrastructure identifier at this stage
+- in Dedicated Deployment, the derived identity can track the topic
+- in Shared Platform, the derived identity must stay platform-level
 
 ### Runtime
 
@@ -139,6 +162,7 @@ Minimum expected fields:
 - `sources`
 - `prompt_variant`
 - `database_name`
+- `domain`
 
 Rules:
 

@@ -1,34 +1,34 @@
 # Runtime Model
 
-This document defines the target runtime model for the client/server phase of MassWhisper.
+This document defines the runtime model of the dedicated deployment path for the client/server phase of MassWhisper.
 
-Its purpose is to remove deployment and operations ambiguity before infrastructure implementation.
+Its purpose is to remove deployment and operations ambiguity for the dedicated deployment path.
 
 ## Runtime Principles
 
-The target runtime must stay:
+The runtime must stay:
 
 - simple to operate
 - easy to explain
-- reproducible for additional topics later
+- reproducible for additional dedicated deployments
 - narrow in public exposure
 
 ## Process Model
 
-- one long-lived backend service runs per deployed topic runtime
+- one long-lived backend service runs per dedicated deployment
 - `Nginx` stays the only public HTTP entrypoint on the VM
 - the Node backend stays private behind the proxy
 - `cron` runs alongside the backend service and triggers capture through a single entrypoint
 
 ## Runtime Shape
 
-The target runtime is intentionally simple:
+The runtime is intentionally simple:
 
-- the public frontend is hosted on Vercel
-- the public API is exposed on `api.masswhisper.com`
+- the public frontend is hosted on a dedicated domain such as `<domain>`
+- the public API is exposed on a dedicated domain such as `api.<domain>`
 - `Nginx` is the public reverse proxy on the backend VM
 - the Node backend listens only on a local interface behind `Nginx`
-- one backend runtime serves one real deployed topic in this phase
+- one backend runtime serves one real deployed topic
 - capture runs are triggered locally through `cron`, a single capture entrypoint, and `flock`
 - each production topic uses its own Neon database
 
@@ -38,7 +38,7 @@ The target runtime is intentionally simple:
 
 - serves the frontend SPA
 - handles public frontend hosting
-- serves `masswhisper.com/<topic-slug>`
+- serves the dedicated frontend domain of the deployment
 
 ### Nginx
 
@@ -71,8 +71,8 @@ The target runtime is intentionally simple:
 
 The network model is deliberately narrow:
 
-- the frontend is public on `masswhisper.com`
-- the API is public on `api.masswhisper.com`
+- the frontend is public on a dedicated frontend domain
+- the API is public on a dedicated API domain
 - the Node backend is not publicly reachable
 - the backend listens only on a local interface such as `127.0.0.1`
 - the initial fixed backend listener target is `127.0.0.1:3000`
@@ -82,7 +82,7 @@ Example request flow:
 
 ```text
 Browser
-  -> https://api.masswhisper.com
+  -> https://api.<domain>
   -> Nginx on public 80/443
   -> proxy_pass http://127.0.0.1:3000
   -> Node backend
@@ -92,8 +92,8 @@ Browser
 
 Normal public entrypoints:
 
-- frontend: `https://masswhisper.com`
-- API: `https://api.masswhisper.com`
+- frontend: `https://<domain>`
+- API: `https://api.<domain>`
 
 Temporary entrypoints:
 
@@ -102,10 +102,10 @@ Temporary entrypoints:
 
 ## DNS And Cutover Assumptions
 
-- the target frontend domain is `masswhisper.com`
-- the target API domain is `api.masswhisper.com`
-- Vercel is the intended serving target for the frontend apex domain
-- the backend VM is the intended traffic target for `api.masswhisper.com`
+- the target frontend domain is deployment-specific
+- the target API domain is deployment-specific
+- Vercel is the intended serving target for the dedicated frontend domain
+- the backend VM is the intended traffic target for the dedicated API domain
 - DNS TTL should be lowered before cutover when possible to reduce propagation delay
 
 ## CORS Model
@@ -120,7 +120,7 @@ Rules:
 
 Normal target origin:
 
-- `https://masswhisper.com`
+- `https://<domain>`
 
 Temporary fallback origin:
 
@@ -129,7 +129,7 @@ Temporary fallback origin:
 
 ## Scheduler Model
 
-Scheduling remains intentionally local in this phase.
+Scheduling remains intentionally local in this deployment model.
 
 Rules:
 
