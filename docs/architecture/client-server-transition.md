@@ -70,12 +70,14 @@ flowchart LR
 - a shared platform serves multiple topics through:
   - `masswhisper.com/<topic-slug>`
   - `api.masswhisper.com/api/v1/topics/<topic-slug>/...`
+- runtime status is exposed through `GET /api/v1/topics/<topic-slug>/status`
 - topics are application-level data, not infrastructure resources
 
 ### Dedicated Deployment
 
 - a dedicated deployment provisions one backend runtime on one VM
 - one topic is injected through the manifest
+- the minimal runtime status endpoint is exposed as `GET /status`
 - the public frontend is exposed on `<domain>`
 - the public API is exposed on `api.<domain>`
 - the dedicated frontend is wired to the dedicated backend
