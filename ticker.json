@@ -1,27 +1,27 @@
 [
   {
     "title": "Arrêtez d’envoyer tout le monde dans le dev",
-    "weight": "4",
+    "weight": "3",
     "itemRef": "https://reddit.com/comments/1s43j9w"
   },
   {
-    "title": "Combien d'entre vous envisagent de quitter l'informatique?",
+    "title": "[RANT] On parle beaucoup du marché du travail et de à quel point le game est fini pour les juniors mais…",
     "weight": "3",
+    "itemRef": "https://reddit.com/comments/1s6beir"
+  },
+  {
+    "title": "Combien d'entre vous envisagent de quitter l'informatique?",
+    "weight": "2",
     "itemRef": "https://reddit.com/comments/1s4nkds"
   },
   {
+    "title": "Où sont les offres d'emplois des boîtes \"prestigieuses\" ?",
+    "weight": "2",
+    "itemRef": "https://reddit.com/comments/1s27ks8"
+  },
+  {
     "title": "J'étais tellement proche de doubler ma rémunération",
-    "weight": "3",
+    "weight": "2",
     "itemRef": "https://reddit.com/comments/1s4hbhg"
-  },
-  {
-    "title": "Suis-je destiné à bosser en agence toute ma vie ?",
-    "weight": "2",
-    "itemRef": "https://reddit.com/comments/1s4f3tq"
-  },
-  {
-    "title": "Existe t'il des postes de dev cobol pour les juniors ?",
-    "weight": "2",
-    "itemRef": "https://reddit.com/comments/1s567dh"
   }
 ]
