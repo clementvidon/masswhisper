@@ -3,7 +3,7 @@ import express, { type Express } from 'express';
 import type { SnapshotQueryPort } from '../../application/ports/input/SnapshotQueryPort';
 import type { LoggerPort } from '../../application/ports/output/LoggerPort';
 
-export function makeReportController(
+export function makeReadApiController(
   logger: LoggerPort,
   query: SnapshotQueryPort,
 ): Express {
@@ -25,7 +25,6 @@ export function makeReportController(
     try {
       const report = await query.getLastReport();
       if (!report) {
-        reqLogger.warn('No report found');
         return res.status(404).json({ error: 'No report found' });
       }
       res.json(report);
@@ -37,6 +36,38 @@ export function makeReportController(
         error,
       );
       res.status(500).json({ error: 'Failed to load report' });
+    }
+  });
+
+  app.get('/headlines', async (req, res) => {
+    const reqLogger = req.logger ?? logger;
+    try {
+      const headlines = await query.getTopHeadlines(10);
+      res.json(headlines);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      reqLogger.warn(
+        'Failed to load headlines',
+        { path: '/headlines', method: 'GET' },
+        error,
+      );
+      res.status(500).json({ error: 'Failed to load headlines' });
+    }
+  });
+
+  app.get('/sentiment-history', async (req, res) => {
+    const reqLogger = req.logger ?? logger;
+    try {
+      const history = await query.getSentimentHistory();
+      res.json(history);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      reqLogger.warn(
+        'Failed to load sentiment history',
+        { path: '/sentiment-history', method: 'GET' },
+        error,
+      );
+      res.status(500).json({ error: 'Failed to load sentiment history' });
     }
   });
 

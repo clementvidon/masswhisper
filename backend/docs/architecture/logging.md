@@ -330,7 +330,7 @@ _Example: Logger hierarchy with context injection_
   │
   │ // Interface creation - scoped by entrypoint
   │ const interfaceLogger = entrypointLogger.child({ module: 'http-interface' })
-  │ const controller = makeReportController(interfaceLogger, deps)
+  │ const controller = makeReadApiController(interfaceLogger, deps)
   ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │ Interface (factory/class)                                       │

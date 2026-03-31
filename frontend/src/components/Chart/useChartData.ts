@@ -2,7 +2,7 @@ import {
   EMOTION_SCORE_FIELDS,
   TONALITY_AXIS_KEYS,
 } from '@masswhisper/shared/domain';
-import { AggregatedSentimentProfileDtoSchema } from '@masswhisper/shared/dtos';
+import { SentimentHistoryPointDtoSchema } from '@masswhisper/shared/dtos';
 import { useEffect, useState } from 'react';
 
 import { smoothUX } from './smoothing';
@@ -29,7 +29,7 @@ export function useChartData() {
         const res = await fetch(baseUrl + 'chart.json');
         const payload: unknown = await res.json();
         const result =
-          AggregatedSentimentProfileDtoSchema.array().safeParse(payload);
+          SentimentHistoryPointDtoSchema.array().safeParse(payload);
         if (!result.success) {
           setError(new Error(result.error.message));
           setEmotionData([]);

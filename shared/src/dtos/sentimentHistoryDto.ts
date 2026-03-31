@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { EmotionScoresSchema, TonalityScoresSchema } from '../domain';
 import { IsoDateStringSchema } from '../primitives/date';
 
-export const AggregatedSentimentProfileDtoSchema = z
+export const SentimentHistoryPointDtoSchema = z
   .object({
     createdAt: IsoDateStringSchema,
     count: z.number().int().nonnegative(),
@@ -11,7 +11,8 @@ export const AggregatedSentimentProfileDtoSchema = z
     emotions: EmotionScoresSchema,
     tonalities: TonalityScoresSchema,
   })
-  .brand<'AggregatedSentimentProfileDto'>();
-export type AggregatedSentimentProfileDto = z.infer<
-  typeof AggregatedSentimentProfileDtoSchema
+  .brand<'SentimentHistoryPointDto'>();
+export type SentimentHistoryPointDto = z.infer<
+  typeof SentimentHistoryPointDtoSchema
 >;
+export type SentimentHistoryDto = SentimentHistoryPointDto[];

@@ -7,6 +7,9 @@ describe('getConfirmedRelevanceCacheBefore', () => {
   test('keeps only decisions confirmed twice in a row on identical content', async () => {
     const persistence: PersistencePort = {
       storeSnapshotAt: vi.fn(),
+      getLatestReport: vi.fn().mockResolvedValue(null),
+      getLatestHeadlines: vi.fn().mockResolvedValue(null),
+      getSentimentHistory: vi.fn().mockResolvedValue([]),
       getSnapshots: () =>
         Promise.resolve([
           {

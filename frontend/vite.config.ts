@@ -8,6 +8,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/report': 'http://localhost:3000',
+      '/headlines': 'http://localhost:3000',
+      '/sentiment-history': 'http://localhost:3000',
     },
   },
   build: {

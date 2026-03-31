@@ -10,7 +10,7 @@ import type { HttpServerConfig } from '../infrastructure/config/loaders';
 import { loadHttpServerConfig } from '../infrastructure/config/loaders';
 import { makeLogger } from '../infrastructure/logging/root';
 import { PostgresAdapter } from '../infrastructure/persistence/PostgresAdapter';
-import { makeReportController } from '../interface/web/ReportController';
+import { makeReadApiController } from '../interface/web/ReadApiController';
 
 const rootLogger = makeLogger();
 
@@ -23,7 +23,7 @@ type Deps = {
 
 export function buildHttpServer(deps: Deps) {
   const query = makeSnapshotQueryService(deps.persistence);
-  const app = makeReportController(deps.logger.child({ scope: 'web' }), query);
+  const app = makeReadApiController(deps.logger.child({ scope: 'web' }), query);
   return { app, port: deps.port };
 }
 

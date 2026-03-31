@@ -1,7 +1,7 @@
 import type { Report } from '@masswhisper/shared/domain';
 import type {
-  AggregatedSentimentProfileDto,
   HeadlineDto,
+  SentimentHistoryDto,
 } from '@masswhisper/shared/dtos';
 
 /**
@@ -14,8 +14,8 @@ import type {
 export interface SnapshotQueryPort {
   /** Returns the latest report or null if none. */
   getLastReport(): Promise<Report | null>;
-  /** Returns aggregated profiles for all snapshots (newest-first source). */
-  getAggregatedProfiles(): Promise<AggregatedSentimentProfileDto[]>;
+  /** Returns the chronological sentiment history exposed by the read API. */
+  getSentimentHistory(): Promise<SentimentHistoryDto>;
   /** Returns top headlines from the latest snapshot; `limit` defaults are impl-specific. */
   getTopHeadlines(limit?: number): Promise<HeadlineDto[]>;
 }

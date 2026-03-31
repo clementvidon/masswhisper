@@ -7,8 +7,8 @@ import fs from 'fs';
 import path from 'path';
 
 import type { LoggerPort } from '../application/ports/output/LoggerPort';
-import { getAggregatedProfiles } from '../application/usecases/queries/getAggregatedProfiles';
 import { getLastReport } from '../application/usecases/queries/getLastReport';
+import { getSentimentHistory } from '../application/usecases/queries/getSentimentHistory';
 import { getTopHeadlines } from '../application/usecases/queries/getTopHeadlines';
 import { loadDatabaseConfig } from '../infrastructure/config/loaders';
 import { makeLogger } from '../infrastructure/logging/root';
@@ -34,7 +34,7 @@ export async function generateStatic(logger: LoggerPort) {
 
   const report = await getLastReport(persistence);
   const ticker = await getTopHeadlines(persistence, 5);
-  const chart = await getAggregatedProfiles(persistence);
+  const chart = await getSentimentHistory(persistence);
 
   save(log, 'report.json', report);
   save(log, 'ticker.json', ticker);

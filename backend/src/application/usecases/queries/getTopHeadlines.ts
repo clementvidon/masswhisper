@@ -19,9 +19,10 @@ export async function getTopHeadlines(
   persistence: PersistencePort,
   limit = 10,
 ): Promise<HeadlineDto[]> {
-  const snapshots = await persistence.getSnapshots();
-  if (snapshots.length === 0) return [];
-  return snapshots[0].weightedItems
+  const headlines = await persistence.getLatestHeadlines();
+  if (!headlines) return [];
+
+  return headlines
     .slice()
     .sort((a, b) => b.weight - a.weight)
     .slice(0, limit)

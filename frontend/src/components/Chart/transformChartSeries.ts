@@ -3,7 +3,7 @@ import {
   TONALITY_AXIS_KEYS,
   type TonalityAxisKey,
 } from '@masswhisper/shared/domain';
-import type { AggregatedSentimentProfileDto } from '@masswhisper/shared/dtos';
+import type { SentimentHistoryPointDto } from '@masswhisper/shared/dtos';
 
 import { EMOTION_COLORS } from './config';
 import { dateFmtTooltip } from './formatters';
@@ -15,7 +15,7 @@ export type EmotionSeriesPoint = {
 } & Record<keyof typeof EMOTION_COLORS, number>;
 
 export function buildEmotionSeries(
-  profiles: AggregatedSentimentProfileDto[],
+  profiles: SentimentHistoryPointDto[],
 ): EmotionSeriesPoint[] {
   const keys = Object.keys(EMOTION_COLORS) as (keyof typeof EMOTION_COLORS)[];
   return profiles
@@ -41,7 +41,7 @@ export type TonalitySeriesPoint = {
 } & Record<TonalityAxisKey, number>;
 
 export function buildTonalitySeries(
-  profiles: AggregatedSentimentProfileDto[],
+  profiles: SentimentHistoryPointDto[],
 ): TonalitySeriesPoint[] {
   return profiles
     .slice()

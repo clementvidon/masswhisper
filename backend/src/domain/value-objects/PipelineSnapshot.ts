@@ -14,16 +14,17 @@ import {
 /**
  * Backend-owned persisted snapshot contract.
  *
- * This schema intentionally serves two roles:
- * - historical aggregate of one pipeline execution
- * - validated storage contract for persistence adapters
+ * - Represents one pipeline execution snapshot
+ * - Defines the persistence storage contract
+ * - Enforces internal consistency invariants
  *
- * It is not a shared cross-workspace domain contract.
+ * Not a shared cross-workspace contract.
  */
 
-function equalRounded(a: number, b: number): boolean {
-  return roundNumber(a) === roundNumber(b);
-}
+const equalRounded = (a: number, b: number): boolean =>
+  roundNumber(a) === roundNumber(b);
+
+/* Schemas */
 
 export const SnapshotIssueSchema = z
   .object({
@@ -36,16 +37,32 @@ export const SnapshotDataShape = z
   .object({
     status: z.enum(['ok', 'degraded']),
     issues: z.array(SnapshotIssueSchema),
+
     fetchedItems: z.array(ItemSchema),
     itemsRelevance: z.array(ItemRelevanceSchema),
+
     weightedItems: z.array(WeightedItemSchema),
     weightedSentimentProfiles: z.array(WeightedSentimentProfileSchema),
+
     aggregatedSentimentProfile: AggregatedSentimentProfileSchema,
     report: ReportSchema,
   })
   .strict();
 
+/* Types */
+
 type SnapshotDataShapeValue = z.infer<typeof SnapshotDataShape>;
+
+type PipelineSnapshotShapeValue = SnapshotDataShapeValue & {
+  id: string;
+  createdAt: z.infer<typeof IsoDateStringSchema>;
+};
+
+export type SnapshotData = SnapshotDataShapeValue;
+export type PipelineSnapshot = PipelineSnapshotShapeValue;
+export type SnapshotIssue = z.infer<typeof SnapshotIssueSchema>;
+
+/* Validation */
 
 function validateSnapshotConsistency(
   snapshot: SnapshotDataShapeValue,
@@ -59,6 +76,8 @@ function validateSnapshotConsistency(
     aggregatedSentimentProfile,
   } = snapshot;
 
+  /* relevance alignment */
+
   if (fetchedItems.length !== itemsRelevance.length) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -67,11 +86,11 @@ function validateSnapshotConsistency(
     });
   }
 
-  const relevancePairCount = Math.min(
-    fetchedItems.length,
-    itemsRelevance.length,
-  );
-  for (let i = 0; i < relevancePairCount; i++) {
+  for (
+    let i = 0;
+    i < Math.min(fetchedItems.length, itemsRelevance.length);
+    i++
+  ) {
     if (fetchedItems[i].itemRef !== itemsRelevance[i].itemRef) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -80,6 +99,8 @@ function validateSnapshotConsistency(
       });
     }
   }
+
+  /* weighted alignment */
 
   if (weightedItems.length !== weightedSentimentProfiles.length) {
     ctx.addIssue({
@@ -90,12 +111,11 @@ function validateSnapshotConsistency(
     });
   }
 
-  const pairCount = Math.min(
-    weightedItems.length,
-    weightedSentimentProfiles.length,
-  );
-
-  for (let i = 0; i < pairCount; i++) {
+  for (
+    let i = 0;
+    i < Math.min(weightedItems.length, weightedSentimentProfiles.length);
+    i++
+  ) {
     const item = weightedItems[i];
     const profile = weightedSentimentProfiles[i];
 
@@ -116,6 +136,8 @@ function validateSnapshotConsistency(
       });
     }
   }
+
+  /* aggregation integrity */
 
   if (aggregatedSentimentProfile.count !== weightedSentimentProfiles.length) {
     ctx.addIssue({
@@ -142,17 +164,15 @@ function validateSnapshotConsistency(
   }
 }
 
-export const SnapshotDataSchema = SnapshotDataShape.superRefine(
-  validateSnapshotConsistency,
-);
+/* final schemas */
 
-export const PipelineSnapshotSchema = SnapshotDataShape.extend({
-  id: z.string().uuid(),
-  createdAt: IsoDateStringSchema,
-})
-  .strict()
-  .superRefine(validateSnapshotConsistency);
+export const SnapshotDataSchema: z.ZodType<SnapshotDataShapeValue> =
+  SnapshotDataShape.superRefine(validateSnapshotConsistency);
 
-export type SnapshotData = z.infer<typeof SnapshotDataSchema>;
-export type SnapshotIssue = z.infer<typeof SnapshotIssueSchema>;
-export type PipelineSnapshot = z.infer<typeof PipelineSnapshotSchema>;
+export const PipelineSnapshotSchema: z.ZodType<PipelineSnapshotShapeValue> =
+  SnapshotDataShape.extend({
+    id: z.string().uuid(),
+    createdAt: IsoDateStringSchema,
+  })
+    .strict()
+    .superRefine(validateSnapshotConsistency);

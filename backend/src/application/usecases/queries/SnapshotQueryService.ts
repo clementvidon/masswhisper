@@ -1,13 +1,13 @@
 import type { Report } from '@masswhisper/shared/domain';
-import type {
-  AggregatedSentimentProfileDto,
-  HeadlineDto,
+import {
+  type HeadlineDto,
+  type SentimentHistoryDto,
 } from '@masswhisper/shared/dtos';
 
 import type { SnapshotQueryPort } from '../../ports/input/SnapshotQueryPort';
 import type { PersistencePort } from '../../ports/output/PersistencePort';
-import { getAggregatedProfiles } from './getAggregatedProfiles';
 import { getLastReport } from './getLastReport';
+import { getSentimentHistory as getSentimentHistoryQuery } from './getSentimentHistory';
 import { getTopHeadlines } from './getTopHeadlines';
 
 export class SnapshotQueryService implements SnapshotQueryPort {
@@ -16,8 +16,8 @@ export class SnapshotQueryService implements SnapshotQueryPort {
   async getLastReport(): Promise<Report | null> {
     return getLastReport(this.persistence);
   }
-  getAggregatedProfiles(): Promise<AggregatedSentimentProfileDto[]> {
-    return getAggregatedProfiles(this.persistence);
+  getSentimentHistory(): Promise<SentimentHistoryDto> {
+    return getSentimentHistoryQuery(this.persistence);
   }
   getTopHeadlines(limit?: number): Promise<HeadlineDto[]> {
     return getTopHeadlines(this.persistence, limit);
