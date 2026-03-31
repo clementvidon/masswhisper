@@ -1,13 +1,8 @@
 [
   {
-    "title": "Arrêtez d’envoyer tout le monde dans le dev",
+    "title": "Combien d'entre vous envisagent de quitter l'informatique?",
     "weight": "2",
-    "itemRef": "https://reddit.com/comments/1s43j9w"
-  },
-  {
-    "title": "J'étais tellement proche de doubler ma rémunération",
-    "weight": "2",
-    "itemRef": "https://reddit.com/comments/1s4hbhg"
+    "itemRef": "https://reddit.com/comments/1s4nkds"
   },
   {
     "title": "Le problème que j'ai en tant que junior",
@@ -15,13 +10,18 @@
     "itemRef": "https://reddit.com/comments/1s48jk0"
   },
   {
+    "title": "Existe t'il des postes de dev cobol pour les juniors ?",
+    "weight": "2",
+    "itemRef": "https://reddit.com/comments/1s567dh"
+  },
+  {
     "title": "Suis-je destiné à bosser en agence toute ma vie ?",
     "weight": "2",
     "itemRef": "https://reddit.com/comments/1s4f3tq"
   },
   {
-    "title": "Combien d'entre vous envisagent de quitter l'informatique?",
+    "title": "Poste de Software Manager en France",
     "weight": "1",
-    "itemRef": "https://reddit.com/comments/1s4nkds"
+    "itemRef": "https://reddit.com/comments/1s42ury"
   }
 ]
