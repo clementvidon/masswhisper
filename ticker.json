@@ -1,23 +1,23 @@
 [
   {
     "title": "Arrêtez d’envoyer tout le monde dans le dev",
-    "weight": "3",
+    "weight": "4",
     "itemRef": "https://reddit.com/comments/1s43j9w"
   },
   {
-    "title": "[RANT] On parle beaucoup du marché du travail et de à quel point le game est fini pour les juniors mais…",
-    "weight": "3",
-    "itemRef": "https://reddit.com/comments/1s6beir"
-  },
-  {
     "title": "Combien d'entre vous envisagent de quitter l'informatique?",
-    "weight": "2",
+    "weight": "3",
     "itemRef": "https://reddit.com/comments/1s4nkds"
   },
   {
-    "title": "Où sont les offres d'emplois des boîtes \"prestigieuses\" ?",
+    "title": "Avenir des seniors",
     "weight": "2",
-    "itemRef": "https://reddit.com/comments/1s27ks8"
+    "itemRef": "https://reddit.com/comments/1s4kne8"
+  },
+  {
+    "title": "[RANT] On parle beaucoup du marché du travail et de à quel point le game est fini pour les juniors mais…",
+    "weight": "2",
+    "itemRef": "https://reddit.com/comments/1s6beir"
   },
   {
     "title": "J'étais tellement proche de doubler ma rémunération",
