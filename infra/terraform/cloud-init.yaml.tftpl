@@ -12,6 +12,11 @@ packages:
   - cron
 
 write_files:
+  - path: /etc/masswhisper/topic-runtime.env
+    permissions: '0644'
+    owner: root:root
+    content: |
+      ${indent(6, topic_runtime_env)}
   - path: /etc/nginx/sites-available/public-api.conf
     permissions: '0644'
     content: |
@@ -28,6 +33,8 @@ runcmd:
     id -u ${admin_user} >/dev/null 2>&1 || adduser --disabled-password --gecos "" ${admin_user}
     usermod -aG sudo ${admin_user}
     install -d -m 700 -o ${admin_user} -g ${admin_user} /home/${admin_user}/.ssh
+    chown root:${service_user} /etc/masswhisper/topic-runtime.env
+    chmod 640 /etc/masswhisper/topic-runtime.env
     printf "%s\n" "${ssh_public_key}" > /home/${admin_user}/.ssh/authorized_keys
     chown ${admin_user}:${admin_user} /home/${admin_user}/.ssh/authorized_keys
     chmod 600 /home/${admin_user}/.ssh/authorized_keys

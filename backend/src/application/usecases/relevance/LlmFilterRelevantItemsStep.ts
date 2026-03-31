@@ -9,7 +9,10 @@ import type {
 import { filterRelevantItems as filterRelevantItemsUsecase } from './filterRelevantItems';
 
 export class LlmFilterRelevantItemsStep implements FilterRelevantItemsPort {
-  constructor(private readonly llm: LlmPort) {}
+  constructor(
+    private readonly llm: LlmPort,
+    private readonly defaultOptions: Partial<FilterRelevantItemsOptions> = {},
+  ) {}
 
   async filterRelevantItems(
     logger: LoggerPort,
@@ -20,7 +23,7 @@ export class LlmFilterRelevantItemsStep implements FilterRelevantItemsPort {
       logger.child({ scope: 'relevance.filter' }),
       items,
       this.llm,
-      opts,
+      { ...this.defaultOptions, ...opts },
     );
   }
 }

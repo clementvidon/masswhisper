@@ -8,7 +8,10 @@ import type {
 import { generateReport as generateReportUsecase } from './generateReport';
 
 export class LlmGenerateReportStep implements GenerateReportPort {
-  constructor(private readonly llm: LlmPort) {}
+  constructor(
+    private readonly llm: LlmPort,
+    private readonly defaultOptions: Partial<GenerateReportOptions> = {},
+  ) {}
 
   async generateReport(
     logger: LoggerPort,
@@ -19,7 +22,7 @@ export class LlmGenerateReportStep implements GenerateReportPort {
       logger.child({ scope: 'report.generate' }),
       aggregatedSentimentProfile,
       this.llm,
-      opts,
+      { ...this.defaultOptions, ...opts },
     );
   }
 }

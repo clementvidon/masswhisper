@@ -7,6 +7,7 @@ export PATH="/usr/local/bin:/usr/bin:/bin"
 
 cd /opt/masswhisper
 set -a
+source /etc/masswhisper/topic-runtime.env
 source /etc/masswhisper/backend.env
 set +a
 

@@ -2,9 +2,7 @@ topic_slug: fr-dev-job-market
 topic_name: French Dev Job Market
 environment: prod
 schedule: '0 6 * * *'
-sources:
-  - kind: reddit
-    url: https://oauth.reddit.com/r/developpeurs/top.json?limit=100&t=week&raw_json=1
-prompt_variant: fr-dev-job-market
+sources_variant: fr-dev-job-market-v1
+prompt_variant: fr-dev-job-market-v1
 database_name: fr_dev_job_market_prod
 domain: fr-dev-job-market.masswhisper.com

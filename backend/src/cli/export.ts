@@ -7,7 +7,7 @@ import fs from 'fs';
 import path from 'path';
 
 import type { LoggerPort } from '../application/ports/output/LoggerPort';
-import { loadCoreConfig } from '../infrastructure/config/loaders';
+import { loadDatabaseConfig } from '../infrastructure/config/loaders';
 import { makeLogger } from '../infrastructure/logging/root';
 import { PostgresAdapter } from '../infrastructure/persistence/PostgresAdapter';
 
@@ -18,7 +18,7 @@ export async function runExport(logger: LoggerPort, outArg?: string) {
   log.info('Snapshots export start');
   const outPath = outArg ?? (process.argv[2] || './tmp/snapshots-export.json');
 
-  const { databaseUrl } = loadCoreConfig();
+  const { databaseUrl } = loadDatabaseConfig();
   const persistence = new PostgresAdapter(databaseUrl);
   const snapshots = await persistence.getSnapshots();
 

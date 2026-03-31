@@ -15,6 +15,9 @@ jobs:
 
     env:
       CI: true
+      TOPIC_SLUG: fr-dev-job-market
+      TOPIC_PROMPT_VARIANT: fr-dev-job-market-v1
+      TOPIC_SOURCES_VARIANT: fr-dev-job-market-v1
 
     steps:
       - name: Checkout repo
@@ -34,6 +37,21 @@ jobs:
       - name: Build shared package
         run: npm run build-shared
 
+      - name: Materialize private topic config
+        run: |
+          prompt_bundle_path="$RUNNER_TEMP/prompt-${TOPIC_PROMPT_VARIANT}.json"
+          cat > "$prompt_bundle_path" <<'EOF'
+          ${{ secrets.FR_DEV_JOB_MARKET_PROMPT_BUNDLE_JSON }}
+          EOF
+
+          sources_bundle_path="$RUNNER_TEMP/sources-${TOPIC_SOURCES_VARIANT}.json"
+          cat > "$sources_bundle_path" <<'EOF'
+          ${{ secrets.FR_DEV_JOB_MARKET_SOURCES_JSON }}
+          EOF
+                  
+          echo "TOPIC_PROMPT_BUNDLE_PATH=$prompt_bundle_path" >> "$GITHUB_ENV"
+          echo "TOPIC_SOURCES_BUNDLE_PATH=$sources_bundle_path" >> "$GITHUB_ENV"
+
       - name: Generate sentiment report
         run: npm --workspace backend run agent
         env:
@@ -43,7 +61,6 @@ jobs:
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
           REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
           REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
-          REDDIT_URL: ${{ secrets.REDDIT_URL }}
 
       - name: Generate static JSON
         run: npm --workspace backend run generate-static

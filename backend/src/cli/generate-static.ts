@@ -10,7 +10,7 @@ import type { LoggerPort } from '../application/ports/output/LoggerPort';
 import { getAggregatedProfiles } from '../application/usecases/queries/getAggregatedProfiles';
 import { getLastReport } from '../application/usecases/queries/getLastReport';
 import { getTopHeadlines } from '../application/usecases/queries/getTopHeadlines';
-import { loadCoreConfig } from '../infrastructure/config/loaders';
+import { loadDatabaseConfig } from '../infrastructure/config/loaders';
 import { makeLogger } from '../infrastructure/logging/root';
 import { PostgresAdapter } from '../infrastructure/persistence/PostgresAdapter';
 
@@ -29,7 +29,7 @@ function save(logger: LoggerPort, filename: string, data: unknown) {
 export async function generateStatic(logger: LoggerPort) {
   const log = logger.child({ module: 'cli' });
   log.info('Generate static start');
-  const { databaseUrl } = loadCoreConfig();
+  const { databaseUrl } = loadDatabaseConfig();
   const persistence = new PostgresAdapter(databaseUrl);
 
   const report = await getLastReport(persistence);

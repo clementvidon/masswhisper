@@ -11,7 +11,13 @@ import type { LlmPort } from '../application/ports/output/LlmPort';
 import type { LoggerPort } from '../application/ports/output/LoggerPort';
 import type { PersistencePort } from '../application/ports/output/PersistencePort';
 import { makeReportingAgentService } from '../application/usecases/agent/makeReportingAgentService';
-import type { ReportingAgentConfig } from '../infrastructure/config/loaders';
+import { LlmCreateSentimentProfilesStep } from '../application/usecases/profiles/LlmCreateSentimentProfilesStep';
+import { LlmFilterRelevantItemsStep } from '../application/usecases/relevance/LlmFilterRelevantItemsStep';
+import { LlmGenerateReportStep } from '../application/usecases/report/LlmGenerateReportStep';
+import type {
+  ReportingAgentConfig,
+  TopicConfig,
+} from '../infrastructure/config/loaders';
 import { loadReportingAgentConfig } from '../infrastructure/config/loaders';
 import { NodeFetchAdapter } from '../infrastructure/fetch/NodeFetchAdapter';
 import type { RedditCredentials } from '../infrastructure/items/redditAuth';
@@ -27,15 +33,18 @@ type Deps = {
   fetcher: FetchPort;
   persistence: PersistencePort;
   llm: LlmPort;
-  redditUrl: string;
+  topic: TopicConfig;
   redditCreds: RedditCredentials;
 };
 
 export function buildCliAgent(deps: Deps): ReportingAgentPort {
+  const source = deps.topic.sourcesBundle.sources[0];
+  const promptBundle = deps.topic.promptBundle;
+
   const itemsProvider = new RedditItemsAdapter(
     deps.logger,
     deps.fetcher,
-    deps.redditUrl,
+    source.url,
     deps.redditCreds,
   );
   return makeReportingAgentService(
@@ -43,6 +52,18 @@ export function buildCliAgent(deps: Deps): ReportingAgentPort {
     itemsProvider,
     deps.llm,
     deps.persistence,
+    {
+      relevance: new LlmFilterRelevantItemsStep(deps.llm, {
+        prompt: promptBundle.relevancePrompt,
+      }),
+      profiles: new LlmCreateSentimentProfilesStep(deps.llm, {
+        emotionPrompt: promptBundle.emotionPrompt,
+        tonalityPrompt: promptBundle.tonalityPrompt,
+      }),
+      report: new LlmGenerateReportStep(deps.llm, {
+        reportPrompt: promptBundle.reportPrompt,
+      }),
+    },
   );
 }
 
@@ -50,13 +71,13 @@ export function buildDeps(
   logger: LoggerPort,
   config: ReportingAgentConfig,
 ): Deps {
-  const { databaseUrl, openaiApiKey, reddit } = config;
+  const { databaseUrl, openaiApiKey, reddit, topic } = config;
   return {
     logger,
     fetcher: new NodeFetchAdapter(globalThis.fetch),
     persistence: new PostgresAdapter(databaseUrl),
     llm: new OpenAIAdapter(new OpenAI({ apiKey: openaiApiKey }), logger),
-    redditUrl: reddit.url,
+    topic,
     redditCreds: {
       clientId: reddit.clientId,
       clientSecret: reddit.clientSecret,

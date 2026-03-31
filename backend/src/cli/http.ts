@@ -6,8 +6,8 @@ import { pathToFileURL } from 'node:url';
 import type { LoggerPort } from '../application/ports/output/LoggerPort';
 import type { PersistencePort } from '../application/ports/output/PersistencePort';
 import { makeSnapshotQueryService } from '../application/usecases/queries/makeSnapshotQueryService';
-import type { CoreConfig } from '../infrastructure/config/loaders';
-import { loadCoreConfig } from '../infrastructure/config/loaders';
+import type { HttpServerConfig } from '../infrastructure/config/loaders';
+import { loadHttpServerConfig } from '../infrastructure/config/loaders';
 import { makeLogger } from '../infrastructure/logging/root';
 import { PostgresAdapter } from '../infrastructure/persistence/PostgresAdapter';
 import { makeReportController } from '../interface/web/ReportController';
@@ -27,7 +27,7 @@ export function buildHttpServer(deps: Deps) {
   return { app, port: deps.port };
 }
 
-export function buildDeps(logger: LoggerPort, config: CoreConfig): Deps {
+export function buildDeps(logger: LoggerPort, config: HttpServerConfig): Deps {
   const { bindHost, port, databaseUrl } = config;
   return {
     logger,
@@ -39,7 +39,7 @@ export function buildDeps(logger: LoggerPort, config: CoreConfig): Deps {
 
 export function runHttpServer(logger: LoggerPort) {
   const log = logger.child({ module: 'http' });
-  const config = loadCoreConfig();
+  const config = loadHttpServerConfig();
   const deps = buildDeps(log, config);
   const { app, port } = buildHttpServer(deps);
   return app.listen(port, deps.bindHost, () => {

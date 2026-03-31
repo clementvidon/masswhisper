@@ -142,14 +142,15 @@ Rules:
 
 ## Secrets Injection Model
 
-Secrets are injected into the backend runtime through environment variables.
+Secrets are injected into the backend runtime through environment variables or private runtime files outside git.
 
 The manifest may reference secrets, but it does not store secret values.
 
 The runtime model assumes:
 
 - secrets stay outside git
-- scripts or deployment steps inject secret values into the runtime
+- scripts or deployment steps inject secret values and private prompt and sources bundles into the runtime
+- local operator copies of those bundles may be referenced by environment-driven paths before installation
 - the backend reads them at process start
 
 ## Runtime Observability

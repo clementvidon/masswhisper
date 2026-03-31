@@ -123,7 +123,7 @@ flowchart LR
 - `frontend_path` and `backend_api_prefix` belong to routing contracts, not to infrastructure naming
 - infrastructure naming derives from a stable deployment identity
 - Terraform derives that deployment identity locally from stable inputs
-- for the MVP, those inputs are `domain`, `topic_slug`, and `environment`
+- those inputs are `domain`, `topic_slug`, and `environment`
 - the manifest does not carry a separate infrastructure identifier at this stage
 - in Dedicated Deployment, the derived identity can track the topic
 - in Shared Platform, the derived identity must stay platform-level
@@ -161,7 +161,7 @@ Minimum expected fields:
 - `topic_name`
 - `environment`
 - `schedule`
-- `sources`
+- `sources_variant`
 - `prompt_variant`
 - `database_name`
 - `domain`
@@ -172,6 +172,14 @@ Rules:
 - scripts may read and validate the manifest
 - scripts must not mutate the manifest
 - Terraform consumes generated input derived from the manifest, not the raw YAML directly
+- `sources_variant` is a versioned bundle identifier
+- `sources_variant` must follow `<topic-slug>-vN`
+- the private sources bundle filename must be `<sources_variant>.json`
+- the private sources bundle JSON must declare `"variant": "<sources_variant>"`
+- `prompt_variant` is a versioned bundle identifier
+- `prompt_variant` must follow `<topic-slug>-vN`
+- the private prompt bundle filename must be `<prompt_variant>.json`
+- the private prompt bundle JSON must declare `"variant": "<prompt_variant>"`
 
 ## Reserved Slugs
 

@@ -10,7 +10,10 @@ import { createSentimentProfiles as createSentimentProfilesUsecase } from './cre
 export class LlmCreateSentimentProfilesStep
   implements CreateSentimentProfilesPort
 {
-  constructor(private readonly llm: LlmPort) {}
+  constructor(
+    private readonly llm: LlmPort,
+    private readonly defaultOptions: Partial<CreateSentimentProfilesOptions> = {},
+  ) {}
 
   async createSentimentProfiles(
     logger: LoggerPort,
@@ -21,7 +24,7 @@ export class LlmCreateSentimentProfilesStep
       logger.child({ scope: 'profiles.create' }),
       items,
       this.llm,
-      opts,
+      { ...this.defaultOptions, ...opts },
     );
   }
 }

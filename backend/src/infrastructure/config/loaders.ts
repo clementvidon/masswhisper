@@ -1,19 +1,22 @@
 import type { z } from 'zod';
 
 import type { LogLevel } from '../../application/ports/output/LoggerPort';
+import { ConfigError } from './errors';
+import { loadPromptBundle, type PromptBundle } from './loadPromptBundle';
+import { loadSourcesBundle, type SourcesBundle } from './loadSourcesBundle';
 import {
-  CoreEnvSchema,
+  DatabaseEnvSchema,
   GlobalEnvSchema,
+  HttpServerEnvSchema,
   LlmEnvSchema,
   LoggingEnvSchema,
   RedditEnvSchema,
+  TopicEnvSchema,
 } from './schemas';
 
 /* ---------- helpers ---------- */
 
 type Env = typeof process.env;
-
-export class ConfigError extends Error {}
 
 function prettyErrors(issues: z.ZodIssue[]) {
   return issues
@@ -49,22 +52,6 @@ export function loadGlobalConfig(env: Env = process.env): GlobalConfig {
     nodeEnv,
   };
 }
-/* ---------- core ---------- */
-
-export type CoreConfig = {
-  bindHost: string;
-  port: number;
-  databaseUrl: string;
-};
-
-export function loadCoreConfig(env: Env = process.env): CoreConfig {
-  const core = parseEnv(CoreEnvSchema, env);
-  return {
-    bindHost: core.BIND_HOST,
-    port: core.PORT,
-    databaseUrl: core.DATABASE_URL,
-  };
-}
 
 /* ---------- logging ---------- */
 
@@ -81,14 +68,46 @@ export function loadLoggingConfig(env: Env = process.env): LoggingConfig {
   return { level, pretty };
 }
 
+/* ---------- database ---------- */
+
+export type DatabaseConfig = {
+  databaseUrl: string;
+};
+
+export function loadDatabaseConfig(env: Env = process.env): DatabaseConfig {
+  const db = parseEnv(DatabaseEnvSchema, env);
+  return {
+    databaseUrl: db.DATABASE_URL,
+  };
+}
+
+/* ---------- http server ---------- */
+
+export type HttpServerConfig = {
+  bindHost: string;
+  port: number;
+  databaseUrl: string;
+};
+
+export function loadHttpServerConfig(env: Env = process.env): HttpServerConfig {
+  const db = parseEnv(DatabaseEnvSchema, env);
+  const http = parseEnv(HttpServerEnvSchema, env);
+  return {
+    bindHost: http.BIND_HOST,
+    port: http.PORT,
+    databaseUrl: db.DATABASE_URL,
+  };
+}
+
 /* ---------- replay ---------- */
+
 export type ReplayConfig = {
   databaseUrl: string;
   openaiApiKey: string;
 };
 
 export function loadReplayConfig(env: Env = process.env): ReplayConfig {
-  const core = parseEnv(CoreEnvSchema, env);
+  const db = parseEnv(DatabaseEnvSchema, env);
   const llm = parseEnv(LlmEnvSchema, env);
 
   if (llm.LLM_PROVIDER !== 'openai')
@@ -97,27 +116,36 @@ export function loadReplayConfig(env: Env = process.env): ReplayConfig {
     throw new ConfigError('Replay requires OPENAI_API_KEY');
 
   return {
-    databaseUrl: core.DATABASE_URL,
+    databaseUrl: db.DATABASE_URL,
     openaiApiKey: llm.OPENAI_API_KEY,
   };
 }
 
 /* ---------- reporting agent ---------- */
+
 export type RedditConfig = {
-  url: string;
   clientId: string;
   clientSecret: string;
   username: string;
   password: string;
 };
 
+export type TopicConfig = {
+  slug: string;
+  sourcesVariant: string;
+  promptVariant: string;
+  sourcesBundlePath: string;
+  promptBundlePath: string;
+  sourcesBundle: SourcesBundle;
+  promptBundle: PromptBundle;
+};
+
 export type LlmProvider = z.infer<typeof LlmEnvSchema>['LLM_PROVIDER'];
 
 export type ReportingAgentConfig = {
-  bindHost: string;
-  port: number;
   databaseUrl: string;
   openaiApiKey: string;
+  topic: TopicConfig;
   reddit: RedditConfig;
   llmProvider: LlmProvider;
 };
@@ -125,10 +153,14 @@ export type ReportingAgentConfig = {
 export function loadReportingAgentConfig(
   env: Env = process.env,
 ): ReportingAgentConfig {
-  const core = parseEnv(CoreEnvSchema, env);
+  const db = parseEnv(DatabaseEnvSchema, env);
   const llm = parseEnv(LlmEnvSchema, env);
+  const topic = parseEnv(TopicEnvSchema, env);
   const reddit = parseEnv(RedditEnvSchema, env);
 
+  if (llm.LLM_PROVIDER !== 'openai') {
+    throw new ConfigError('Reporting agent MVP requires LLM_PROVIDER=openai');
+  }
   if (!llm.OPENAI_API_KEY) {
     throw new ConfigError(
       'OPENAI_API_KEY is required for this reporting agent configuration',
@@ -136,7 +168,6 @@ export function loadReportingAgentConfig(
   }
 
   if (
-    !reddit.REDDIT_URL ||
     !reddit.REDDIT_CLIENT_ID ||
     !reddit.REDDIT_CLIENT_SECRET ||
     !reddit.REDDIT_USERNAME ||
@@ -147,13 +178,35 @@ export function loadReportingAgentConfig(
     );
   }
 
+  const sourcesBundle = loadSourcesBundle(
+    topic.TOPIC_SOURCES_BUNDLE_PATH,
+    topic.TOPIC_SOURCES_VARIANT,
+  );
+
+  const promptBundle = loadPromptBundle(
+    topic.TOPIC_PROMPT_BUNDLE_PATH,
+    topic.TOPIC_PROMPT_VARIANT,
+  );
+
+  if (sourcesBundle.sources.length !== 1) {
+    throw new ConfigError(
+      'Reporting agent MVP requires exactly one topic source',
+    );
+  }
+
   return {
-    bindHost: core.BIND_HOST,
-    port: core.PORT,
-    databaseUrl: core.DATABASE_URL,
+    databaseUrl: db.DATABASE_URL,
     openaiApiKey: llm.OPENAI_API_KEY,
+    topic: {
+      slug: topic.TOPIC_SLUG,
+      promptVariant: topic.TOPIC_PROMPT_VARIANT,
+      promptBundlePath: topic.TOPIC_PROMPT_BUNDLE_PATH,
+      sourcesVariant: topic.TOPIC_SOURCES_VARIANT,
+      sourcesBundlePath: topic.TOPIC_SOURCES_BUNDLE_PATH,
+      sourcesBundle,
+      promptBundle,
+    },
     reddit: {
-      url: reddit.REDDIT_URL,
       clientId: reddit.REDDIT_CLIENT_ID,
       clientSecret: reddit.REDDIT_CLIENT_SECRET,
       username: reddit.REDDIT_USERNAME,

@@ -8,10 +8,13 @@ export const GlobalEnvSchema = z.object({
     .default('development'),
 });
 
-export const CoreEnvSchema = z.object({
+export const DatabaseEnvSchema = z.object({
+  DATABASE_URL: z.string().min(1, 'DATABASE_URL missing'),
+});
+
+export const HttpServerEnvSchema = z.object({
   BIND_HOST: z.string().min(1).default('127.0.0.1'),
   PORT: z.coerce.number().int().positive().default(3000),
-  DATABASE_URL: z.string().min(1, 'DATABASE_URL missing'),
 });
 
 export const LlmEnvSchema = z.object({
@@ -20,11 +23,18 @@ export const LlmEnvSchema = z.object({
 });
 
 export const RedditEnvSchema = z.object({
-  REDDIT_URL: z.string().url('REDDIT_URL must be a valid URL').optional(),
   REDDIT_CLIENT_ID: z.string().optional(),
   REDDIT_CLIENT_SECRET: z.string().optional(),
   REDDIT_USERNAME: z.string().optional(),
   REDDIT_PASSWORD: z.string().optional(),
+});
+
+export const TopicEnvSchema = z.object({
+  TOPIC_SLUG: z.string().min(1),
+  TOPIC_PROMPT_VARIANT: z.string().min(1),
+  TOPIC_PROMPT_BUNDLE_PATH: z.string().min(1),
+  TOPIC_SOURCES_VARIANT: z.string().min(1),
+  TOPIC_SOURCES_BUNDLE_PATH: z.string().min(1),
 });
 
 const LOG_LEVEL_VALUES = ['debug', 'info', 'warn', 'error', 'silent'] as const;

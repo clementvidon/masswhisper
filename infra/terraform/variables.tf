@@ -6,10 +6,7 @@ variable "topic_backend" {
     topic_name      = string
     environment     = string
     schedule        = string
-    sources         = list(object({
-      kind  = string
-      url   = string
-    }))
+    sources_variant = string
     prompt_variant  = string
     database_name   = string
     domain          = string

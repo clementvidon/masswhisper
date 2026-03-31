@@ -15,6 +15,7 @@ Operator variables:
 ```bash
 export TOPIC_SLUG=fr-dev-job-market
 export ENVIRONMENT=prod
+export LOCAL_TOPIC_CONFIG_DIR=$HOME/project/masswhisper/local/topic-config
 ```
 
 ## 1. Export The Hetzner Token
@@ -30,7 +31,7 @@ export HCLOUD_TOKEN="$(pass show masswhisper/infra/hcloud/token)"
 ## 2. Generate The Terraform Input
 
 ```bash
-npm run generate-topic-tf-input -- instances/$TOPIC_SLUG/$ENVIRONMENT.yaml
+npm run generate-topic-tf-input -- instances/$TOPIC_SLUG/$ENVIRONMENT.yaml "$LOCAL_TOPIC_CONFIG_DIR"
 ```
 
 ## 3. Initialize Terraform
@@ -74,6 +75,7 @@ ssh "root@$server_ip" '
 
   echo "[cloud-init] prepare runtime"
   printf "env: "; test -f /etc/masswhisper/backend.env && stat -c "%U:%G %a %n" /etc/masswhisper/backend.env || echo fail
+  printf "topic runtime env: "; test -f /etc/masswhisper/topic-runtime.env && stat -c "%U:%G %a %n" /etc/masswhisper/topic-runtime.env || echo fail
   printf "unit: "; test -s /etc/systemd/system/masswhisper-topic.service && echo ok || echo fail
 
   echo "[cloud-init] prepare scheduler"
