@@ -1,23 +1,23 @@
 [
   {
-    "createdAt": "2026-03-31T14:52:20.565Z",
-    "count": 13,
-    "confidenceMass": 17.895903,
+    "createdAt": "2026-03-31T18:18:05.692Z",
+    "count": 15,
+    "confidenceMass": 16.603867,
     "emotions": {
-      "joy": 0.047954,
-      "trust": 0.194966,
-      "anger": 0.249069,
-      "fear": 0.494809,
-      "sadness": 0.422978,
-      "disgust": 0.145583
+      "joy": 0.075021,
+      "trust": 0.215668,
+      "anger": 0.241965,
+      "fear": 0.46252,
+      "sadness": 0.42462,
+      "disgust": 0.118748
     },
     "tonalities": {
-      "positive": 0.077758,
-      "negative": 0.62846,
-      "positive_surprise": 0.010896,
-      "negative_surprise": 0.407518,
-      "optimistic_anticipation": 0.105723,
-      "pessimistic_anticipation": 0.695171
+      "positive": 0.120795,
+      "negative": 0.602511,
+      "positive_surprise": 0.012497,
+      "negative_surprise": 0.379715,
+      "optimistic_anticipation": 0.166218,
+      "pessimistic_anticipation": 0.640794
     }
   },
   {
