@@ -18,7 +18,7 @@ It assumes:
 Operator variables:
 
 ```zsh
-export CERTBOT_EMAIL=ops@example.com
+export CERTBOT_EMAIL=example@mail.com
 ```
 
 This runbook uses `certbot certonly --webroot`, so Certbot issues the certificate without editing the Nginx configuration. HTTPS and the public read API routes are enabled explicitly in step 7.
@@ -32,7 +32,7 @@ Create an `A` record pointing the dedicated `public_api_domain` to the server IP
 - Target: the current Terraform `server_ip`
 - TTL: `300`
 
-Get the server IP:
+Current Terraform server IP:
 
 ```zsh
 terraform -chdir=infra/terraform output server_ip
@@ -225,3 +225,7 @@ If the current `public_api_domain` cannot be pointed yet, use a temporary hostna
 - `/health` responds on the public HTTPS API
 - `/report`, `/headlines`, and `/sentiment-history` respond on the public HTTPS API
 - certificate renewal is testable
+
+Next step:
+
+- go back to `docs/runbooks/02-backend-post-boot.md` step 14

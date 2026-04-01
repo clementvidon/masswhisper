@@ -10,6 +10,20 @@ export function makeReadApiController(
   const app = express();
   app.use(express.json());
 
+  const frontendOrigin = process.env.FRONTEND_ORIGIN;
+
+  function applyReadCors(req: express.Request, res: express.Response) {
+    if (!frontendOrigin) {
+      return;
+    }
+    const requestOrigin = req.get('Origin');
+    if (requestOrigin !== frontendOrigin) {
+      return;
+    }
+    res.setHeader('Access-Control-Allow-Origin', frontendOrigin);
+    res.setHeader('Vary', 'Origin');
+  }
+
   app.use((req, _res, next) => {
     const requestId = globalThis.crypto.randomUUID();
     req.logger = logger.child({ requestId });
@@ -21,6 +35,7 @@ export function makeReadApiController(
   });
 
   app.get('/report', async (req, res) => {
+    applyReadCors(req, res);
     const reqLogger = req.logger ?? logger;
     try {
       const report = await query.getLastReport();
@@ -40,6 +55,7 @@ export function makeReadApiController(
   });
 
   app.get('/headlines', async (req, res) => {
+    applyReadCors(req, res);
     const reqLogger = req.logger ?? logger;
     try {
       const headlines = await query.getTopHeadlines(10);
@@ -56,6 +72,7 @@ export function makeReadApiController(
   });
 
   app.get('/sentiment-history', async (req, res) => {
+    applyReadCors(req, res);
     const reqLogger = req.logger ?? logger;
     try {
       const history = await query.getSentimentHistory();

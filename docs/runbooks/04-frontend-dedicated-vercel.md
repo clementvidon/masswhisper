@@ -2,6 +2,9 @@
 
 This runbook deploys the dedicated mono-topic frontend on `https://<domain>` and wires it to the dedicated backend on `https://api.<domain>`.
 
+If the dedicated frontend is already live on `<domain>`, you usually do not need to repeat the full Vercel and DNS setup.
+Update the required production environment variables if needed, then trigger a new production redeploy.
+
 Estimated hands-on time: 10 minutes
 
 It assumes:

@@ -12,25 +12,43 @@ It assumes:
 - the repository already exists at `/opt/masswhisper`
 - the backend service is already installed on the VM
 
-## 1. Pull The Latest Repository State
+Operator variables:
 
 ```zsh
-server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "massops@$server_ip" '
-  set -eu
-  sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
-'
+export PASS_SECRET_PATH=masswhisper/runtime/fr-dev-job-market-prod/backend.env
 ```
 
-## 2. Reapply The Required Runtime Changes
+## 1. Choose The Update Path
 
 Use the matching update path:
 
+- `runtime env` changes: reinstall `/etc/masswhisper/backend.env`, then restart the backend service
 - `backend` code changes: restart the backend service
 - `shared/` changes: rebuild shared artifacts, then restart the backend service
 - `dependency` changes: reinstall dependencies, rebuild shared artifacts, then restart the backend service
 - `deploy/systemd/` changes: reinstall the systemd unit, run daemon-reload, then restart the backend service
 - `deploy/proxy/` changes: reinstall the active Nginx config, validate it, then reload Nginx
+
+## 2. Apply The Matching Update
+
+### Runtime Env
+
+Use this when the backend runtime secret file changed and must be reinstalled on the VM.
+
+```zsh
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+: "${PASS_SECRET_PATH:?PASS_SECRET_PATH must be set}"
+pass show "$PASS_SECRET_PATH" | \
+  ssh "massops@$server_ip" '
+    set -eu
+    sudo install -d -m 755 /etc/masswhisper
+    tmp=$(mktemp)
+    trap "rm -f \"$tmp\"" EXIT
+    cat > "$tmp"
+    sudo install -o root -g masswhisper -m 640 "$tmp" /etc/masswhisper/backend.env
+    sudo systemctl restart masswhisper-topic
+'
+```
 
 ### Backend Code
 
@@ -38,6 +56,7 @@ Use the matching update path:
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "massops@$server_ip" '
   set -eu
+  sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
   sudo systemctl restart masswhisper-topic
 '
 ```
@@ -48,6 +67,7 @@ ssh "massops@$server_ip" '
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "massops@$server_ip" '
   set -eu
+  sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
   sudo -u masswhisper -H bash -lc "cd /opt/masswhisper && npm run build-shared"
   sudo systemctl restart masswhisper-topic
 '
@@ -59,6 +79,7 @@ ssh "massops@$server_ip" '
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "massops@$server_ip" '
   set -eu
+  sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
   sudo -u masswhisper -H bash -lc "cd /opt/masswhisper && HUSKY=0 npm ci && npm run build-shared"
   sudo systemctl restart masswhisper-topic
 '
@@ -70,8 +91,9 @@ ssh "massops@$server_ip" '
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "massops@$server_ip" '
   set -eu
-  sudo install -D -m 0644 /opt/masswhisper/deploy/systemd/masswhisper-topic.service /etc/systemd/system/masswhisper-
-topic.service
+  sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
+  sudo install -D -m 0644 /opt/masswhisper/deploy/systemd/masswhisper-topic.service \
+    /etc/systemd/system/masswhisper-topic.service
   sudo systemctl daemon-reload
   sudo systemctl restart masswhisper-topic
 '
@@ -85,9 +107,29 @@ Use this only if `/etc/masswhisper/public-api.tls.conf` is already up to date an
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "massops@$server_ip" '
   set -eu
+  sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
   sudo install -D -m 0644 /etc/masswhisper/public-api.tls.conf /etc/nginx/sites-available/public-api.conf
   sudo nginx -t
   sudo systemctl reload nginx
+'
+```
+
+## Recover A Diverged Repository
+
+Use this only if `git pull --ff-only` fails because the VM repository diverged from `origin/main`.
+
+Warning:
+
+- this discards uncommitted changes inside `/opt/masswhisper`
+- do not use this as the normal update path
+
+```zsh
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+ssh "massops@$server_ip" '
+  set -eu
+  sudo -u masswhisper -H git -C /opt/masswhisper fetch origin
+  sudo -u masswhisper -H git -C /opt/masswhisper reset --hard origin/main
+  sudo systemctl restart masswhisper-topic
 '
 ```
 
@@ -103,12 +145,29 @@ ssh "massops@$server_ip" '
   printf "service active: "
   sudo systemctl is-active --quiet masswhisper-topic && echo ok || echo fail
 '
-```
 
-```zsh
 printf "public api health reachable: "
 curl -s -i "https://$public_api_domain/health" \
   | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+
+printf "public api report reachable: "
+curl -s -i "https://$public_api_domain/report" \
+  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+
+printf "public api headlines reachable: "
+curl -s -i "https://$public_api_domain/headlines" \
+  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+
+printf "public api sentiment history reachable: "
+curl -s -i "https://$public_api_domain/sentiment-history" \
+  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+
+printf "public read api cors origin allowed: "
+curl -s -i \
+  -H "Origin: https://fr-dev-job-market.masswhisper.com" \
+  "https://$public_api_domain/report" \
+  | grep -qi "access-control-allow-origin: https://fr-dev-job-market.masswhisper.com" \
+  && echo ok || echo fail
 ```
 
 ## State After This Runbook

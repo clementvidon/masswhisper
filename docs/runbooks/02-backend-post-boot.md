@@ -25,14 +25,11 @@ export TOPIC_SLUG=fr-dev-job-market
 Transfer the local topic config files to `/etc/masswhisper/`
 
 ```zsh
-server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-
-
 setopt nullglob
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" 'install -d -m 700 /tmp/prompts /tmp/sources'
 scp "$LOCAL_TOPIC_CONFIG_DIR"/prompts/${TOPIC_SLUG}-v*.json "root@$server_ip:/tmp/prompts/"
 scp "$LOCAL_TOPIC_CONFIG_DIR"/sources/${TOPIC_SLUG}-v*.json "root@$server_ip:/tmp/sources/"
-
 ssh "root@$server_ip" '
   set -eu
 
@@ -56,6 +53,7 @@ Transfer the backend env file to `/etc/masswhisper/backend.env` over SSH.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+: "${PASS_SECRET_PATH:?PASS_SECRET_PATH must be set}"
 pass show "$PASS_SECRET_PATH" | \
   ssh "root@$server_ip" '
     set -eu
@@ -145,10 +143,6 @@ ssh "root@$server_ip" "
   printf 'nginx local health route works: '
   curl -s -i -H \"Host: $public_api_domain\" http://127.0.0.1/health \
     | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
-
-  printf 'nginx local report route blocked: '
-  curl -s -i -H \"Host: $public_api_domain\" http://127.0.0.1/report \
-    | grep -q \"^HTTP/1.1 404\" && echo ok || echo fail
 "
 ```
 
@@ -161,10 +155,6 @@ public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_dom
 printf "public health endpoint reachable: "
 curl -s -i -H "Host: $public_api_domain" "http://$server_ip/health" \
   | grep -q "^HTTP/1.1 200" && echo ok || echo fail
-
-printf "public report endpoint blocked: "
-curl -s -i -H "Host: $public_api_domain" "http://$server_ip/report" \
-  | grep -q "^HTTP/1.1 404" && echo ok || echo fail
 
 printf "public node port stays closed: "
 curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
@@ -322,3 +312,7 @@ Consider the runtime closed only after a fresh end-to-end replay confirms that:
 - routine SSH access goes through massops
 - root SSH login is disabled after ops access validation
 - DNS/TLS are configured after the dedicated runbook is completed
+
+Next step:
+
+- follow `docs/runbooks/04-frontend-dedicated-vercel.md` to deploy the dedicated frontend
