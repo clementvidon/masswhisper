@@ -17,7 +17,7 @@ It assumes:
 
 Operator variables:
 
-```bash
+```zsh
 export CERTBOT_EMAIL=ops@example.com
 ```
 
@@ -34,7 +34,7 @@ Create an `A` record pointing the dedicated `public_api_domain` to the server IP
 
 Get the server IP:
 
-```bash
+```zsh
 terraform -chdir=infra/terraform output server_ip
 ```
 
@@ -46,7 +46,7 @@ the relative label may be `api.fr-dev-job-market` rather than only `api`.
 
 Verify that public DNS resolvers return the expected IPv4 address.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
@@ -63,7 +63,7 @@ If both checks fail, wait a few minutes for DNS propagation and retry.
 
 Simulate the ACME HTTP-01 challenge to verify that the webroot is publicly accessible.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
@@ -83,7 +83,7 @@ If it fails, stop here and fix DNS, HTTP reachability, or the Nginx ACME webroot
 
 Request a staging certificate from Let's Encrypt to validate the ACME HTTP-01 challenge end-to-end without hitting production rate limits.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 ssh "root@$server_ip" "
@@ -103,7 +103,7 @@ ssh "root@$server_ip" "
 
 Request and install a production TLS certificate from Let's Encrypt using the ACME HTTP-01 challenge.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 ssh "root@$server_ip" "
@@ -123,7 +123,7 @@ ssh "root@$server_ip" "
 
 Add a Certbot deploy hook to reload Nginx after each certificate renewal.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
@@ -144,7 +144,7 @@ ssh "root@$server_ip" '
 
 Activate the final TLS-enabled Nginx configuration and reload the server.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
@@ -165,7 +165,7 @@ ssh "root@$server_ip" '
 
 Verify that HTTP requests are redirected to HTTPS and that routing behaves as expected.
 
-```bash
+```zsh
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 printf "http redirects to https: "
 curl -s -i "http://$public_api_domain/health" \
@@ -182,7 +182,7 @@ curl -s -i "https://$public_api_domain/report" \
 
 ## 9. Inspect The Presented Certificate
 
-```bash
+```zsh
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 openssl s_client -connect "$public_api_domain:443" -servername "$public_api_domain" </dev/null 2>/dev/null \
   | openssl x509 -noout -subject -issuer -dates
@@ -198,7 +198,7 @@ Confirm that:
 
 Dry-run renewal to ensure certificates can be renewed automatically.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" 'certbot renew --dry-run --no-random-sleep-on-renew -v'
 ```

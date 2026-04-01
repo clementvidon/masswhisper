@@ -12,7 +12,7 @@ It assumes:
 
 Operator variables:
 
-```bash
+```zsh
 export TOPIC_SLUG=fr-dev-job-market
 export ENVIRONMENT=prod
 export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/topic-config
@@ -22,25 +22,25 @@ export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/topic-config
 
 Terraform reads the Hetzner cloud api token from the shell environment.
 
-```bash
+```zsh
 export HCLOUD_TOKEN="$(pass show masswhisper/infra/hcloud/token)"
 ```
 
 ## 2. Generate The Terraform Input
 
-```bash
+```zsh
 npm run generate-topic-tf-input -- instances/$TOPIC_SLUG/$ENVIRONMENT.yaml "$LOCAL_TOPIC_CONFIG_DIR"
 ```
 
 ## 3. Initialize Terraform
 
-```bash
+```zsh
 terraform -chdir=infra/terraform init
 ```
 
 ## 4. Review The Plan And Apply
 
-```bash
+```zsh
 terraform -chdir=infra/terraform apply -var-file="generated/${TOPIC_SLUG}-${ENVIRONMENT}.tfvars.json"
 ```
 
@@ -53,7 +53,7 @@ Expected result:
 
 ## 5. Verify Cloud-Init Output
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   cloud-init status --wait
@@ -97,14 +97,14 @@ ssh "root@$server_ip" '
 
 If the step fails, inspect the cloud-init logs first:
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" 'journalctl -u cloud-init -u cloud-final -n 40'
 ```
 
 If cloud-init must be replayed after a template fix, recreate the server:
 
-```bash
+```zsh
 terraform -chdir=infra/terraform apply -replace=hcloud_server.vm \
   -var-file="generated/${TOPIC_SLUG}-${ENVIRONMENT}.tfvars.json"
 ```

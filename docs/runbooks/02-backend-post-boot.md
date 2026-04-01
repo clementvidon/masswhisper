@@ -14,40 +14,34 @@ It assumes:
 
 Operator variables:
 
-```bash
+```zsh
 export PASS_SECRET_PATH=masswhisper/runtime/fr-dev-job-market-prod/backend.env
-export LOCAL_TOPIC_CONFIG_DIR=$HOME/project/masswhisper/local/topic-config
+export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/topic-config
 export TOPIC_SLUG=fr-dev-job-market
 ```
 
 ## 1. Install The Local Topic Config
 
-Transfer the local topic config files to:
+Transfer the local topic config files to `/etc/masswhisper/`
 
-- `/etc/masswhisper/prompts/`
-- `/etc/masswhisper/sources/`
-
-Ensure:
-
-- owner is `root:masswhisper`
-- mode is `640`
-- the files are never committed to git
-
-Secure approach example:
-
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" 'install -d -m 700 /tmp/prompts /tmp/sources'
 
+
+setopt nullglob
+ssh "root@$server_ip" 'install -d -m 700 /tmp/prompts /tmp/sources'
 scp "$LOCAL_TOPIC_CONFIG_DIR"/prompts/${TOPIC_SLUG}-v*.json "root@$server_ip:/tmp/prompts/"
 scp "$LOCAL_TOPIC_CONFIG_DIR"/sources/${TOPIC_SLUG}-v*.json "root@$server_ip:/tmp/sources/"
+
 ssh "root@$server_ip" '
   set -eu
+
   install -d -m 750 -o root -g masswhisper /etc/masswhisper/prompts
   for file in /tmp/prompts/'"${TOPIC_SLUG}"'-v*.json; do
     install -o root -g masswhisper -m 640 "$file" /etc/masswhisper/prompts/
     rm -f "$file"
   done
+
   install -d -m 750 -o root -g masswhisper /etc/masswhisper/sources
   for file in /tmp/sources/'"${TOPIC_SLUG}"'-v*.json; do
     install -o root -g masswhisper -m 640 "$file" /etc/masswhisper/sources/
@@ -56,19 +50,11 @@ ssh "root@$server_ip" '
 '
 ```
 
-## 2. Transfer The Runtime Env File Securely
+## 2. Securely Transfer The Runtime Env
 
 Transfer the backend env file to `/etc/masswhisper/backend.env` over SSH.
 
-Ensure:
-
-- owner is `root:masswhisper`
-- mode is `640`
-- the file is never committed to git
-
-Secure approach example:
-
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 pass show "$PASS_SECRET_PATH" | \
   ssh "root@$server_ip" '
@@ -87,7 +73,7 @@ If the service was already running, restart it after updating the env file.
 
 Load the runtime env file and apply the pending database migrations before starting the backend service.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
@@ -105,7 +91,7 @@ ssh "root@$server_ip" '
 
 Once the env file and schema are ready, enable the backend service at boot and start it on the current VM.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
@@ -122,7 +108,7 @@ ssh "root@$server_ip" '
 
 Enable cron only after the runtime env is in place and the database is migrated.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
@@ -137,14 +123,14 @@ ssh "root@$server_ip" '
 
 ## 6. Inspect Logs
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" 'journalctl -u masswhisper-topic -n 100'
 ```
 
 ## 7. Verify Local Reachability
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 ssh "root@$server_ip" "
@@ -168,7 +154,7 @@ ssh "root@$server_ip" "
 
 ## 8. Verify Proxied Health
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
@@ -187,7 +173,7 @@ curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
 
 ## 9. Verify Minimal Firewall Exposure
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
@@ -208,7 +194,7 @@ curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
 
 Run the capture wrapper once as `masswhisper` and verify that one new snapshot is persisted.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
@@ -238,7 +224,7 @@ ssh "root@$server_ip" '
 
 Hold the capture lock manually, run the wrapper again, and verify that the run is skipped without creating a new snapshot.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
@@ -277,7 +263,7 @@ ssh "root@$server_ip" '
 
 Verify that the dedicated ops user can connect over SSH and use sudo without a password.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 
 printf "ops ssh access works: "
@@ -297,7 +283,7 @@ Follow `docs/runbooks/03-backend-api-dns-tls.md` to attach the current Terraform
 
 Once massops access is validated, disable root SSH login entirely.
 
-```bash
+```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
