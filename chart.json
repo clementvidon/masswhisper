@@ -4914,24 +4914,24 @@
     }
   },
   {
-    "createdAt": "2026-03-31T21:55:32.138Z",
+    "createdAt": "2026-04-01T10:57:31.211Z",
     "count": 14,
-    "confidenceMass": 14.734615,
+    "confidenceMass": 16.628858,
     "emotions": {
-      "joy": 0.071459,
-      "trust": 0.242,
-      "anger": 0.200636,
-      "fear": 0.441152,
-      "sadness": 0.386491,
-      "disgust": 0.114854
+      "joy": 0.064533,
+      "trust": 0.218865,
+      "anger": 0.253845,
+      "fear": 0.408617,
+      "sadness": 0.404697,
+      "disgust": 0.144138
     },
     "tonalities": {
-      "positive": 0.146163,
-      "negative": 0.528039,
-      "positive_surprise": 0.018664,
-      "negative_surprise": 0.319373,
-      "optimistic_anticipation": 0.165868,
-      "pessimistic_anticipation": 0.615802
+      "positive": 0.140902,
+      "negative": 0.601155,
+      "positive_surprise": 0.032731,
+      "negative_surprise": 0.365899,
+      "optimistic_anticipation": 0.146693,
+      "pessimistic_anticipation": 0.608401
     }
   }
 ]

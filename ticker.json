@@ -1,8 +1,8 @@
 [
   {
-    "title": "Combien d'entre vous envisagent de quitter l'informatique?",
+    "title": "J'étais tellement proche de doubler ma rémunération",
     "weight": "2",
-    "itemRef": "https://reddit.com/comments/1s4nkds"
+    "itemRef": "https://reddit.com/comments/1s4hbhg"
   },
   {
     "title": "Le problème que j'ai en tant que junior",
@@ -15,13 +15,13 @@
     "itemRef": "https://reddit.com/comments/1s567dh"
   },
   {
+    "title": "Sécurité de l'emploie: startup ou ESN?",
+    "weight": "2",
+    "itemRef": "https://reddit.com/comments/1s6y0gy"
+  },
+  {
     "title": "Suis-je destiné à bosser en agence toute ma vie ?",
     "weight": "2",
     "itemRef": "https://reddit.com/comments/1s4f3tq"
-  },
-  {
-    "title": "Poste de Software Manager en France",
-    "weight": "1",
-    "itemRef": "https://reddit.com/comments/1s42ury"
   }
 ]
