@@ -33,8 +33,6 @@ runcmd:
     id -u ${admin_user} >/dev/null 2>&1 || adduser --disabled-password --gecos "" ${admin_user}
     usermod -aG sudo ${admin_user}
     install -d -m 700 -o ${admin_user} -g ${admin_user} /home/${admin_user}/.ssh
-    chown root:${service_user} /etc/masswhisper/topic-runtime.env
-    chmod 640 /etc/masswhisper/topic-runtime.env
     printf "%s\n" "${ssh_public_key}" > /home/${admin_user}/.ssh/authorized_keys
     chown ${admin_user}:${admin_user} /home/${admin_user}/.ssh/authorized_keys
     chmod 600 /home/${admin_user}/.ssh/authorized_keys
@@ -51,6 +49,8 @@ runcmd:
     curl -fsSLo "$TMP_DIR/$NODE_BASENAME.tar.xz" "$BASE_URL/$NODE_BASENAME.tar.xz"
     curl -fsSLo "$TMP_DIR/SHASUMS256.txt.asc" "$BASE_URL/SHASUMS256.txt.asc"
     git clone --depth=1 https://github.com/nodejs/release-keys.git "$TMP_DIR/release-keys"
+    test -d "$TMP_DIR/release-keys/gpg"
+    chmod 700 "$TMP_DIR/release-keys/gpg"
     GNUPGHOME="$TMP_DIR/release-keys/gpg" gpg --batch --verify "$TMP_DIR/SHASUMS256.txt.asc"
     (
       cd "$TMP_DIR"
@@ -64,6 +64,8 @@ runcmd:
     set -eu
     echo "[cloud-init] clone and build repo: ${repo_url}"
     id -u ${service_user} >/dev/null 2>&1 || adduser --system --group --home ${repo_dir} ${service_user}
+    chown root:${service_user} /etc/masswhisper/topic-runtime.env
+    chmod 640 /etc/masswhisper/topic-runtime.env
     test -d ${repo_dir}/.git || git clone ${repo_url} ${repo_dir}
     chown -R ${service_user}:${service_user} ${repo_dir}
     su - ${service_user} -s /bin/bash -c 'cd ${repo_dir} && HUSKY=0 npm ci && npm run build-shared'
@@ -84,6 +86,7 @@ runcmd:
     set -eu
     echo "[cloud-init] harden ssh security"
     install -D -m 0644 ${repo_dir}/deploy/ssh/sshd_config.transition.conf /etc/ssh/sshd_config.d/99-masswhisper.conf
+    install -d -m 0755 /run/sshd
     sshd -t
     systemctl reload ssh
   - |

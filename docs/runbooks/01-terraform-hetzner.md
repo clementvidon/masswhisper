@@ -15,14 +15,12 @@ Operator variables:
 ```bash
 export TOPIC_SLUG=fr-dev-job-market
 export ENVIRONMENT=prod
-export LOCAL_TOPIC_CONFIG_DIR=$HOME/project/masswhisper/local/topic-config
+export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/topic-config
 ```
 
-## 1. Export The Hetzner Token
+## 1. Securely Export The Hetzner Token
 
 Terraform reads the Hetzner cloud api token from the shell environment.
-
-Secure approach example:
 
 ```bash
 export HCLOUD_TOKEN="$(pass show masswhisper/infra/hcloud/token)"
