@@ -41,6 +41,18 @@ public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_dom
 printf "public api health reachable: "
 curl -s -i "https://$public_api_domain/health" \
   | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+
+printf "public api report reachable: "
+curl -s -i "https://$public_api_domain/report" \
+  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+
+printf "public api headlines reachable: "
+curl -s -i "https://$public_api_domain/headlines" \
+  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+
+printf "public api sentiment history reachable: "
+curl -s -i "https://$public_api_domain/sentiment-history" \
+  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 ```
 
 ## 3. Create Or Configure The Vercel Project
@@ -56,7 +68,7 @@ Before deploying, configure the project:
 
 - Framework preset: `Vite`
 - Root directory: `.`
-- Build command: `npm run build-shared && npm run build:dedicated --workspace=frontend`
+- Build command: `npm run build:frontend:dedicated`
 - Output directory: `frontend/dist`
 
 ## 4. Set Dedicated Frontend Build Variables

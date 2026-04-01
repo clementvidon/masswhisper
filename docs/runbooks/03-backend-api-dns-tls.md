@@ -21,7 +21,7 @@ Operator variables:
 export CERTBOT_EMAIL=ops@example.com
 ```
 
-This runbook uses `certbot certonly --webroot`, so Certbot issues the certificate without editing the Nginx configuration. HTTPS is enabled explicitly in step 7.
+This runbook uses `certbot certonly --webroot`, so Certbot issues the certificate without editing the Nginx configuration. HTTPS and the public read API routes are enabled explicitly in step 7.
 
 ## 1. Create The DNS A Record
 
@@ -161,7 +161,7 @@ ssh "root@$server_ip" '
 '
 ```
 
-## 8. Verify Public HTTP Redirect And HTTPS Routing
+## 8. Verify Public HTTP Redirect And HTTPS Read Routing
 
 Verify that HTTP requests are redirected to HTTPS and that routing behaves as expected.
 
@@ -175,9 +175,17 @@ printf "https health endpoint reachable: "
 curl -s -i "https://$public_api_domain/health" \
   | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 
-printf "https report endpoint blocked: "
+printf "https report endpoint reachable: "
 curl -s -i "https://$public_api_domain/report" \
-  | grep -Eq "^HTTP/[0-9.]+ 404" && echo ok || echo fail
+  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+
+printf "https headlines endpoint reachable: "
+curl -s -i "https://$public_api_domain/headlines" \
+  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+
+printf "https sentiment history endpoint reachable: "
+curl -s -i "https://$public_api_domain/sentiment-history" \
+  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 ```
 
 ## 9. Inspect The Presented Certificate
@@ -215,5 +223,5 @@ If the current `public_api_domain` cannot be pointed yet, use a temporary hostna
 - HTTP redirects to HTTPS
 - the API presents a valid TLS certificate
 - `/health` responds on the public HTTPS API
-- `/report` stays blocked publicly
+- `/report`, `/headlines`, and `/sentiment-history` respond on the public HTTPS API
 - certificate renewal is testable
