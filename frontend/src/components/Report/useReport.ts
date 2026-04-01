@@ -1,6 +1,8 @@
 import { type Report, ReportSchema } from '@masswhisper/shared/domain';
 import { useEffect, useState } from 'react';
 
+import { buildFrontendResourceUrl } from '../../config/runtime';
+
 function parseReportJson(data: unknown): Report {
   const parsed = ReportSchema.safeParse(data);
   if (!parsed.success) {
@@ -16,9 +18,8 @@ export function useReport() {
   useEffect(() => {
     async function loadReport() {
       try {
-        const baseUrl: string = import.meta.env.BASE_URL;
-        const response = await fetch(baseUrl + 'report.json');
-        const data: unknown = response.ok ? await response.json() : null;
+        const res = await fetch(buildFrontendResourceUrl('report'));
+        const data: unknown = res.ok ? await res.json() : null;
         setReport(parseReportJson(data));
       } catch (err: unknown) {
         setError(err instanceof Error ? err : new Error('Erreur inconnue'));

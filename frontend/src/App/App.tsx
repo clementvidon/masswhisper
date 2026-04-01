@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Chart } from '../components/Chart/Chart';
 import { Report } from '../components/Report/Report';
 import { Ticker } from '../components/Ticker/Ticker';
+import { runtimeConfig } from '../config/runtime';
 import { setupAppHeightListener } from '../utils/setAppHeight';
 import styles from './App.module.css';
 
@@ -14,7 +15,7 @@ function App() {
   return (
     <>
       <header className={styles.header}>
-        <h1 className={styles.heading}>DevBarometer</h1>
+        <h1 className={styles.heading}>{runtimeConfig.topicName}</h1>
         <a
           className={styles.navButton}
           href="https://github.com/clementvidon/masswhisper"

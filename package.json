@@ -47,6 +47,7 @@
     "build-shared": "npm --workspace shared run type-check && npm --workspace shared run clean && npm --workspace shared run build",
     "generate-static": "npm --workspace backend run generate-static",
     "build-frontend": "npm --workspace frontend run predeploy",
+    "build:frontend:dedicated": "npm run build-shared && npm run build:dedicated --workspace=frontend",
     "deploy-frontend": "npm --workspace frontend run deploy",
     "publish": "npm-run-all --sequential build-frontend deploy-frontend",
     "update-site": "npm-run-all --sequential generate-static publish",
@@ -58,17 +59,17 @@
     ],
     "frontend/src/**/*.{ts,tsx}": [
       "npm --workspace frontend exec -- prettier --write --ignore-unknown",
-      "npm --workspace frontend exec -- eslint --fix --cache --max-warnings=0",
+      "npm --workspace frontend exec -- eslint --fix --cache --max-warnings=0 --no-warn-ignored",
       "npm --workspace frontend exec -- vitest related --run"
     ],
     "backend/src/**/*.{ts,tsx}": [
       "npm --workspace backend exec -- prettier --write --ignore-unknown",
-      "npm --workspace backend exec -- eslint --fix --cache --max-warnings=0",
+      "npm --workspace backend exec -- eslint --fix --cache --max-warnings=0 --no-warn-ignored",
       "npm --workspace backend exec -- vitest related --run"
     ],
     "shared/src/**/*.ts": [
       "npm --workspace shared exec -- prettier --write --ignore-unknown",
-      "npm --workspace shared exec -- eslint --fix --cache --max-warnings=0",
+      "npm --workspace shared exec -- eslint --fix --cache --max-warnings=0 --no-warn-ignored",
       "npm --workspace shared exec -- vitest related --run"
     ]
   },

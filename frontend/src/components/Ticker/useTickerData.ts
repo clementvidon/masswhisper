@@ -1,6 +1,7 @@
 import { type HeadlineDto, HeadlineDtoSchema } from '@masswhisper/shared/dtos';
 import { useEffect, useState } from 'react';
 
+import { buildFrontendResourceUrl } from '../../config/runtime';
 import { shuffleArray } from '../../utils/shuffle';
 
 export function useTickerData() {
@@ -10,8 +11,7 @@ export function useTickerData() {
   useEffect(() => {
     void (async () => {
       try {
-        const baseUrl = import.meta.env.BASE_URL;
-        const res = await fetch(baseUrl + 'ticker.json');
+        const res = await fetch(buildFrontendResourceUrl('ticker'));
         if (!res.ok) {
           setHeadlines([]);
           return;

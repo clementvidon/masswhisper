@@ -27,9 +27,9 @@ This runbook uses `certbot certonly --webroot`, so Certbot issues the certificat
 
 Create an `A` record pointing the dedicated `public_api_domain` to the server IPv4 address.
 
-- type: `A`
-- host/name: the full hostname or the zone-relative label for `public_api_domain`
-- value: the current Terraform `server_ip`
+- Type: `A`
+- Host: the full hostname or the zone-relative label for `public_api_domain`
+- Target: the current Terraform `server_ip`
 - TTL: `300`
 
 Get the server IP:

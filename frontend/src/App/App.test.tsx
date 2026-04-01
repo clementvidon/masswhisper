@@ -12,9 +12,9 @@ describe('App', () => {
     ) as unknown as typeof fetch;
   });
 
-  it('affiche le titre DevBarometer dans un h1', () => {
+  it('affiche le titre fallback dans un h1', () => {
     render(<App />);
     const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading).toHaveTextContent('DevBarometer');
+    expect(heading).toHaveTextContent('MassWhisper');
   });
 });

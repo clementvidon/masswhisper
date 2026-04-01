@@ -4,9 +4,13 @@
   "type": "module",
   "homepage": "https://clementvidon.github.io/masswhisper",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev:static": "vite --mode static",
+    "dev:dedicated": "vite --mode dedicated",
+    "build:static": "tsc -b && vite build --mode static",
+    "build:dedicated": "tsc -b && vite build --mode dedicated",
     "preview": "vite preview",
+    "predeploy": "npm run build:static",
+    "deploy": "gh-pages -d dist",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
@@ -15,9 +19,7 @@
     "test": "vitest run --silent",
     "test:coverage": "vitest --coverage --silent",
     "fix": "npm-run-all --sequential format lint:fix",
-    "check": "npm-run-all --sequential format:check lint type-check test",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "check": "npm-run-all --sequential format:check lint type-check test"
   },
   "dependencies": {
     "@masswhisper/shared": "*",

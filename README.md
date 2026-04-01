@@ -44,7 +44,8 @@ cp backend/.env.example backend/.env
 ### Run locally
 
 - Backend API (Express): `npm --workspace backend run dev` then POST `http://localhost:3000/report` to update.
-- Frontend (Vite): `npm --workspace frontend run dev` and open the printed local URL.
+- Frontend static mode: `npm --workspace frontend run dev:static`
+- Frontend dedicated mode: `npm --workspace frontend run dev:dedicated`
 
 ### Useful scripts
 

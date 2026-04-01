@@ -5,6 +5,7 @@ import {
 import { SentimentHistoryPointDtoSchema } from '@masswhisper/shared/dtos';
 import { useEffect, useState } from 'react';
 
+import { buildFrontendResourceUrl } from '../../config/runtime';
 import { smoothUX } from './smoothing';
 import {
   buildEmotionSeries,
@@ -25,8 +26,7 @@ export function useChartData() {
   useEffect(() => {
     void (async () => {
       try {
-        const baseUrl = import.meta.env.BASE_URL;
-        const res = await fetch(baseUrl + 'chart.json');
+        const res = await fetch(buildFrontendResourceUrl('chart'));
         const payload: unknown = await res.json();
         const result =
           SentimentHistoryPointDtoSchema.array().safeParse(payload);

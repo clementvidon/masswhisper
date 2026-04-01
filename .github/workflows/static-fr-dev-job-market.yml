@@ -1,4 +1,4 @@
-name: Daily Deploy
+name: Static Deploy (fr-dev-job-market)
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: daily-deploy
+  group: static-deploy-fr-dev-job-market
   cancel-in-progress: true
 
 jobs:
@@ -16,6 +16,7 @@ jobs:
     env:
       CI: true
       TOPIC_SLUG: fr-dev-job-market
+      VITE_TOPIC_NAME: French Dev Job Market
       TOPIC_PROMPT_VARIANT: fr-dev-job-market-v1
       TOPIC_SOURCES_VARIANT: fr-dev-job-market-v1
 
