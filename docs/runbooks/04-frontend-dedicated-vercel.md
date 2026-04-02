@@ -62,9 +62,15 @@ If creating a new project:
 Before deploying, configure the project:
 
 - Framework preset: `Vite`
+- Production Branch: `main`
 - Root directory: `.`
 - Build command: `npm run build:frontend:dedicated`
 - Output directory: `frontend/dist`
+
+Skips preview deployments for non-`main` branches:
+
+1. Go to: `Settings -> Builds and Deployment -> Ignored Build Step`
+2. Change: `Automatic` -> `Only build production`
 
 ## 4. Set Dedicated Frontend Build Variables
 
