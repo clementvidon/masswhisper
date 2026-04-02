@@ -11,6 +11,8 @@
     --heading-h: 3rem;
     --chart-h: clamp(260px, 40vw, 420px);
     --legend-h: 10rem;
+    max-width: var(--width-content);
+    margin-inline: auto;
   }
 }
 

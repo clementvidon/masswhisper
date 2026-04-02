@@ -60,7 +60,7 @@ function App() {
       </main>
 
       <footer className={styles.footer}>
-        Made with ❤️ by
+        Made with by
         <a
           href="https://github.com/clementvidon/"
           aria-label="Author's GitHub"
@@ -69,6 +69,7 @@ function App() {
         >
           {' Clément Vidon '}
         </a>
+        <span>· MIT License</span>
       </footer>
     </>
   );

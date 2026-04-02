@@ -28,7 +28,7 @@
 
 @media (min-width: 1440px) {
   :root {
-    --font-size-ui: 24px;
+    --font-size-ui: 20px;
     --font-size-footer: 14px;
   }
 }
