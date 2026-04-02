@@ -137,7 +137,7 @@ ssh "root@$server_ip" "
   ss -ltnp | grep -E \"127\.0\.0\.1:3000.*node\" >/dev/null 2>&1 && echo ok || echo fail
 
   printf 'nginx local health route works: '
-  curl -s -i -H \"Host: $public_api_domain\" http://127.0.0.1/health \
+  curl -s -i -H "Host: $public_api_domain" http://127.0.0.1/health \
     | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
 
   printf 'nginx local daily route works: '
@@ -219,6 +219,13 @@ ssh "root@$server_ip" '
   printf "manual capture adds a snapshot: "
   test "$after" -gt "$before" && echo ok || echo fail
 '
+```
+
+Check the capture log in parallel in a separate terminal:
+
+```zsh
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+ssh "root@$server_ip" 'journalctl -f -t masswhisper-capture'
 ```
 
 ## 11. Verify Lock Skip Behavior
