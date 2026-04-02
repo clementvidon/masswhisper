@@ -69,6 +69,7 @@ runcmd:
     test -d ${repo_dir}/.git || git clone ${repo_url} ${repo_dir}
     chown -R ${service_user}:${service_user} ${repo_dir}
     su - ${service_user} -s /bin/bash -c 'cd ${repo_dir} && HUSKY=0 npm ci && npm run build-shared'
+    install -d -m 750 -o ${service_user} -g ${service_user} /var/lib/masswhisper/read-api
   - |
     set -eu
     echo "[cloud-init] deploy systemd service: ${service_name}"

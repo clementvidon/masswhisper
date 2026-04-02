@@ -3,14 +3,12 @@ import 'dotenv/config';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import fs from 'fs';
 import path from 'path';
 
 import type { LoggerPort } from '../application/ports/output/LoggerPort';
-import { getLastReport } from '../application/usecases/queries/getLastReport';
-import { getSentimentHistory } from '../application/usecases/queries/getSentimentHistory';
-import { getTopHeadlines } from '../application/usecases/queries/getTopHeadlines';
+import { getDaily } from '../application/usecases/queries/getDaily';
 import { loadDatabaseConfig } from '../infrastructure/config/loaders';
+import { writeDailyBundleAtomically } from '../infrastructure/daily-bundle/dailyBundleFileStore';
 import { makeLogger } from '../infrastructure/logging/root';
 import { PostgresAdapter } from '../infrastructure/persistence/PostgresAdapter';
 
@@ -18,13 +16,10 @@ const rootLogger = makeLogger();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const outputDir = path.resolve(__dirname, '../../../frontend/public');
-function save(logger: LoggerPort, filename: string, data: unknown) {
-  const filePath = path.join(outputDir, filename);
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, JSON.stringify(data ?? null, null, 2), 'utf-8');
-  logger.info('Static file saved', { filename, outputDir });
-}
+const outputFile = path.resolve(
+  __dirname,
+  '../../../frontend/public/daily.json',
+);
 
 export async function generateStatic(logger: LoggerPort) {
   const log = logger.child({ module: 'cli' });
@@ -32,13 +27,8 @@ export async function generateStatic(logger: LoggerPort) {
   const { databaseUrl } = loadDatabaseConfig();
   const persistence = new PostgresAdapter(databaseUrl);
 
-  const report = await getLastReport(persistence);
-  const ticker = await getTopHeadlines(persistence, 5);
-  const chart = await getSentimentHistory(persistence);
-
-  save(log, 'report.json', report);
-  save(log, 'ticker.json', ticker);
-  save(log, 'chart.json', chart);
+  const daily = await getDaily(persistence);
+  await writeDailyBundleAtomically(outputFile, daily);
 
   log.info('Generate static done');
 }

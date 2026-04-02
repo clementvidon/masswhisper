@@ -30,9 +30,7 @@ The API is public data surface.
 
 The intended public read contract is:
 
-- `GET /api/v1/topics/<topic-slug>/report`
-- `GET /api/v1/topics/<topic-slug>/headlines`
-- `GET /api/v1/topics/<topic-slug>/sentiment-history`
+- `GET /api/v1/topics/<topic-slug>/daily`
 - `GET /api/v1/topics/<topic-slug>/status`
 - `GET /health`
 

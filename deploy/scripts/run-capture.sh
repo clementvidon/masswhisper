@@ -13,14 +13,19 @@ set +a
 
 exec 9>"$LOCK_FILE"
 if ! flock -n 9; then
-  logger -t masswhisper-capture "capture skipped: lock held"
-  exit 0
+	logger -t masswhisper-capture "capture skipped: lock held"
+	exit 0
 fi
 
 logger -t masswhisper-capture "capture started"
 if npm --workspace backend run agent 2>&1 | logger -t masswhisper-capture; then
-  logger -t masswhisper-capture "capture finished"
+	if npm --workspace backend run publish-daily 2>&1 | logger -t masswhisper-capture; then
+		logger -t masswhisper-capture "capture finished"
+	else
+		logger -t masswhisper-capture "daily publish failed"
+		exit 1
+	fi
 else
-  logger -t masswhisper-capture "capture failed"
-  exit 1
+	logger -t masswhisper-capture "capture failed"
+	exit 1
 fi

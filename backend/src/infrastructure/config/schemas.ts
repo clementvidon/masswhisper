@@ -70,3 +70,9 @@ export const LoggingEnvSchema = z.object({
   LOG_LEVEL: LogLevelInputSchema,
   LOG_PRETTY: LogPrettyInputSchema,
 });
+
+export const ReadApiEnvSchema = z.object({
+  READ_API_DAILY_BUNDLE_PATH: z
+    .string()
+    .min(1, 'READ_API_DAILY_BUNDLE_PATH missing'),
+});

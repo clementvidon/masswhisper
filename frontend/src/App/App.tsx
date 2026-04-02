@@ -6,11 +6,18 @@ import { Ticker } from '../components/Ticker/Ticker';
 import { runtimeConfig } from '../config/runtime';
 import { setupAppHeightListener } from '../utils/setAppHeight';
 import styles from './App.module.css';
+import { useDailyData } from './useDailyData';
 
 function App() {
   useEffect(() => {
     setupAppHeightListener();
   }, []);
+  const { data, error, isLoading, isSnapshotCurrentDay } = useDailyData();
+
+  const freshnessMessage =
+    data && !isSnapshotCurrentDay
+      ? `Pas de donnees disponibles pour aujourd'hui. Affichage des dernieres donnees publiees le ${new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium' }).format(new Date(data.snapshotCreatedAt))}.`
+      : null;
 
   return (
     <>
@@ -28,9 +35,28 @@ function App() {
       </header>
 
       <main className={styles.mainContent}>
-        <Report />
-        <Ticker />
-        <Chart />
+        {isLoading ? (
+          <p role="status" aria-live="polite">
+            Chargement des donnees…
+          </p>
+        ) : null}
+        {error && !data ? (
+          <p role="alert" aria-live="assertive">
+            Erreur de chargement.
+          </p>
+        ) : null}
+        {freshnessMessage ? (
+          <p role="status" aria-live="polite">
+            {freshnessMessage}
+          </p>
+        ) : null}
+        {data ? (
+          <>
+            <Report report={data.report} />
+            <Ticker headlines={data.headlines} />
+            <Chart sentimentHistory={data.sentimentHistory} />
+          </>
+        ) : null}
       </main>
 
       <footer className={styles.footer}>

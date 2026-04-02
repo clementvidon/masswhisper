@@ -1,11 +1,15 @@
+import type { DailyDto } from '@masswhisper/shared/dtos';
 import express, { type Express } from 'express';
 
-import type { SnapshotQueryPort } from '../../application/ports/input/SnapshotQueryPort';
 import type { LoggerPort } from '../../application/ports/output/LoggerPort';
+
+type ReadApiControllerDeps = {
+  readDaily: () => Promise<DailyDto>;
+};
 
 export function makeReadApiController(
   logger: LoggerPort,
-  query: SnapshotQueryPort,
+  deps: ReadApiControllerDeps,
 ): Express {
   const app = express();
   app.use(express.json());
@@ -34,57 +38,21 @@ export function makeReadApiController(
     res.status(200).json({ ok: true });
   });
 
-  app.get('/report', async (req, res) => {
+  app.get('/daily', async (req, res) => {
     applyReadCors(req, res);
     const reqLogger = req.logger ?? logger;
     try {
-      const report = await query.getLastReport();
-      if (!report) {
-        return res.status(404).json({ error: 'No report found' });
-      }
-      res.json(report);
+      const daily = await deps.readDaily();
+      res.setHeader('Cache-Control', 'no-store');
+      res.json(daily);
     } catch (err) {
       const error = err instanceof Error ? err : new Error(String(err));
       reqLogger.warn(
-        'Failed to load report',
-        { path: '/report', method: 'GET' },
+        'Failed to load daily bundle',
+        { path: '/daily', method: 'GET' },
         error,
       );
-      res.status(500).json({ error: 'Failed to load report' });
-    }
-  });
-
-  app.get('/headlines', async (req, res) => {
-    applyReadCors(req, res);
-    const reqLogger = req.logger ?? logger;
-    try {
-      const headlines = await query.getTopHeadlines(10);
-      res.json(headlines);
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
-      reqLogger.warn(
-        'Failed to load headlines',
-        { path: '/headlines', method: 'GET' },
-        error,
-      );
-      res.status(500).json({ error: 'Failed to load headlines' });
-    }
-  });
-
-  app.get('/sentiment-history', async (req, res) => {
-    applyReadCors(req, res);
-    const reqLogger = req.logger ?? logger;
-    try {
-      const history = await query.getSentimentHistory();
-      res.json(history);
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
-      reqLogger.warn(
-        'Failed to load sentiment history',
-        { path: '/sentiment-history', method: 'GET' },
-        error,
-      );
-      res.status(500).json({ error: 'Failed to load sentiment history' });
+      res.status(503).json({ error: 'Failed to load daily bundle' });
     }
   });
 

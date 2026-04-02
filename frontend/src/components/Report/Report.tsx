@@ -1,25 +1,8 @@
+import { type Report as ReportModel } from '@masswhisper/shared/domain';
+
 import styles from './Report.module.css';
-import { useReport } from './useReport';
 
-export function Report() {
-  const { report, isLoading, error } = useReport();
-
-  if (isLoading) {
-    return (
-      <p role="status" aria-live="polite">
-        Chargement du rapport…
-      </p>
-    );
-  }
-
-  if (error || !report) {
-    return (
-      <p role="alert" aria-live="assertive">
-        Erreur de chargement du rapport.
-      </p>
-    );
-  }
-
+export function Report({ report }: { report: ReportModel }) {
   return (
     <div className={styles.report}>
       <div className={styles.emoji}>{report.emoji}</div>

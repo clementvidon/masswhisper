@@ -31,9 +31,11 @@ Use the matching update path:
 
 ## 2. Apply The Matching Update
 
-### Runtime Env
+### Runtime Env Files
 
-Use this when the backend runtime secret file changed and must be reinstalled on the VM.
+Use this when `/etc/masswhisper/backend.env` or `/etc/masswhisper/topic-runtime.env` changed.
+
+If `/etc/masswhisper/backend.env` changed:
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
@@ -47,6 +49,21 @@ pass show "$PASS_SECRET_PATH" | \
     cat > "$tmp"
     sudo install -o root -g masswhisper -m 640 "$tmp" /etc/masswhisper/backend.env
     sudo systemctl restart masswhisper-topic
+'
+```
+
+If `/etc/masswhisper/topic-runtime.env` changed:
+
+```zsh
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+terraform -chdir=infra/terraform output -raw topic_runtime_env | \
+  ssh "massops@$server_ip" '
+    set -eu
+    sudo install -d -m 755 /etc/masswhisper
+    tmp=$(mktemp)
+    trap "rm -f \"$tmp\"" EXIT
+    cat > "$tmp"
+    sudo install -o root -g masswhisper -m 640 "$tmp" /etc/masswhisper/topic-runtime.env
 '
 ```
 
@@ -150,22 +167,14 @@ printf "public api health reachable: "
 curl -s -i "https://$public_api_domain/health" \
   | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 
-printf "public api report reachable: "
-curl -s -i "https://$public_api_domain/report" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
-
-printf "public api headlines reachable: "
-curl -s -i "https://$public_api_domain/headlines" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
-
-printf "public api sentiment history reachable: "
-curl -s -i "https://$public_api_domain/sentiment-history" \
+printf "public api daily reachable: "
+curl -s -i "https://$public_api_domain/daily" \
   | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 
 printf "public read api cors origin allowed: "
 curl -s -i \
   -H "Origin: https://fr-dev-job-market.masswhisper.com" \
-  "https://$public_api_domain/report" \
+  "https://$public_api_domain/daily"
   | grep -qi "access-control-allow-origin: https://fr-dev-job-market.masswhisper.com" \
   && echo ok || echo fail
 ```

@@ -4,12 +4,10 @@ import { randomUUID } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 
 import type { LoggerPort } from '../application/ports/output/LoggerPort';
-import type { PersistencePort } from '../application/ports/output/PersistencePort';
-import { makeSnapshotQueryService } from '../application/usecases/queries/makeSnapshotQueryService';
 import type { HttpServerConfig } from '../infrastructure/config/loaders';
 import { loadHttpServerConfig } from '../infrastructure/config/loaders';
+import { readDailyBundle } from '../infrastructure/daily-bundle/dailyBundleFileStore';
 import { makeLogger } from '../infrastructure/logging/root';
-import { PostgresAdapter } from '../infrastructure/persistence/PostgresAdapter';
 import { makeReadApiController } from '../interface/web/ReadApiController';
 
 const rootLogger = makeLogger();
@@ -18,22 +16,23 @@ type Deps = {
   logger: LoggerPort;
   bindHost: string;
   port: number;
-  persistence: PersistencePort;
+  dailyBundlePath: string;
 };
 
 export function buildHttpServer(deps: Deps) {
-  const query = makeSnapshotQueryService(deps.persistence);
-  const app = makeReadApiController(deps.logger.child({ scope: 'web' }), query);
+  const app = makeReadApiController(deps.logger.child({ scope: 'web' }), {
+    readDaily: () => readDailyBundle(deps.dailyBundlePath),
+  });
   return { app, port: deps.port };
 }
 
 export function buildDeps(logger: LoggerPort, config: HttpServerConfig): Deps {
-  const { bindHost, port, databaseUrl } = config;
+  const { bindHost, port, dailyBundlePath } = config;
   return {
     logger,
     bindHost,
     port,
-    persistence: new PostgresAdapter(databaseUrl),
+    dailyBundlePath,
   };
 }
 

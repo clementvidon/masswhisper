@@ -43,7 +43,8 @@ cp backend/.env.example backend/.env
 
 ### Run locally
 
-- Backend API (Express): `npm --workspace backend run dev` then POST `http://localhost:3000/report` to update.
+- Generate a local daily bundle: `npm run generate-static`
+- Backend read API (Express): `npm --workspace backend run dev` then GET `http://localhost:3000/daily`
 - Frontend static mode: `npm --workspace frontend run dev:static`
 - Frontend dedicated mode: `npm --workspace frontend run dev:dedicated`
 

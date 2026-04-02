@@ -23,21 +23,9 @@ export default defineConfig((configEnv: ConfigEnv) => {
     }
   }
 
-  let proxy: Record<string, string> | undefined;
-  if (frontendMode === 'dedicated') {
-    proxy = undefined;
-  } else if (frontendMode === 'static') {
-    proxy = {
-      '/report': 'http://localhost:3000',
-      '/headlines': 'http://localhost:3000',
-      '/sentiment-history': 'http://localhost:3000',
-    };
-  }
-
   return {
     base: assetBasePath,
     plugins: [react()],
-    server: { proxy },
     build: {
       rollupOptions: {
         output: {

@@ -53,7 +53,8 @@ The runtime is intentionally simple:
 - serves the read-only API
 - applies application configuration
 - applies CORS from environment-driven configuration
-- reads topic data from the database
+- cron publishes an atomically swapped daily bundle on local disk
+- Node backend exposes GET /daily by reading the current published bundle from local disk
 - exposes runtime health endpoints
 
 ### cron + capture entrypoint + flock

@@ -12,7 +12,7 @@ flowchart LR
     GH_PAGES["GitHub Pages frontend"]
     GH_ACTIONS["GitHub Actions cron"]
     LOCAL_BACKEND["Backend CLI / local runs"]
-    JSON["report.json / chart.json / ticker.json"]
+    JSON["daily.json"]
 
     GH_ACTIONS --> LOCAL_BACKEND
     LOCAL_BACKEND --> JSON
@@ -46,7 +46,7 @@ flowchart LR
 - frontend is a static site published on GitHub Pages
 - backend runs through GitHub Actions or local CLI entrypoints
 - data is produced as static JSON artifacts
-- frontend reads `report.json`, `chart.json`, and `ticker.json`
+- frontend reads `daily.json`
 - scheduling is handled by GitHub Actions cron
 - secrets are carried by GitHub Secrets and local `.env`
 

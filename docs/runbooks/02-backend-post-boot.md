@@ -136,13 +136,21 @@ ssh "root@$server_ip" "
   printf 'node binds local port 3000: '
   ss -ltnp | grep -E \"127\.0\.0\.1:3000.*node\" >/dev/null 2>&1 && echo ok || echo fail
 
+  printf 'nginx local health route works: '
+  curl -s -i -H \"Host: $public_api_domain\" http://127.0.0.1/health \
+    | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
+
+  printf 'nginx local daily route works: '
+  curl -s -i -H "Host: $public_api_domain" http://127.0.0.1/daily \
+    | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+
   printf 'local health endpoint reachable: '
   curl -s -i http://127.0.0.1:3000/health \
     | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
 
-  printf 'nginx local health route works: '
-  curl -s -i -H \"Host: $public_api_domain\" http://127.0.0.1/health \
-    | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
+  printf 'local daily endpoint reachable: '
+  curl -s -i http://127.0.0.1:3000/daily \
+    | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 "
 ```
 
@@ -201,6 +209,9 @@ ssh "root@$server_ip" '
   npm --workspace backend run export -- "$before_file" >/dev/null 2>&1
   su -s /bin/bash masswhisper -c "/usr/local/bin/run-capture.sh"
   npm --workspace backend run export -- "$after_file" >/dev/null 2>&1
+
+  printf "daily bundle file created: "
+  test -s /var/lib/masswhisper/read-api/daily-bundle.json && echo ok || echo fail
 
   before=$(grep -c "\"id\":" "$before_file")
   after=$(grep -c "\"id\":" "$after_file")

@@ -175,16 +175,8 @@ printf "https health endpoint reachable: "
 curl -s -i "https://$public_api_domain/health" \
   | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 
-printf "https report endpoint reachable: "
-curl -s -i "https://$public_api_domain/report" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
-
-printf "https headlines endpoint reachable: "
-curl -s -i "https://$public_api_domain/headlines" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
-
-printf "https sentiment history endpoint reachable: "
-curl -s -i "https://$public_api_domain/sentiment-history" \
+printf "https daily endpoint reachable: "
+curl -s -i "https://$public_api_domain/daily" \
   | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 ```
 
@@ -222,8 +214,7 @@ If the current `public_api_domain` cannot be pointed yet, use a temporary hostna
 - the current `public_api_domain` resolves to the backend VM IPv4
 - HTTP redirects to HTTPS
 - the API presents a valid TLS certificate
-- `/health` responds on the public HTTPS API
-- `/report`, `/headlines`, and `/sentiment-history` respond on the public HTTPS API
+- `/health` and `/daily` respond on the public HTTPS API
 - certificate renewal is testable
 
 Next step:

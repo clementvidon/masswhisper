@@ -1,3 +1,4 @@
+import { type SentimentHistoryDto } from '@masswhisper/shared/dtos';
 import { useState } from 'react';
 
 import styles from './Chart.module.css';
@@ -5,39 +6,23 @@ import { ChartControls } from './ChartControls';
 import { ChartEmotions } from './ChartEmotions';
 import { ChartLegend } from './ChartLegend';
 import { ChartTonalities } from './ChartTonalities';
-import { useChartData } from './useChartData';
+import { useChartSeries } from './useChartSeries';
 
 type View = 'emotions' | 'tonalities';
 
-export function Chart() {
-  const { emotionData, tonalityData, isLoading, error } = useChartData();
+export function Chart({
+  sentimentHistory,
+}: {
+  sentimentHistory: SentimentHistoryDto;
+}) {
+  const { emotionData, tonalityData } = useChartSeries(sentimentHistory);
 
   const [view, setView] = useState<View>('emotions');
   const [hudVisible, setHudVisible] = useState(false);
   const [tooltipActive, setTooltipActive] = useState(false);
 
-  if (isLoading) {
-    return (
-      <p role="status" aria-live="polite">
-        Chargement du graphique…
-      </p>
-    );
-  }
-
-  if (!emotionData || !tonalityData) {
-    return (
-      <p role="alert" aria-live="assertive">
-        Données manquantes ou invalides.
-      </p>
-    );
-  }
-
-  if (error) {
-    return (
-      <p role="alert" aria-live="assertive">
-        Erreur de chargement du graphique.
-      </p>
-    );
+  if (!emotionData.length || !tonalityData.length) {
+    return <p role="status">Aucune donnée historique disponible.</p>;
   }
 
   const diffDays = emotionData.length;

@@ -45,16 +45,8 @@ printf "public api health reachable: "
 curl -s -i "https://$public_api_domain/health" \
   | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 
-printf "public api report reachable: "
-curl -s -i "https://$public_api_domain/report" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
-
-printf "public api headlines reachable: "
-curl -s -i "https://$public_api_domain/headlines" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
-
-printf "public api sentiment history reachable: "
-curl -s -i "https://$public_api_domain/sentiment-history" \
+printf "public api daily reachable: "
+curl -s -i "https://$public_api_domain/daily" \
   | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
 ```
 
@@ -141,10 +133,8 @@ Ensure the new deployment reaches the `Ready` state before continuing.
 Verify:
 
 - frontend loads on `https://<domain>`
-- browser fetches `https://api.<domain>/report`
-- browser fetches `https://api.<domain>/headlines`
-- browser fetches `https://api.<domain>/sentiment-history`
-- no request targets `report.json`, `ticker.json`, or `chart.json`
+- browser fetches `https://api.<domain>/daily`
+- the browser does not fetch `/daily.json` from the frontend origin
 
 Use the browser network inspector to confirm the runtime requests.
 
@@ -152,4 +142,3 @@ Use the browser network inspector to confirm the runtime requests.
 
 - the dedicated frontend is reachable on `https://<domain>`
 - the dedicated frontend fetches data from `https://api.<domain>`
-- no runtime request targets `report.json`, `ticker.json`, or `chart.json`

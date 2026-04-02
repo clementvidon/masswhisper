@@ -96,11 +96,10 @@ describe('getLastRelevantItemsBefore', () => {
       }),
     ];
     const persistence = {
-      getSnapshots: vi.fn().mockResolvedValue(snapshots),
       storeSnapshotAt: vi.fn(),
-      getLatestReport: vi.fn().mockResolvedValue(null),
-      getLatestHeadlines: vi.fn().mockResolvedValue(null),
+      getLatestSnapshot: vi.fn().mockResolvedValue([]),
       getSentimentHistory: vi.fn().mockResolvedValue([]),
+      getSnapshots: vi.fn().mockResolvedValue(snapshots),
     };
     return persistence;
   }

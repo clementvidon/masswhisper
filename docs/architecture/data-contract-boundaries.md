@@ -27,7 +27,6 @@ This document defines where data contracts live, who owns them, and where runtim
 
 - `SentimentProfile` stays backend-owned because it is pipeline-internal and does not cross workspace boundaries.
 - `AggregatedSentimentProfile` stays backend-owned; the shared read-side contract is `SentimentHistoryDto`.
-- `SnapshotQueryPort` stays backend-owned even when it returns shared contracts.
 - Move a backend-owned type to `shared` only when the same shape becomes a stable cross-workspace contract.
 
 ## Runtime Validation Boundaries

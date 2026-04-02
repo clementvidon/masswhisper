@@ -5,6 +5,7 @@ locals {
   public_api_domain = "api.${var.topic_backend.domain}"
   topic_runtime_env = <<-EOT
   TOPIC_SLUG='${var.topic_backend.topic_slug}'
+  READ_API_DAILY_BUNDLE_PATH='/var/lib/masswhisper/read-api/daily-bundle.json'
   TOPIC_PROMPT_VARIANT='${var.topic_backend.prompt_variant}'
   TOPIC_PROMPT_BUNDLE_PATH='/etc/masswhisper/prompts/${var.topic_backend.prompt_variant}.json'
   TOPIC_SOURCES_VARIANT='${var.topic_backend.sources_variant}'

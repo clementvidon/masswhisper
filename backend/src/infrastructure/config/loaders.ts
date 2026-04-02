@@ -10,6 +10,7 @@ import {
   HttpServerEnvSchema,
   LlmEnvSchema,
   LoggingEnvSchema,
+  ReadApiEnvSchema,
   RedditEnvSchema,
   TopicEnvSchema,
 } from './schemas';
@@ -86,16 +87,16 @@ export function loadDatabaseConfig(env: Env = process.env): DatabaseConfig {
 export type HttpServerConfig = {
   bindHost: string;
   port: number;
-  databaseUrl: string;
+  dailyBundlePath: string;
 };
 
 export function loadHttpServerConfig(env: Env = process.env): HttpServerConfig {
-  const db = parseEnv(DatabaseEnvSchema, env);
   const http = parseEnv(HttpServerEnvSchema, env);
+  const readApi = loadReadApiConfig(env);
   return {
     bindHost: http.BIND_HOST,
     port: http.PORT,
-    databaseUrl: db.DATABASE_URL,
+    dailyBundlePath: readApi.dailyBundlePath,
   };
 }
 
@@ -118,6 +119,19 @@ export function loadReplayConfig(env: Env = process.env): ReplayConfig {
   return {
     databaseUrl: db.DATABASE_URL,
     openaiApiKey: llm.OPENAI_API_KEY,
+  };
+}
+
+/* ---------- read api ---------- */
+
+export type ReadApiConfig = {
+  dailyBundlePath: string;
+};
+
+export function loadReadApiConfig(env: Env = process.env): ReadApiConfig {
+  const readApi = parseEnv(ReadApiEnvSchema, env);
+  return {
+    dailyBundlePath: readApi.READ_API_DAILY_BUNDLE_PATH,
   };
 }
 

@@ -1,17 +1,17 @@
+import { type HeadlineDto } from '@masswhisper/shared/dtos';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { shuffleArray } from '../../utils/shuffle';
 import styles from './Ticker.module.css';
-import { useTickerData } from './useTickerData';
 import { useTickerScroll } from './useTickerScroll';
 
 const COPIES = 3;
 
-export function Ticker() {
-  const { headlines, isLoading, error } = useTickerData();
+export function Ticker({ headlines }: { headlines: HeadlineDto[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const rowRef = useRef<HTMLDivElement>(null);
 
-  const data = useMemo(() => headlines ?? [], [headlines]);
+  const data = useMemo(() => shuffleArray(headlines), [headlines]);
   const looped = useMemo(
     () => Array.from({ length: COPIES }, () => data).flat(),
     [data],
@@ -46,18 +46,6 @@ export function Ticker() {
 
   useEffect(() => placeInitialScroll(), [looped.length, placeInitialScroll]);
 
-  if (isLoading)
-    return (
-      <p role="status" aria-live="polite">
-        Chargement des titres…
-      </p>
-    );
-  if (error)
-    return (
-      <p role="alert" aria-live="assertive">
-        Erreur de chargement.
-      </p>
-    );
   if (!looped.length) return <p role="status">Aucun titre disponible.</p>;
 
   return (

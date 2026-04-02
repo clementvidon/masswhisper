@@ -9,3 +9,7 @@ output "server_name" {
 output "server_ip" {
   value = hcloud_server.vm.ipv4_address
 }
+
+output "topic_runtime_env" {
+  value = local.topic_runtime_env
+}

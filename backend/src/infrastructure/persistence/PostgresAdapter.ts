@@ -1,4 +1,3 @@
-import type { Report } from '@masswhisper/shared/domain';
 import { asc, desc } from 'drizzle-orm';
 import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import type { Sql } from 'postgres';
@@ -6,10 +5,7 @@ import postgres from 'postgres';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { PersistencePort } from '../../application/ports/output/PersistencePort';
-import type {
-  HeadlinesReadItem,
-  SentimentHistoryPoint,
-} from '../../application/read-models/snapshotReads';
+import type { SentimentHistoryPoint } from '../../application/read-models/snapshotReads';
 import {
   type PipelineSnapshot,
   PipelineSnapshotSchema,
@@ -61,7 +57,7 @@ export class PostgresAdapter implements PersistencePort {
     });
   }
 
-  async getLatestReport(): Promise<Report | null> {
+  async getLatestSnapshot(): Promise<PipelineSnapshot | null> {
     const rows = await this.db
       .select({
         id: snapshotsTable.id,
@@ -73,34 +69,7 @@ export class PostgresAdapter implements PersistencePort {
       .limit(1);
 
     if (rows.length === 0) return null;
-
-    const row = rows[0];
-    const payload = SnapshotDataSchema.parse(row.data);
-    requireCreatedAt(row.createdAt, 'PostgresAdapter.getLatestReport');
-    return payload.report;
-  }
-
-  async getLatestHeadlines(): Promise<HeadlinesReadItem[] | null> {
-    const rows = await this.db
-      .select({
-        data: snapshotsTable.data,
-        createdAt: snapshotsTable.date_created,
-      })
-      .from(snapshotsTable)
-      .orderBy(desc(snapshotsTable.date_created))
-      .limit(1);
-
-    if (rows.length === 0) return null;
-
-    const row = rows[0];
-    const payload = SnapshotDataSchema.parse(row.data);
-
-    requireCreatedAt(row.createdAt, 'PostgresAdapter.getLatestHeadlines');
-    return payload.weightedItems.map(({ title, weight, itemRef }) => ({
-      title,
-      weight,
-      itemRef,
-    }));
+    return mapRowToSnapshot(rows[0], 'PostgresAdapter.getLatestSnapshot');
   }
 
   async getSentimentHistory(): Promise<SentimentHistoryPoint[]> {

@@ -1,13 +1,8 @@
-import type { Report } from '@masswhisper/shared/domain';
-
 import type {
   PipelineSnapshot,
   SnapshotData,
 } from '../../../domain/value-objects/PipelineSnapshot';
-import type {
-  HeadlinesReadItem,
-  SentimentHistoryPoint,
-} from '../../read-models/snapshotReads';
+import type { SentimentHistoryPoint } from '../../read-models/snapshotReads';
 
 /**
  * Persistence for pipeline snapshots.
@@ -30,24 +25,15 @@ export interface PersistencePort {
   storeSnapshotAt(createdAtISO: string, snapshot: SnapshotData): Promise<void>;
 
   /**
-   * Return the most recent report, or null if none exists.
+   * Return the most recent full persisted snapshot, or null if none exists.
    *
    * Contract:
-   * - Result is the latest readable report by `createdAt`.
+   * - Result is the latest readable snapshot by `createdAt`.
    * - Returns null when the store is empty.
-   * - Returned `createdAt` must be an ISO 8601 string.
+   * - Returned snapshot is fully validated against the persisted snapshot schema.
+   * - `createdAt` must be an ISO 8601 string.
    */
-  getLatestReport(): Promise<Report | null>;
-
-  /**
-   * Return the most recent headlines, or null if none exists.
-   *
-   * Contract:
-   * - Result is the latest readable headlines by `createdAt`.
-   * - Returns null when the store is empty.
-   * - `weightedItems` only contains the minimal fields required by the read side.
-   */
-  getLatestHeadlines(): Promise<HeadlinesReadItem[] | null>;
+  getLatestSnapshot(): Promise<PipelineSnapshot | null>;
 
   /**
    * Return the sentiment history intended for read-side trend queries.
