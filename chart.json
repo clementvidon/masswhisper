@@ -4933,5 +4933,26 @@
       "optimistic_anticipation": 0.146693,
       "pessimistic_anticipation": 0.608401
     }
+  },
+  {
+    "createdAt": "2026-04-02T10:48:31.833Z",
+    "count": 14,
+    "confidenceMass": 18.921941,
+    "emotions": {
+      "joy": 0.062415,
+      "trust": 0.223433,
+      "anger": 0.307206,
+      "fear": 0.497196,
+      "sadness": 0.40375,
+      "disgust": 0.222997
+    },
+    "tonalities": {
+      "positive": 0.156533,
+      "negative": 0.637547,
+      "positive_surprise": 0.065145,
+      "negative_surprise": 0.530236,
+      "optimistic_anticipation": 0.129429,
+      "pessimistic_anticipation": 0.619005
+    }
   }
 ]
