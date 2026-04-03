@@ -20,7 +20,15 @@ export PASS_SECRET_PATH=masswhisper/runtime/fr-dev-job-market-prod/backend.env
 
 ## 1. Choose The Update Path
 
-Use the matching update path:
+Determine the path from modified files, not from commit intent.
+
+Safe default:
+
+- if unsure, run the `Dependencies` path
+- then additionally apply `Systemd Unit` if `deploy/systemd/` changed
+- then additionally apply `Nginx Proxy` if `deploy/proxy/` changed
+
+Path rules:
 
 - `runtime env` changes: reinstall `/etc/masswhisper/backend.env`, then restart the backend service
 - `backend` code changes: restart the backend service
@@ -28,6 +36,14 @@ Use the matching update path:
 - `dependency` changes: reinstall dependencies, rebuild shared artifacts, then restart the backend service
 - `deploy/systemd/` changes: reinstall the systemd unit, run daemon-reload, then restart the backend service
 - `deploy/proxy/` changes: reinstall the active Nginx config, validate it, then reload Nginx
+
+Use `dependency` when any of these changed:
+
+- `package.json`
+- `package-lock.json`
+- `backend/package.json`
+- `frontend/package.json`
+- `shared/package.json`
 
 ## 2. Apply The Matching Update
 
@@ -146,9 +162,10 @@ ssh "massops@$server_ip" '
   set -eu
   sudo -u masswhisper -H git -C /opt/masswhisper fetch origin
   sudo -u masswhisper -H git -C /opt/masswhisper reset --hard origin/main
-  sudo systemctl restart masswhisper-topic
 '
 ```
+
+After recovering the repository, return to `Choose The Update Path` and apply the matching update steps.
 
 ## 3. Verify The Updated Backend
 
