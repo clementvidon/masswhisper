@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-02T18:29:50.374Z",
-  "snapshotCreatedAt": "2026-04-02T18:29:11.721Z",
+  "generatedAt": "2026-04-03T10:40:09.502Z",
+  "snapshotCreatedAt": "2026-04-03T10:39:42.097Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et prudence dominent",
+    "text": "Marché tech sous pression, perspectives clairement dégradées",
     "emoji": "🌧️"
   },
   "headlines": [
@@ -12,8 +12,18 @@
       "itemRef": "https://reddit.com/comments/1sab4qt"
     },
     {
-      "title": "BREAKING: Oracle a envoyé des emails à 6 heures du matin “Aujourd'hui est votre dernier jour de travail” à des milliers d'employés sans avertissement, sans appel du manager, et avec révocation immédiate de l'accès au système",
+      "title": "Je fais tout avec l’IA au boulot… mon manager est content mais j’ai peur de me faire virer",
       "weight": "3",
+      "itemRef": "https://reddit.com/comments/1s8si11"
+    },
+    {
+      "title": "[RANT] On parle beaucoup du marché du travail et de à quel point le game est fini pour les juniors mais…",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1s6beir"
+    },
+    {
+      "title": "BREAKING: Oracle a envoyé des emails à 6 heures du matin “Aujourd'hui est votre dernier jour de travail” à des milliers d'employés sans avertissement, sans appel du manager, et avec révocation immédiate de l'accès au système",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1s9dkjx"
     },
     {
@@ -22,24 +32,9 @@
       "itemRef": "https://reddit.com/comments/1s9lzub"
     },
     {
-      "title": "Combien d'entre vous envisagent de quitter l'informatique?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1s4nkds"
-    },
-    {
-      "title": "Sécurité de l'emploie: startup ou ESN?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1s6y0gy"
-    },
-    {
       "title": "Pourquoi les apps françaises c'est de la merde ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1s9jcqt"
-    },
-    {
-      "title": "Avenir des seniors",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1s4kne8"
     },
     {
       "title": "Existe t'il des postes de dev cobol pour les juniors ?",
@@ -47,14 +42,14 @@
       "itemRef": "https://reddit.com/comments/1s567dh"
     },
     {
-      "title": "J'étais tellement proche de doubler ma rémunération",
+      "title": "Sécurité de l'emploie: startup ou ESN?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1s4hbhg"
+      "itemRef": "https://reddit.com/comments/1s6y0gy"
     },
     {
-      "title": "Je fais tout avec l’IA au boulot… mon manager est content mais j’ai peur de me faire virer",
+      "title": "Est-ce que le nom de la fac compte vraiment pour le premier job ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1s8si11"
+      "itemRef": "https://reddit.com/comments/1s59cdi"
     }
   ],
   "sentimentHistory": [
@@ -5033,6 +5028,27 @@
         "negative_surprise": 0.538859,
         "optimistic_anticipation": 0.134067,
         "pessimistic_anticipation": 0.677302
+      }
+    },
+    {
+      "createdAt": "2026-04-03T10:39:42.097Z",
+      "count": 9,
+      "confidenceMass": 14.594492,
+      "emotions": {
+        "joy": 0.071975,
+        "trust": 0.220931,
+        "anger": 0.358499,
+        "fear": 0.48637,
+        "sadness": 0.403946,
+        "disgust": 0.22604
+      },
+      "tonalities": {
+        "positive": 0.173598,
+        "negative": 0.657296,
+        "positive_surprise": 0.041218,
+        "negative_surprise": 0.478521,
+        "optimistic_anticipation": 0.145753,
+        "pessimistic_anticipation": 0.573405
       }
     }
   ]
