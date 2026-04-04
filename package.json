@@ -51,7 +51,8 @@
     "deploy-frontend": "npm --workspace frontend run deploy",
     "publish": "npm-run-all --sequential build-frontend deploy-frontend",
     "update-site": "npm-run-all --sequential generate-static publish",
-    "generate-topic-tf-input": "tsx scripts/generate-topic-tf-input.ts"
+    "validate-manifest": "tsx scripts/manifest/validate-manifest.ts",
+    "generate-topic-tf-input": "tsx scripts/manifest/generate-topic-tf-input.ts"
   },
   "lint-staged": {
     "*.{md,json,yml,yaml}": [

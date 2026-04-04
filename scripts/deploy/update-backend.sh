@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
+source "$SCRIPT_DIR/common.sh"
+
+usage() {
+  cat <<USAGE
+Usage:
+  scripts/deploy/update-backend.sh \
+    --target <backend|shared|dependencies|systemd|nginx|backend-env|topic-runtime-env> \
+    [--backend-env-file <path|->] \
+    [--dry-run]
+USAGE
+}
+
+TARGET=
+BACKEND_ENV_FILE=
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --target) TARGET=${2:?}; shift 2 ;;
+    --backend-env-file) BACKEND_ENV_FILE=${2:?}; shift 2 ;;
+    --dry-run) DRY_RUN=1; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) fail "unknown argument: $1" ;;
+  esac
+done
+
+[[ -n "$TARGET" ]] || { usage; fail "--target is required"; }
+
+case "$TARGET" in
+  backend|shared|dependencies|systemd|nginx|backend-env|topic-runtime-env) ;;
+  *) fail "invalid --target: $TARGET" ;;
+esac
+
+require_cmd terraform
+require_cmd ssh
+SERVER_IP="$(tf_output server_ip)"
+
+if [[ "$TARGET" == "backend-env" ]]; then
+  [[ -n "$BACKEND_ENV_FILE" ]] || fail "--backend-env-file is required for target backend-env"
+  tmp_backend_env=$(mktemp)
+  trap 'rm -f "$tmp_backend_env"' EXIT
+  read_backend_env_to_temp "$BACKEND_ENV_FILE" "$tmp_backend_env"
+fi
+
+step "05.2 Apply the matching update"
+case "$TARGET" in
+  backend-env)
+    scp_to_root "$tmp_backend_env" "$SERVER_IP" /tmp/backend.env
+    run_ssh_massops_script "$SERVER_IP" '
+set -eu
+sudo install -d -m 755 /etc/masswhisper
+sudo install -o root -g masswhisper -m 640 /tmp/backend.env /etc/masswhisper/backend.env
+rm -f /tmp/backend.env
+sudo systemctl restart masswhisper-topic
+'
+    ;;
+
+  topic-runtime-env)
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+      info 'would export terraform output topic_runtime_env and install /etc/masswhisper/topic-runtime.env'
+    else
+      tmp_topic_runtime_env=$(mktemp)
+      trap 'rm -f "$tmp_topic_runtime_env"' EXIT
+      terraform -chdir="$REPO_ROOT/infra/terraform" output -raw topic_runtime_env > "$tmp_topic_runtime_env"
+      scp_to_root "$tmp_topic_runtime_env" "$SERVER_IP" /tmp/topic-runtime.env
+      run_ssh_massops_script "$SERVER_IP" '
+set -eu
+sudo install -d -m 755 /etc/masswhisper
+sudo install -o root -g masswhisper -m 640 /tmp/topic-runtime.env /etc/masswhisper/topic-runtime.env
+rm -f /tmp/topic-runtime.env
+sudo systemctl restart masswhisper-topic
+'
+    fi
+    ;;
+
+  backend)
+    run_ssh_massops_script "$SERVER_IP" '
+set -eu
+sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
+sudo systemctl restart masswhisper-topic
+'
+    ;;
+
+  shared)
+    run_ssh_massops_script "$SERVER_IP" '
+set -eu
+sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
+sudo -u masswhisper -H bash -lc "cd /opt/masswhisper && npm run build-shared"
+sudo systemctl restart masswhisper-topic
+'
+    ;;
+
+  dependencies)
+    run_ssh_massops_script "$SERVER_IP" '
+set -eu
+sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
+sudo -u masswhisper -H bash -lc "cd /opt/masswhisper && HUSKY=0 npm ci && npm run build-shared"
+sudo systemctl restart masswhisper-topic
+'
+    ;;
+
+  systemd)
+    run_ssh_massops_script "$SERVER_IP" '
+set -eu
+sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
+sudo install -D -m 0644 /opt/masswhisper/deploy/systemd/masswhisper-topic.service /etc/systemd/system/masswhisper-topic.service
+sudo systemctl daemon-reload
+sudo systemctl restart masswhisper-topic
+'
+    ;;
+
+  nginx)
+    run_ssh_massops_script "$SERVER_IP" '
+set -eu
+sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
+sudo install -D -m 0644 /etc/masswhisper/public-api.tls.conf /etc/nginx/sites-available/public-api.conf
+sudo nginx -t
+sudo systemctl reload nginx
+'
+    ;;
+esac
