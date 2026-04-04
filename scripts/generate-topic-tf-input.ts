@@ -128,6 +128,18 @@ const targetPath = path.join(
 );
 
 fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-fs.writeFileSync(targetPath, `${json}\n`);
+
+const tmpPath = path.join(
+  path.dirname(targetPath),
+  `.${path.basename(targetPath)}.${String(process.pid)}.tmp`,
+);
+try {
+  fs.writeFileSync(tmpPath, `${json}\n`);
+  fs.renameSync(tmpPath, targetPath);
+} finally {
+  if (fs.existsSync(tmpPath)) {
+    fs.rmSync(tmpPath, { force: true });
+  }
+}
 
 console.log(`Generated: ${targetPath}`);

@@ -108,8 +108,8 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 ssh "root@$server_ip" "
   set -eu
-  certbot certonly --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
-    --webroot -w /var/www/certbot -d "$public_api_domain" --force-renewal
+  certbot certonly --keep-until-expiring --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
+    --webroot -w /var/www/certbot -d "$public_api_domain"
 "
 
 ssh "root@$server_ip" "
@@ -118,6 +118,8 @@ ssh "root@$server_ip" "
     | grep -q \"O = Let's Encrypt\" && echo ok || echo fail
 "
 ```
+
+Rerun: keep the existing certificate until renewal is due.
 
 ## 6. Install The Renewal Reload Hook
 
