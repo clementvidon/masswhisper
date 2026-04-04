@@ -1,45 +1,50 @@
 {
-  "generatedAt": "2026-04-03T10:40:09.502Z",
-  "snapshotCreatedAt": "2026-04-03T10:39:42.097Z",
+  "generatedAt": "2026-04-04T10:30:18.427Z",
+  "snapshotCreatedAt": "2026-04-04T10:29:38.227Z",
   "report": {
-    "text": "Marché tech sous pression, perspectives clairement dégradées",
+    "text": "Marché tech sous pression, tensions et prudence dominent",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Mon tour est arrivé",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1sab4qt"
-    },
-    {
       "title": "Je fais tout avec l’IA au boulot… mon manager est content mais j’ai peur de me faire virer",
-      "weight": "3",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1s8si11"
     },
     {
-      "title": "[RANT] On parle beaucoup du marché du travail et de à quel point le game est fini pour les juniors mais…",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1s6beir"
-    },
-    {
-      "title": "BREAKING: Oracle a envoyé des emails à 6 heures du matin “Aujourd'hui est votre dernier jour de travail” à des milliers d'employés sans avertissement, sans appel du manager, et avec révocation immédiate de l'accès au système",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1s9dkjx"
-    },
-    {
-      "title": "Informatique dans l’armée",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1s9lzub"
-    },
-    {
       "title": "Pourquoi les apps françaises c'est de la merde ?",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1s9jcqt"
     },
     {
-      "title": "Existe t'il des postes de dev cobol pour les juniors ?",
+      "title": "Mon tour est arrivé",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1sab4qt"
+    },
+    {
+      "title": "BREAKING: Oracle a envoyé des emails à 6 heures du matin “Aujourd'hui est votre dernier jour de travail” à des milliers d'employés sans avertissement, sans appel du manager, et avec révocation immédiate de l'accès au système",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1s567dh"
+      "itemRef": "https://reddit.com/comments/1s9dkjx"
+    },
+    {
+      "title": "Quel métiers en IT (technique ou non) qui sont très demandés par les entreprises (pénurie de candidats ou plus d'offres que de candidats ) , notamment pour les profils seniors",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1salmnf"
+    },
+    {
+      "title": "Informatique dans l’armée",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1s9lzub"
+    },
+    {
+      "title": "Presque aucune augmentation en 4 ans , je reste safe ou je m'aventure ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sbijzu"
+    },
+    {
+      "title": "Quel salaire demander ? ingénieur IA / data (junio) seul sur ses projets en province",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sbdcsz"
     },
     {
       "title": "Sécurité de l'emploie: startup ou ESN?",
@@ -47,9 +52,9 @@
       "itemRef": "https://reddit.com/comments/1s6y0gy"
     },
     {
-      "title": "Est-ce que le nom de la fac compte vraiment pour le premier job ?",
+      "title": "Pas augmenté cette année, comment négocier ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1s59cdi"
+      "itemRef": "https://reddit.com/comments/1sba9uy"
     }
   ],
   "sentimentHistory": [
@@ -5010,27 +5015,6 @@
       }
     },
     {
-      "createdAt": "2026-04-02T18:29:11.721Z",
-      "count": 12,
-      "confidenceMass": 17.127472,
-      "emotions": {
-        "joy": 0.038158,
-        "trust": 0.165381,
-        "anger": 0.319945,
-        "fear": 0.54023,
-        "sadness": 0.456628,
-        "disgust": 0.209111
-      },
-      "tonalities": {
-        "positive": 0.090418,
-        "negative": 0.680288,
-        "positive_surprise": 0.026988,
-        "negative_surprise": 0.538859,
-        "optimistic_anticipation": 0.134067,
-        "pessimistic_anticipation": 0.677302
-      }
-    },
-    {
       "createdAt": "2026-04-03T10:39:42.097Z",
       "count": 9,
       "confidenceMass": 14.594492,
@@ -5049,6 +5033,27 @@
         "negative_surprise": 0.478521,
         "optimistic_anticipation": 0.145753,
         "pessimistic_anticipation": 0.573405
+      }
+    },
+    {
+      "createdAt": "2026-04-04T10:29:38.227Z",
+      "count": 12,
+      "confidenceMass": 13.751325,
+      "emotions": {
+        "joy": 0.069475,
+        "trust": 0.20826,
+        "anger": 0.351112,
+        "fear": 0.475085,
+        "sadness": 0.380182,
+        "disgust": 0.229106
+      },
+      "tonalities": {
+        "positive": 0.145772,
+        "negative": 0.636403,
+        "positive_surprise": 0.043166,
+        "negative_surprise": 0.443217,
+        "optimistic_anticipation": 0.180158,
+        "pessimistic_anticipation": 0.553164
       }
     }
   ]
