@@ -38,7 +38,7 @@ type Deps = {
 };
 
 export function buildCliAgent(deps: Deps): ReportingAgentPort {
-  const source = deps.topic.sourcesBundle.sources[0];
+  const source = deps.topic.sourceBundle.sources[0];
   const promptBundle = deps.topic.promptBundle;
 
   const itemsProvider = new RedditItemsAdapter(

@@ -9,17 +9,17 @@ const SourceSchema = z.object({
   url: z.string().url(),
 });
 
-export const SourcesBundleSchema = z.object({
+export const SourceBundleSchema = z.object({
   variant: z.string().min(1),
   sources: z.array(SourceSchema).min(1),
 });
 
-export type SourcesBundle = z.infer<typeof SourcesBundleSchema>;
+export type SourceBundle = z.infer<typeof SourceBundleSchema>;
 
-export function loadSourcesBundle(
+export function loadSourceBundle(
   path: string,
   expectedVariant: string,
-): SourcesBundle {
+): SourceBundle {
   let raw: string;
   try {
     raw = fs.readFileSync(path, 'utf8');
@@ -34,7 +34,7 @@ export function loadSourcesBundle(
     throw new ConfigError(`Topic sources bundle must be valid JSON: ${path}`);
   }
 
-  const parsed = SourcesBundleSchema.safeParse(parsedJson);
+  const parsed = SourceBundleSchema.safeParse(parsedJson);
   if (!parsed.success) {
     throw new ConfigError(`Topic sources bundle has invalid shape: ${path}`);
   }

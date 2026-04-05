@@ -11,7 +11,7 @@ const PromptBundleSchema = z.object({
   reportPrompt: z.string().min(1),
 });
 
-const SourcesBundleSchema = z.object({
+const SourceBundleSchema = z.object({
   variant: z.string().min(1),
   sources: z.array(z.object({
     kind: z.literal('reddit'),
@@ -52,13 +52,13 @@ ${promptBundle.variant}`,
     );
   }
 
-  const sourcesBundle = SourcesBundleSchema.parse(
+  const sourceBundle = SourceBundleSchema.parse(
     JSON.parse(fs.readFileSync(sourcesPath, 'utf8')),
   );
-  if (sourcesBundle.variant !== manifest.sources_variant) {
+  if (sourceBundle.variant !== manifest.sources_variant) {
     throw new Error(
-      `Sources bundle variant mismatch: expected ${manifest.sources_variant}, got
-${sourcesBundle.variant}`,
+      `Source bundle variant mismatch: expected ${manifest.sources_variant}, got
+${sourceBundle.variant}`,
     );
   }
 }

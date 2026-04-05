@@ -3,7 +3,10 @@ import type { z } from 'zod';
 import type { LogLevel } from '../../application/ports/output/LoggerPort';
 import { ConfigError } from './errors';
 import { loadPromptBundle, type PromptBundle } from './loadPromptBundle';
-import { loadSourcesBundle, type SourcesBundle } from './loadSourcesBundle';
+import {
+  loadSourceBundle as loadSourceBundle,
+  type SourceBundle as SourceBundle,
+} from './loadSourceBundle';
 import {
   DatabaseEnvSchema,
   GlobalEnvSchema,
@@ -148,9 +151,9 @@ export type TopicConfig = {
   slug: string;
   sourcesVariant: string;
   promptVariant: string;
-  sourcesBundlePath: string;
+  sourceBundlePath: string;
   promptBundlePath: string;
-  sourcesBundle: SourcesBundle;
+  sourceBundle: SourceBundle;
   promptBundle: PromptBundle;
 };
 
@@ -192,7 +195,7 @@ export function loadReportingAgentConfig(
     );
   }
 
-  const sourcesBundle = loadSourcesBundle(
+  const sourceBundle = loadSourceBundle(
     topic.TOPIC_SOURCES_BUNDLE_PATH,
     topic.TOPIC_SOURCES_VARIANT,
   );
@@ -202,7 +205,7 @@ export function loadReportingAgentConfig(
     topic.TOPIC_PROMPT_VARIANT,
   );
 
-  if (sourcesBundle.sources.length !== 1) {
+  if (sourceBundle.sources.length !== 1) {
     throw new ConfigError(
       'Reporting agent MVP requires exactly one topic source',
     );
@@ -216,8 +219,8 @@ export function loadReportingAgentConfig(
       promptVariant: topic.TOPIC_PROMPT_VARIANT,
       promptBundlePath: topic.TOPIC_PROMPT_BUNDLE_PATH,
       sourcesVariant: topic.TOPIC_SOURCES_VARIANT,
-      sourcesBundlePath: topic.TOPIC_SOURCES_BUNDLE_PATH,
-      sourcesBundle,
+      sourceBundlePath: topic.TOPIC_SOURCES_BUNDLE_PATH,
+      sourceBundle: sourceBundle,
       promptBundle,
     },
     reddit: {
