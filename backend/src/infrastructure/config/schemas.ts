@@ -72,7 +72,5 @@ export const LoggingEnvSchema = z.object({
 });
 
 export const ReadApiEnvSchema = z.object({
-  READ_API_DAILY_BUNDLE_PATH: z
-    .string()
-    .min(1, 'READ_API_DAILY_BUNDLE_PATH missing'),
+  READ_API_DAILY_BUNDLE_PATH: z.string().min(1).optional(),
 });

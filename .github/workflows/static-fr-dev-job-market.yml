@@ -64,7 +64,7 @@ jobs:
           REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
 
       - name: Generate static JSON
-        run: npm --workspace backend run generate-static
+        run: npm --workspace backend run generate-daily-bundle
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 

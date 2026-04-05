@@ -1,36 +1,31 @@
 import 'dotenv/config';
 
 import { randomUUID } from 'node:crypto';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-
-import path from 'path';
+import { pathToFileURL } from 'node:url';
 
 import type { LoggerPort } from '../application/ports/output/LoggerPort';
 import { getDaily } from '../application/usecases/queries/getDaily';
-import { loadDatabaseConfig } from '../infrastructure/config/loaders';
+import {
+  loadDatabaseConfig,
+  loadReadApiConfig,
+} from '../infrastructure/config/loaders';
 import { writeDailyBundleAtomically } from '../infrastructure/daily-bundle/dailyBundleFileStore';
 import { makeLogger } from '../infrastructure/logging/root';
 import { PostgresAdapter } from '../infrastructure/persistence/PostgresAdapter';
 
 const rootLogger = makeLogger();
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-const outputFile = path.resolve(
-  __dirname,
-  '../../../frontend/public/daily.json',
-);
-
-export async function generateStatic(logger: LoggerPort) {
+export async function generateDailyBundle(logger: LoggerPort) {
   const log = logger.child({ module: 'cli' });
-  log.info('Generate static start');
+  log.info('Generate daily bundle start');
   const { databaseUrl } = loadDatabaseConfig();
+  const { dailyBundlePath } = loadReadApiConfig();
   const persistence = new PostgresAdapter(databaseUrl);
 
   const daily = await getDaily(persistence);
-  await writeDailyBundleAtomically(outputFile, daily);
-
-  log.info('Generate static done');
+  await writeDailyBundleAtomically(dailyBundlePath, daily);
+  console.log(`Generated daily bundle: ${dailyBundlePath}`);
+  log.info('Generate daily bundle done');
 }
 
 const entryUrl = process.argv[1]
@@ -40,7 +35,7 @@ const isEntryPoint = import.meta.url === entryUrl;
 
 if (isEntryPoint) {
   const logger = rootLogger.child({
-    cmd: 'generateStatic',
+    cmd: 'generateDailyBundle',
     traceId: randomUUID(),
   });
   process.on('unhandledRejection', (reason) => {
@@ -52,10 +47,10 @@ if (isEntryPoint) {
     process.exit(1);
   });
   try {
-    await generateStatic(logger);
+    await generateDailyBundle(logger);
     process.exit(0);
   } catch (err) {
-    logger.error('Failed to generate static JSON', { error: err });
+    logger.error('Failed to generate daily bundle', { error: err });
     process.exit(1);
   }
 }

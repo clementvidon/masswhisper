@@ -1,3 +1,6 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import type { z } from 'zod';
 
 import type { LogLevel } from '../../application/ports/output/LoggerPort';
@@ -131,10 +134,17 @@ export type ReadApiConfig = {
   dailyBundlePath: string;
 };
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const defaultDailyBundlePath = path.resolve(
+  __dirname,
+  '../../../frontend/public/daily.json',
+);
+
 export function loadReadApiConfig(env: Env = process.env): ReadApiConfig {
   const readApi = parseEnv(ReadApiEnvSchema, env);
   return {
-    dailyBundlePath: readApi.READ_API_DAILY_BUNDLE_PATH,
+    dailyBundlePath:
+      readApi.READ_API_DAILY_BUNDLE_PATH ?? defaultDailyBundlePath,
   };
 }
 

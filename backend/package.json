@@ -6,7 +6,7 @@
     "agent": "tsx src/cli/agent-cli.ts",
     "export": "tsx src/cli/export.ts",
     "replay": "tsx src/cli/replay.ts",
-    "generate-static": "tsx src/cli/generate-static.ts",
+    "generate-daily-bundle": "tsx src/cli/generate-daily-bundle.ts",
     "publish-daily": "tsx src/cli/publish-daily.ts",
     "backfill": "tsx src/tools/backfill-future-topics/index.ts",
     "export-replay-input": "tsx src/tools/export-replay-input/index.ts",

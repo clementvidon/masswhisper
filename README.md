@@ -43,7 +43,7 @@ cp backend/.env.example backend/.env
 
 ### Run locally
 
-- Generate a local daily bundle: `npm run generate-static`
+- Generate a local daily bundle: `npm run generate-daily-bundle`
 - Backend read API (Express): `npm --workspace backend run dev` then GET `http://localhost:3000/daily`
 - Frontend static mode: `npm --workspace frontend run dev:static`
 - Frontend dedicated mode: `npm --workspace frontend run dev:dedicated`
@@ -58,8 +58,8 @@ cp backend/.env.example backend/.env
 Daily GitHub Actions build and publish the static site. Maintainers can trigger a full update locally:
 
 ```bash
-npm run generate-static   # backend: produce JSON snapshot
-npm run update-site       # build frontend and deploy to GitHub Pages
+npm run generate-daily-bundle # backend: produce JSON daily bundle
+npm run update-site # build frontend and deploy to GitHub Pages
 ```
 
 ---
