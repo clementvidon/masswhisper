@@ -20,6 +20,8 @@ export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/topic-config
 export TOPIC_SLUG=fr-dev-job-market
 ```
 
+`LOCAL_TOPIC_CONFIG_DIR` must follow the format documented in `docs/topic-config.md`.
+
 ## 1. Install The Local Topic Config
 
 Transfer the local topic config files to `/etc/masswhisper/`

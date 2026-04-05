@@ -18,6 +18,8 @@ export ENVIRONMENT=prod
 export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/topic-config
 ```
 
+`LOCAL_TOPIC_CONFIG_DIR` must follow the format documented in `docs/topic-config.md`.
+
 ## 1. Securely Export The Hetzner Token
 
 Terraform reads the Hetzner cloud api token from the shell environment.
