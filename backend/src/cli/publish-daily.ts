@@ -31,8 +31,17 @@ if (import.meta.url === entryUrl) {
     cmd: 'publishDaily',
     traceId: randomUUID(),
   });
+  process.on('unhandledRejection', (reason) => {
+    logger.error('Unhandled rejection', { error: reason });
+    process.exit(1);
+  });
+  process.on('uncaughtException', (err) => {
+    logger.error('Uncaught exception', { error: err });
+    process.exit(1);
+  });
   try {
     await publishDaily();
+    process.exit(0);
   } catch (err) {
     logger.error('Failed to publish daily bundle', { error: err });
     process.exit(1);
