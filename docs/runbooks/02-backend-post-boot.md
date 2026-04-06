@@ -321,7 +321,7 @@ ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>
 
 printf "root ssh access is denied: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
-  && { echo fail; exit 1; }
+  && { echo fail; exit 1; } || echo ok
 ```
 
 ## 14. Closure Criteria

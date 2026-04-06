@@ -57,7 +57,7 @@ Expected result:
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh-keygen -R $server_ip
+ssh-keygen -R $server_ip 2>/dev/null
 ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new "root@$server_ip" '
   cloud-init status --wait
 

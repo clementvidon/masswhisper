@@ -6,7 +6,7 @@ source "$SCRIPT_DIR/common.sh"
 enable_error_trace
 
 usage() {
-  cat <<USAGE
+  cat <<'USAGE'
 Usage:
   scripts/deploy/update-backend.sh \
     --target <backend|shared|dependencies|systemd|nginx|backend-env|topic-runtime-env> \
