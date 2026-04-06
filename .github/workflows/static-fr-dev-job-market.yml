@@ -16,7 +16,7 @@ jobs:
     env:
       CI: true
       TOPIC_SLUG: fr-dev-job-market
-      VITE_TOPIC_NAME: French Dev Job Market
+      VITE_TOPIC_NAME: DevBarometer
       TOPIC_PROMPT_VARIANT: fr-dev-job-market-v1
       TOPIC_SOURCES_VARIANT: fr-dev-job-market-v1
 
@@ -49,7 +49,7 @@ jobs:
           cat > "$sources_bundle_path" <<'EOF'
           ${{ secrets.FR_DEV_JOB_MARKET_SOURCES_JSON }}
           EOF
-                  
+
           echo "TOPIC_PROMPT_BUNDLE_PATH=$prompt_bundle_path" >> "$GITHUB_ENV"
           echo "TOPIC_SOURCES_BUNDLE_PATH=$sources_bundle_path" >> "$GITHUB_ENV"
 
