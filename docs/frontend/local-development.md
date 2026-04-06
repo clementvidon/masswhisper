@@ -27,7 +27,9 @@ Use this mode when you want to validate UI changes against a generated snapshot.
 
 Generate the local bundle:
 
-npm run generate-static
+```zsh
+npm run generate-daily-bundle
+```
 
 Start the frontend:
 
@@ -57,7 +59,8 @@ npm --workspace backend run dev
 Start the frontend in dedicated mode:
 
 ```zsh
-VITE_API_BASE_URL=http://127.0.0.1:3000 VITE_TOPIC_NAME="MassWhisper" npm --workspace frontend run dev:dedicat
+VITE_API_BASE_URL=http://127.0.0.1:3000 VITE_TOPIC_NAME="MassWhisper" \
+  npm --workspace frontend run dev:dedicated
 ```
 
 Open the app at:
@@ -69,6 +72,12 @@ Useful local endpoints:
 - http://127.0.0.1:3000/health
 - http://127.0.0.1:3000/daily
 
+By default, the local backend reads the daily bundle from:
+
+- `frontend/public/daily.json`
+
+Override `READ_API_DAILY_BUNDLE_PATH` only if you want the local API to read a different bundle file.
+
 ## 4. Validate Frontend Changes
 
 Run automated checks:
@@ -79,10 +88,11 @@ npm --workspace frontend run check
 
 ## 5. Common Pitfalls
 
-- npm run generate-static requires a valid backend environment and data source access
-- static mode serves under /masswhisper/, not /
-- dedicated mode requires VITE_API_BASE_URL
-- backend local API expects READ_API_DAILY_BUNDLE_PATH to point to a readable bundle
+- `npm run generate-daily-bundle` requires a valid backend environment and data source access
+- static mode serves under `/masswhisper/`, not `/`
+- dedicated mode requires `VITE_API_BASE_URL`
+- backend local API reads `frontend/public/daily.json` by default
+- set `READ_API_DAILY_BUNDLE_PATH` only if you want another readable bundle path
 
 ## State After This Runbook
 

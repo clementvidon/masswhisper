@@ -174,26 +174,26 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 ssh "massops@$server_ip" '
   printf "local backend health: "
-  curl -s -i http://127.0.0.1:3000/health | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+  http_status="$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/health)"
+  [[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
 
   printf "service active: "
-  sudo systemctl is-active --quiet masswhisper-topic && echo ok || echo fail
+  sudo systemctl is-active --quiet masswhisper-topic && echo ok || { echo fail; exit 1; }
 '
 
 printf "public api health reachable: "
-curl -s -i "https://$public_api_domain/health" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$public_api_domain/health")"
+[[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
 
 printf "public api daily reachable: "
-curl -s -i "https://$public_api_domain/daily" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$public_api_domain/daily")"
+[[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
 
 printf "public read api cors origin allowed: "
 curl -s -i \
-  -H "Origin: https://fr-dev-job-market.masswhisper.com" \
-  "https://$public_api_domain/daily"
+  -H "Origin: https://fr-dev-job-market.masswhisper.com" "https://$public_api_domain/daily" \
   | grep -qi "access-control-allow-origin: https://fr-dev-job-market.masswhisper.com" \
-  && echo ok || echo fail
+  && echo ok || { echo fail; exit 1; }
 ```
 
 ## State After This Runbook

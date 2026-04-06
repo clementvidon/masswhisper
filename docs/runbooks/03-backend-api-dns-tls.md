@@ -18,7 +18,7 @@ It assumes:
 Operator variables:
 
 ```zsh
-export CERTBOT_EMAIL=example@mail.com
+export CERTBOT_EMAIL=cvidon@student.42.fr
 ```
 
 This runbook uses `certbot certonly --webroot`, so Certbot issues the certificate without editing the Nginx configuration. HTTPS and the public read API routes are enabled explicitly in step 7.
@@ -51,10 +51,10 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
 printf "cloudflare A record matches server IPv4: "
-dig +short A "$public_api_domain" @1.1.1.1 | grep -qx "$server_ip" && echo ok || echo fail
+dig +short A "$public_api_domain" @1.1.1.1 | grep -qx "$server_ip" && echo ok || { echo fail; exit 1; }
 
 printf "google A record matches server IPv4: "
-dig +short A "$public_api_domain" @8.8.8.8 | grep -qx "$server_ip" && echo ok || echo fail
+dig +short A "$public_api_domain" @8.8.8.8 | grep -qx "$server_ip" && echo ok || { echo fail; exit 1; }
 ```
 
 If both checks fail, wait a few minutes for DNS propagation and retry.
@@ -73,7 +73,7 @@ ssh "root@$server_ip" '
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 printf "acme challenge served over http: "
 curl -s "http://$public_api_domain/.well-known/acme-challenge/ping" \
-  | grep -qx ok && echo ok || echo fail
+  | grep -qx ok && echo ok || { echo fail; exit 1; }
 ```
 
 This is the required preflight check.
@@ -81,21 +81,23 @@ If it fails, stop here and fix DNS, HTTP reachability, or the Nginx ACME webroot
 
 ## 4. Validate ACME HTTP-01 Challenge (Staging)
 
-Request a staging certificate from Let's Encrypt to validate the ACME HTTP-01 challenge end-to-end without hitting production rate limits.
+Request a staging certificate from Let's Encrypt in a separate Certbot lineage to validate the ACME HTTP-01 challenge end-to-end without hitting production rate limits.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
+staging_cert_name="$public_api_domain-staging"
 ssh "root@$server_ip" "
   set -eu
-  certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
-    --webroot -w /var/www/certbot -d "$public_api_domain"
+  certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m \"$CERTBOT_EMAIL\" \
+    --cert-name \"$staging_cert_name\" \
+    --webroot -w /var/www/certbot -d \"$public_api_domain\"
 "
 
 ssh "root@$server_ip" "
   printf 'staging certificate issued: '
-  openssl x509 -in "/etc/letsencrypt/live/$public_api_domain/fullchain.pem" -noout -issuer \
-    | grep -q \"(STAGING) Let's Encrypt\" && echo ok || echo fail
+  openssl x509 -in \"/etc/letsencrypt/live/$staging_cert_name/fullchain.pem\" -noout -issuer \
+    | grep -q \"(STAGING) Let's Encrypt\" && echo ok || { echo fail; exit 1; }
 "
 ```
 
@@ -108,18 +110,20 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 ssh "root@$server_ip" "
   set -eu
-  certbot certonly --keep-until-expiring --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
-    --webroot -w /var/www/certbot -d "$public_api_domain"
+  certbot certonly --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
+    --cert-name \"$public_api_domain\" \
+    --webroot -w /var/www/certbot -d \"$public_api_domain\"
 "
 
 ssh "root@$server_ip" "
   printf 'production certificate issued: '
-  openssl x509 -in "/etc/letsencrypt/live/$public_api_domain/fullchain.pem" -noout -issuer \
-    | grep -q \"O = Let's Encrypt\" && echo ok || echo fail
+  openssl x509 -in \"/etc/letsencrypt/live/$public_api_domain/fullchain.pem\" -noout -issuer \
+    | grep -q \"O = Let's Encrypt\" && ! grep -q \"(STAGING)\" && echo ok || { echo fail; exit 1; }
 "
 ```
 
-Rerun: keep the existing certificate until renewal is due.
+Rerun: keep the existing production certificate until renewal is due.
+The staging validation uses a separate Certbot lineage and does not require `--force-renewal`.
 
 ## 6. Install The Renewal Reload Hook
 
@@ -138,7 +142,7 @@ ssh "root@$server_ip" '
   printf "certbot deploy hook installed: "
   test -x /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && \
   grep -qx "systemctl reload nginx" /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && \
-  echo ok || echo fail
+  echo ok || { echo fail; exit 1; }
 '
 ```
 
@@ -159,7 +163,7 @@ ssh "root@$server_ip" '
   printf "nginx TLS config active: "
   nginx -t >/dev/null 2>&1 && \
   grep -q "ssl_certificate" /etc/nginx/sites-available/public-api.conf && \
-  echo ok || echo fail
+  echo ok || { echo fail; exit 1; }
 '
 ```
 
@@ -170,16 +174,16 @@ Verify that HTTP requests are redirected to HTTPS and that routing behaves as ex
 ```zsh
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 printf "http redirects to https: "
-curl -s -i "http://$public_api_domain/health" \
-  | grep -Eq "^HTTP/[0-9.]+ 301" && echo ok || echo fail
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "http://$public_api_domain/health")"
+[[ "$http_status" == "301" ]] && echo ok || { echo fail; exit 1; }
 
 printf "https health endpoint reachable: "
-curl -s -i "https://$public_api_domain/health" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$public_api_domain/health")"
+[[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
 
 printf "https daily endpoint reachable: "
-curl -s -i "https://$public_api_domain/daily" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$public_api_domain/daily")"
+[[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
 ```
 
 ## 9. Inspect The Presented Certificate
@@ -221,4 +225,61 @@ If the current `public_api_domain` cannot be pointed yet, use a temporary hostna
 
 Next step:
 
-- go back to `docs/runbooks/02-backend-post-boot.md` step 14
+- go back to `docs/runbooks/02-backend-post-boot.md` step 13
+
+## Appendix
+
+### Back Up the Issued Certificate
+
+After the production certificate is issued, save the full Let's Encrypt state locally.
+
+Choose a secure local backup directory that is not committed to Git.
+
+```zsh
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
+backup_dir="$HOME/.local/share/masswhisper/tls-backups/$public_api_domain"
+umask 077
+
+mkdir -p "$backup_dir"
+rsync -a "root@$server_ip:/etc/letsencrypt/" "$backup_dir/letsencrypt/"
+```
+
+This preserves:
+
+- `live/`
+- `archive/`
+- `renewal/`
+- Certbot account metadata
+
+### Restore a Saved Certificate to a Rebuilt VM
+
+If the VM was rebuilt and a production certificate backup already exists locally, restore it before trying to issue a new certificate.
+
+```zsh
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
+backup_dir="$HOME/.local/share/masswhisper/tls-backups/$public_api_domain"
+
+test -d "$backup_dir/letsencrypt" || { echo "missing local certificate backup"; exit 1; }
+
+rsync -a "$backup_dir/letsencrypt/" "root@$server_ip:/etc/letsencrypt/"
+
+ssh "root@$server_ip" '
+  set -eu
+  chown -R root:root /etc/letsencrypt
+  find /etc/letsencrypt -type d -exec chmod 755 {} \;
+  find /etc/letsencrypt -type f -exec chmod 644 {} \;
+  find /etc/letsencrypt/archive -type f -exec chmod 600 {} \;
+  nginx -t
+  systemctl reload nginx
+'
+```
+
+### Verify the Restored Certificate
+
+```zsh
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
+ssh "root@$server_ip" "openssl x509 -in '/etc/letsencrypt/live/$public_api_domain/fullchain.pem' -noout -subject -issuer -dates"
+```

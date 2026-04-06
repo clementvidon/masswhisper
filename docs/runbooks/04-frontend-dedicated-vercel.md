@@ -42,12 +42,12 @@ printf "public_api_domain: %s\n" "$public_api_domain"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
 printf "public api health reachable: "
-curl -s -i "https://$public_api_domain/health" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$public_api_domain/health")"
+[[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
 
 printf "public api daily reachable: "
-curl -s -i "https://$public_api_domain/daily" \
-  | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$public_api_domain/daily")"
+[[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
 ```
 
 ## 3. Create Or Configure The Vercel Project

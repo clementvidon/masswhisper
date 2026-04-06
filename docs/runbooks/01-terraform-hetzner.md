@@ -57,43 +57,44 @@ Expected result:
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+ssh-keygen -R $server_ip
+ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new "root@$server_ip" '
   cloud-init status --wait
 
   echo "[cloud-init] prepare ops user"
-  printf "ops user: "; id -u massops >/dev/null 2>&1 && echo ok || echo fail
-  printf "ops authorized key: "; test -s /home/massops/.ssh/authorized_keys && echo ok || echo fail
-  printf "ops sudoers file: "; test -s /etc/sudoers.d/90-massops && echo ok || echo fail
+  printf "ops user: "; id -u massops >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
+  printf "ops authorized key: "; test -s /home/massops/.ssh/authorized_keys && echo ok || { echo fail; exit 1; }
+  printf "ops sudoers file: "; test -s /etc/sudoers.d/90-massops && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] install Node"
-  printf "node: "; node -v 2>/dev/null || echo fail
-  printf "npm: "; npm -v 2>/dev/null || echo fail
+  printf "node: "; node -v >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
+  printf "npm: "; npm -v >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] bootstrap repo"
-  printf "user: "; id -u masswhisper >/dev/null 2>&1 && echo ok || echo fail
-  printf "repo: "; test -d /opt/masswhisper && echo ok || echo fail
+  printf "user: "; id -u masswhisper >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
+  printf "repo: "; test -d /opt/masswhisper && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] prepare runtime"
-  printf "env: "; test -f /etc/masswhisper/backend.env && stat -c "%U:%G %a %n" /etc/masswhisper/backend.env || echo fail
-  printf "topic runtime env: "; test -f /etc/masswhisper/topic-runtime.env && stat -c "%U:%G %a %n" /etc/masswhisper/topic-runtime.env || echo fail
-  printf "unit: "; test -s /etc/systemd/system/masswhisper-topic.service && echo ok || echo fail
+  printf "env: " test -f /etc/masswhisper/backend.env && echo ok || { echo fail; exit 1; }
+  printf "topic runtime env: "; test -f /etc/masswhisper/topic-runtime.env && echo ok || { echo fail; exit 1; }
+  printf "unit: "; test -s /etc/systemd/system/masswhisper-topic.service && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] prepare scheduler"
-  printf "capture wrapper installed: "; test -x /usr/local/bin/run-capture.sh && echo ok || echo fail
-  printf "cron file installed: "; test -s /etc/cron.d/masswhisper-topic && echo ok || echo fail
+  printf "capture wrapper installed: "; test -x /usr/local/bin/run-capture.sh && echo ok || { echo fail; exit 1; }
+  printf "cron file installed: "; test -s /etc/cron.d/masswhisper-topic && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] harden ssh"
-  printf "ssh drop-in installed: "; test -f /etc/ssh/sshd_config.d/99-masswhisper.conf && echo ok || echo fail
-  printf "sshd config valid: "; sshd -t >/dev/null 2>&1 && echo ok || echo fail
+  printf "ssh drop-in installed: "; test -f /etc/ssh/sshd_config.d/99-masswhisper.conf && echo ok || { echo fail; exit 1; }
+  printf "sshd config valid: "; sshd -t >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] configure Nginx"
-  printf "nginx site: "; test -s /etc/nginx/sites-available/public-api.conf && echo ok || echo fail
-  printf "nginx link: "; test -L /etc/nginx/sites-enabled/public-api.conf && echo ok || echo fail
-  printf "nginx config: "; nginx -t >/dev/null 2>&1 && echo ok || echo fail
+  printf "nginx site: "; test -s /etc/nginx/sites-available/public-api.conf && echo ok || { echo fail; exit 1; }
+  printf "nginx link: "; test -L /etc/nginx/sites-enabled/public-api.conf && echo ok || { echo fail; exit 1; }
+  printf "nginx config: "; nginx -t >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] configure certbot"
-  printf "certbot installed: "; certbot --version >/dev/null 2>&1 && echo ok || echo fail
-  printf "acme webroot exists: "; test -d /var/www/certbot/.well-known/acme-challenge && echo ok || echo fail
+  printf "certbot installed: "; certbot --version >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
+  printf "acme webroot exists: "; test -d /var/www/certbot/.well-known/acme-challenge && echo ok || { echo fail; exit 1; }
 '
 ```
 

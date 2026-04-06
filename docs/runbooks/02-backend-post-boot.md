@@ -20,7 +20,10 @@ export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/topic-config
 export TOPIC_SLUG=fr-dev-job-market
 ```
 
-`LOCAL_TOPIC_CONFIG_DIR` must follow the format documented in `docs/topic-config.md`.
+- `LOCAL_TOPIC_CONFIG_DIR` must follow the format documented in `docs/topic-config.md`.
+- `TOPIC_SLUG` is the canonical topic identity from the instance manifest. It must match
+  `instances/<topic-slug>/<environment>.yaml` and the local bundle filenames. It is not derived
+  from `domain` and does not need to mirror the public hostname.
 
 ## 1. Install The Local Topic Config
 
@@ -100,7 +103,7 @@ ssh "root@$server_ip" '
   systemctl status masswhisper-topic
 
   printf "masswhisper-topic service active: "
-  systemctl is-active --quiet masswhisper-topic && echo ok || echo fail
+  systemctl is-active --quiet masswhisper-topic && echo ok || { echo fail; exit 1; }
 '
 ```
 
@@ -117,80 +120,80 @@ ssh "root@$server_ip" '
   systemctl status cron
 
   printf "cron service active: "
-  systemctl is-active --quiet cron && echo ok || echo fail
+  systemctl is-active --quiet cron && echo ok || { echo fail; exit 1; }
 '
 ```
 
-## 6. Inspect Logs
+## 6. Verify Local Reachability
 
-```zsh
-server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" 'journalctl -u masswhisper-topic -n 100'
-```
-
-## 7. Verify Local Reachability
+If you rerun this after TLS activation, `301` is also acceptable on Nginx HTTP checks because the public API may already redirect HTTP to HTTPS.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
-ssh "root@$server_ip" "
 
-  printf 'node binds local port 3000: '
-  ss -ltnp | grep -E \"127\.0\.0\.1:3000.*node\" >/dev/null 2>&1 && echo ok || echo fail
+ssh "root@$server_ip" '
+  set -eu
+  public_api_domain='"$public_api_domain"'
 
-  printf 'nginx local health route works: '
-  curl -s -i -H "Host: $public_api_domain" http://127.0.0.1/health \
-    | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
+  printf "node binds local port 3000: "
+  ss -ltnp | grep -E "127\.0\.0\.1:3000.*node" >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
-  printf 'nginx local daily route works: '
-  curl -s -i -H "Host: $public_api_domain" http://127.0.0.1/daily \
-    | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
+  printf "nginx local health route works: "
+  http_status="$(curl -sS -o /dev/null -w "%{http_code}" -H "Host: $public_api_domain" http://127.0.0.1/health)"
+  [[ "$http_status" == "200" || "$http_status" == "301" ]] && echo ok || { echo fail; exit 1; }
 
-  printf 'local health endpoint reachable: '
-  curl -s -i http://127.0.0.1:3000/health \
-    | grep -q \"^HTTP/1.1 200\" && echo ok || echo fail
+  printf "nginx local daily route works: "
+  http_status="$(curl -sS -o /dev/null -w "%{http_code}" -H "Host: $public_api_domain" http://127.0.0.1/daily)"
+  [[ "$http_status" == "200" || "$http_status" == "301" || "$http_status" == "503" ]] && echo ok || { echo fail; exit 1; }
 
-  printf 'local daily endpoint reachable: '
-  curl -s -i http://127.0.0.1:3000/daily \
-    | grep -Eq "^HTTP/[0-9.]+ 200" && echo ok || echo fail
-"
+  printf "local health endpoint reachable: "
+  http_status="$(curl -sS -o /dev/null -w "%{http_code}" http://127.0.0.1:3000/health)"
+  [[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
+
+  printf "local daily endpoint reachable: "
+  http_status="$(curl -sS -o /dev/null -w "%{http_code}" http://127.0.0.1:3000/daily)"
+  [[ "$http_status" == "200" || "$http_status" == "503" ]] && echo ok || { echo fail; exit 1; }
+'
 ```
 
-## 8. Verify Proxied Health
+## 7. Verify Proxied Health
+
+If you rerun this after TLS activation, `301` is also acceptable because the public HTTP endpoint may already redirect to HTTPS.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
 printf "public health endpoint reachable: "
-curl -s -i -H "Host: $public_api_domain" "http://$server_ip/health" \
-  | grep -q "^HTTP/1.1 200" && echo ok || echo fail
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' -H "Host: $public_api_domain" "http://$server_ip/health")"
+[[ "$http_status" == "200" || "$http_status" == "301" ]] && echo ok || { echo fail; exit 1; }
 
 printf "public node port stays closed: "
 curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
-  && echo fail || echo ok
+  && { echo fail; exit 1; } || echo ok
 ```
 
-## 9. Verify Minimal Firewall Exposure
+## 8. Verify Minimal Firewall Exposure
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
-printf "public tcp/22 reachable: "
+printf '%s' "public tcp/22 reachable: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
-  && echo ok || echo fail
+  && echo ok || { echo fail; exit 1; }
 
-printf "public tcp/80 reachable: "
+printf '%s' "public tcp/80 reachable: "
 curl -s --max-time 5 -o /dev/null -H "Host: $public_api_domain" "http://$server_ip/health" \
-  && echo ok || echo fail
+  && echo ok || { echo fail; exit 1; }
 
-printf "public tcp/3000 blocked: "
+printf '%s' "public tcp/3000 blocked: "
 curl -s --max-time 5 "http://$server_ip:3000/health" >/dev/null 2>&1 \
-  && echo fail || echo ok
+  && { echo fail; exit 1; } || echo ok
 ```
 
-## 10. Verify Manual Capture Run
+## 9. Verify Manual Capture Run
 
 Run the capture wrapper once as `masswhisper` and verify that one new snapshot is persisted.
 
@@ -198,6 +201,9 @@ Run the capture wrapper once as `masswhisper` and verify that one new snapshot i
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
+  json_array_length() {
+    node -e "const fs=require('\''fs'\''); console.log(JSON.parse(fs.readFileSync(process.argv[1], '\''utf8'\'')).length)" "$1"
+  }
   set -a
   source /etc/masswhisper/topic-runtime.env
   source /etc/masswhisper/backend.env
@@ -213,13 +219,17 @@ ssh "root@$server_ip" '
   npm --workspace backend run export -- "$after_file" >/dev/null 2>&1
 
   printf "daily bundle file created: "
-  test -s /var/lib/masswhisper/read-api/daily-bundle.json && echo ok || echo fail
+  test -s /var/lib/masswhisper/read-api/daily-bundle.json && echo ok || { echo fail; exit 1; }
 
-  before=$(grep -c "\"id\":" "$before_file")
-  after=$(grep -c "\"id\":" "$after_file")
+  before=$(json_array_length "$before_file")
+  after=$(json_array_length "$after_file")
+
+  printf "local daily endpoint reachable after capture: "
+  http_status="$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/daily)"
+  [[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
 
   printf "manual capture adds a snapshot: "
-  test "$after" -gt "$before" && echo ok || echo fail
+  test "$after" -gt "$before" && echo ok || { echo fail; exit 1; }
 '
 ```
 
@@ -230,7 +240,7 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" 'journalctl -f -t masswhisper-capture'
 ```
 
-## 11. Verify Lock Skip Behavior
+## 10. Verify Lock Skip Behavior
 
 Hold the capture lock manually, run the wrapper again, and verify that the run is skipped without creating a new snapshot.
 
@@ -238,6 +248,9 @@ Hold the capture lock manually, run the wrapper again, and verify that the run i
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "root@$server_ip" '
   set -eu
+  json_array_length() {
+    node -e "const fs=require('\''fs'\''); console.log(JSON.parse(fs.readFileSync(process.argv[1], '\''utf8'\'')).length)" "$1"
+  }
   set -a
   source /etc/masswhisper/topic-runtime.env
   source /etc/masswhisper/backend.env
@@ -255,21 +268,21 @@ ssh "root@$server_ip" '
   su -s /bin/bash masswhisper -c "/usr/local/bin/run-capture.sh"
   npm --workspace backend run export -- "$after_file" >/dev/null 2>&1
 
-  before=$(grep -c "\"id\":" "$before_file")
-  after=$(grep -c "\"id\":" "$after_file")
+  before=$(json_array_length "$before_file")
+  after=$(json_array_length "$after_file")
 
   printf "locked capture exits without new snapshot: "
-  test "$after" = "$before" && echo ok || echo fail
+  test "$after" = "$before" && echo ok || { echo fail; exit 1; }
 
   printf "lock skip is logged: "
   journalctl -t masswhisper-capture --since "2 minutes ago" \
-    | grep -q "capture skipped: lock held" && echo ok || echo fail
+    | grep -q "capture skipped: lock held" && echo ok || { echo fail; exit 1; }
 
   wait "$lock_holder"
 '
 ```
 
-## 12. Verify Ops User Access
+## 11. Verify Ops User Access
 
 Verify that the dedicated ops user can connect over SSH and use sudo without a password.
 
@@ -278,18 +291,18 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 
 printf "ops ssh access works: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
-  && echo ok || echo fail
+  && echo ok || { echo fail; exit 1; }
 
 printf "ops passwordless sudo works: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" "sudo -n true" >/dev/null 2>&1 \
-  && echo ok || echo fail
+  && echo ok || { echo fail; exit 1; }
 ```
 
-## 13. Enable DNS And TLS
+## 12. Enable DNS And TLS
 
 Follow `docs/runbooks/03-backend-api-dns-tls.md` to attach the current Terraform `public_api_domain` and enable TLS.
 
-## 14. Lock Root SSH Access
+## 13. Lock Root SSH Access
 
 Once massops access is validated, disable root SSH login entirely.
 
@@ -304,14 +317,14 @@ ssh "root@$server_ip" '
 
 printf "ops ssh access still works: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
-  && echo ok || echo fail
+  && echo ok || { echo fail; exit 1; }
 
 printf "root ssh access is denied: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
-  && echo fail || echo ok
+  && { echo fail; exit 1; }
 ```
 
-## 15. Closure Criteria
+## 14. Closure Criteria
 
 Consider the runtime closed only after a fresh end-to-end replay confirms that:
 
