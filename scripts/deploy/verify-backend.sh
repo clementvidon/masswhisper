@@ -51,11 +51,19 @@ fi
 step "Verify backend runtime"
 run_ssh_massops_script "$SERVER_IP" '
 printf "local backend health: "
-http_status="$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/health)"
-if [[ "$http_status" == "200" ]]; then
-  echo ok
-else
+for _ in $(seq 1 15); do
+  http_status="$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/health 2>/dev/null || true)"
+  if [[ "$http_status" == "200" ]]; then
+    echo ok
+    break
+  fi
+  sleep 1
+done
+
+if [[ "$http_status" != "200" ]]; then
   echo fail
+  sudo systemctl status masswhisper-topic --no-pager || true
+  sudo journalctl -u masswhisper-topic -n 50 --no-pager || true
   exit 1
 fi
 

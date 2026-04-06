@@ -172,14 +172,26 @@ After recovering the repository, return to `Choose The Update Path` and apply th
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
-ssh "massops@$server_ip" '
-  printf "local backend health: "
-  http_status="$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/health)"
-  [[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
 
-  printf "service active: "
-  sudo systemctl is-active --quiet masswhisper-topic && echo ok || { echo fail; exit 1; }
-'
+ssh -T "massops@$server_ip" <<'EOF'
+printf "local backend health: "
+for _ in $(seq 1 15); do
+  http_status="$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/health 2>/dev/null || true)"
+  if [[ "$http_status" == "200" ]]; then
+    echo ok
+    break
+  fi
+  sleep 1
+done
+
+if [[ "$http_status" != "200" ]]; then
+  echo fail
+  exit 1
+fi
+
+printf "service active: "
+sudo systemctl is-active --quiet masswhisper-topic && echo ok || { echo fail; exit 1; }
+EOF
 
 printf "public api health reachable: "
 http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$public_api_domain/health")"

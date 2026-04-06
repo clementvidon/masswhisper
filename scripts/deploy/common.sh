@@ -95,6 +95,13 @@ scp_to_root() {
   run scp "$src" "root@$host:$dest"
 }
 
+scp_to_massops() {
+  local src=$1
+  local host=$2
+  local dest=$3
+  run scp "$src" "massops@$host:$dest"
+}
+
 run_ssh_root_script() {
   local host=$1
   local script=$2

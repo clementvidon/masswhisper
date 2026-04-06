@@ -53,7 +53,7 @@ fi
 step "05.2 Apply the matching update"
 case "$TARGET" in
   backend-env)
-    scp_to_root "$tmp_backend_env" "$SERVER_IP" /tmp/backend.env
+    scp_to_massops "$tmp_backend_env" "$SERVER_IP" /tmp/backend.env
     run_ssh_massops_script "$SERVER_IP" '
 set -eu
 sudo install -d -m 755 /etc/masswhisper
@@ -70,7 +70,7 @@ sudo systemctl restart masswhisper-topic
       tmp_topic_runtime_env=$(mktemp)
       trap 'rm -f "$tmp_topic_runtime_env"' EXIT
       terraform -chdir="$REPO_ROOT/infra/terraform" output -raw topic_runtime_env > "$tmp_topic_runtime_env"
-      scp_to_root "$tmp_topic_runtime_env" "$SERVER_IP" /tmp/topic-runtime.env
+      scp_to_massops "$tmp_topic_runtime_env" "$SERVER_IP" /tmp/topic-runtime.env
       run_ssh_massops_script "$SERVER_IP" '
 set -eu
 sudo install -d -m 755 /etc/masswhisper
