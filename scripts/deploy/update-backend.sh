@@ -3,6 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
+enable_error_trace
 
 usage() {
   cat <<USAGE
@@ -11,6 +12,9 @@ Usage:
     --target <backend|shared|dependencies|systemd|nginx|backend-env|topic-runtime-env> \
     [--backend-env-file <path|->] \
     [--dry-run]
+
+Notes:
+  --backend-env-file <path|->   Required for --target backend-env. Use - to read from stdin.
 USAGE
 }
 
@@ -43,6 +47,7 @@ if [[ "$TARGET" == "backend-env" ]]; then
   tmp_backend_env=$(mktemp)
   trap 'rm -f "$tmp_backend_env"' EXIT
   read_backend_env_to_temp "$BACKEND_ENV_FILE" "$tmp_backend_env"
+  test -s "$tmp_backend_env" || fail "backend env file is empty"
 fi
 
 step "05.2 Apply the matching update"
@@ -53,7 +58,7 @@ case "$TARGET" in
 set -eu
 sudo install -d -m 755 /etc/masswhisper
 sudo install -o root -g masswhisper -m 640 /tmp/backend.env /etc/masswhisper/backend.env
-rm -f /tmp/backend.env
+sudo rm -f /tmp/backend.env
 sudo systemctl restart masswhisper-topic
 '
     ;;
@@ -70,7 +75,7 @@ sudo systemctl restart masswhisper-topic
 set -eu
 sudo install -d -m 755 /etc/masswhisper
 sudo install -o root -g masswhisper -m 640 /tmp/topic-runtime.env /etc/masswhisper/topic-runtime.env
-rm -f /tmp/topic-runtime.env
+sudo rm -f /tmp/topic-runtime.env
 sudo systemctl restart masswhisper-topic
 '
     fi

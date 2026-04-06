@@ -4,9 +4,19 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/../.." && pwd)"
 DRY_RUN=${DRY_RUN:-0}
+SSH_OPTS=(-o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new)
+if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
+  C_RESET=$'\033[0m'
+  C_RED=$'\033[31m'
+  C_CYAN=$'\033[36m'
+else
+  C_RESET=''
+  C_RED=''
+  C_CYAN=''
+fi
 
 step() {
-  printf '\n==> %s\n' "$*"
+  printf '\n%s==>%s %s\n' "$C_CYAN" "$C_RESET" "$*"
 }
 
 info() {
@@ -14,8 +24,17 @@ info() {
 }
 
 fail() {
-  printf 'error: %s\n' "$*" >&2
+  printf '%serror:%s %s\n' "$C_RED" "$C_RESET" "$*" >&2
   exit 1
+}
+
+enable_error_trace() {
+  set -o errtrace
+  trap '
+    status_code=$?
+    printf "%serror:%s command failed (exit %s)\n" "$C_RED" "$C_RESET" "$status_code" >&2
+    exit "$status_code"
+  ' ERR
 }
 
 require_cmd() {
@@ -60,13 +79,13 @@ terraform_apply_var_file() {
 ssh_root() {
   local host=$1
   shift
-  run ssh "root@$host" "$@"
+  run ssh "${SSH_OPTS[@]}" "root@$host" "$@"
 }
 
 ssh_massops() {
   local host=$1
   shift
-  run ssh "massops@$host" "$@"
+  run ssh "${SSH_OPTS[@]}" "massops@$host" "$@"
 }
 
 scp_to_root() {
@@ -83,7 +102,12 @@ run_ssh_root_script() {
   if [[ "$DRY_RUN" -eq 1 ]]; then
     printf "+ ssh root@%s 'bash -seu' <<'EOF'\n%s\nEOF\n" "$host" "$script"
   else
-    ssh "root@$host" 'bash -seu' <<EOF2
+    ssh "${SSH_OPTS[@]}" "root@$host" 'bash -seEu -o pipefail' <<EOF2
+trap '
+  status_code=\$?
+  printf "error: remote command failed (exit %s): %s\n" "\$status_code" "\$BASH_COMMAND" >&2
+  exit "\$status_code"
+' ERR
 $script
 EOF2
   fi
@@ -96,7 +120,12 @@ run_ssh_massops_script() {
   if [[ "$DRY_RUN" -eq 1 ]]; then
     printf "+ ssh massops@%s 'bash -seu' <<'EOF'\n%s\nEOF\n" "$host" "$script"
   else
-    ssh "massops@$host" 'bash -seu' <<EOF2
+    ssh "${SSH_OPTS[@]}" "massops@$host" 'bash -seEu -o pipefail' <<EOF2
+trap '
+  status_code=\$?
+  printf "error: remote command failed (exit %s): %s\n" "\$status_code" "\$BASH_COMMAND" >&2
+  exit "\$status_code"
+' ERR
 $script
 EOF2
   fi

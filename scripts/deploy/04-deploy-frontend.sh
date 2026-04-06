@@ -3,10 +3,12 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
+enable_error_trace
 
 usage() {
-  cat <<USAGE
+  cat <<'USAGE'
 Usage:
+
   scripts/deploy/04-deploy-frontend.sh \
     --manifest <path> \
     [--dry-run]

@@ -3,6 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
+enable_error_trace
 
 usage() {
   cat <<USAGE
@@ -50,7 +51,8 @@ fi
 step "Verify backend runtime"
 run_ssh_massops_script "$SERVER_IP" '
 printf "local backend health: "
-if curl -s -i http://127.0.0.1:3000/health | grep -Eq "^HTTP/[0-9.]+ 200"; then
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/health)"
+if [[ "$http_status" == "200" ]]; then
   echo ok
 else
   echo fail
@@ -74,7 +76,7 @@ else
 fi
 
 printf "published bundle present: "
-if test -s /var/lib/masswhisper/read-api/daily-bundle.json; then
+if sudo test -s /var/lib/masswhisper/read-api/daily-bundle.json; then
   echo ok
 else
   echo fail
@@ -85,7 +87,8 @@ fi
 step "Verify public API"
 if [[ "$REQUIRE_TLS" -eq 1 ]]; then
   printf 'public api health reachable: '
-  if curl -s -i "https://$PUBLIC_API_DOMAIN/health" | grep -Eq '^HTTP/[0-9.]+ 200'; then
+  http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$PUBLIC_API_DOMAIN/health")"
+  if [[ "$http_status" == "200" ]]; then
     echo ok
   else
     echo fail
@@ -93,7 +96,8 @@ if [[ "$REQUIRE_TLS" -eq 1 ]]; then
   fi
 
   printf 'public api daily reachable: '
-  if curl -s -i "https://$PUBLIC_API_DOMAIN/daily" | grep -Eq '^HTTP/[0-9.]+ 200'; then
+  http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$PUBLIC_API_DOMAIN/daily")"
+  if [[ "$http_status" == "200" ]]; then
     echo ok
   else
     echo fail
@@ -101,7 +105,9 @@ if [[ "$REQUIRE_TLS" -eq 1 ]]; then
   fi
 else
   printf 'public api health reachable: '
-  if curl -s -i "http://$SERVER_IP/health" | grep -Eq '^HTTP/[0-9.]+ 200' || curl -s -i "https://$PUBLIC_API_DOMAIN/health" | grep -Eq '^HTTP/[0-9.]+ 200'; then
+  http_status_ip="$(curl -sS -o /dev/null -w '%{http_code}' "http://$SERVER_IP/health")"
+  http_status_domain="$(curl -sS -o /dev/null -w '%{http_code}' "https://$PUBLIC_API_DOMAIN/health")"
+  if [[ "$http_status_ip" == "200" || "$http_status_domain" == "200" ]]; then
     echo ok
   else
     echo fail
@@ -109,7 +115,9 @@ else
   fi
 
   printf 'public api daily reachable: '
-  if curl -s -i "http://$SERVER_IP/daily" | grep -Eq '^HTTP/[0-9.]+ 200' || curl -s -i "https://$PUBLIC_API_DOMAIN/daily" | grep -Eq '^HTTP/[0-9.]+ 200'; then
+  http_status_ip="$(curl -sS -o /dev/null -w '%{http_code}' "http://$SERVER_IP/daily")"
+  http_status_domain="$(curl -sS -o /dev/null -w '%{http_code}' "https://$PUBLIC_API_DOMAIN/daily")"
+  if [[ "$http_status_ip" == "200" || "$http_status_domain" == "200" ]]; then
     echo ok
   else
     echo fail
@@ -119,7 +127,7 @@ fi
 
 if [[ -n "$CORS_ORIGIN" ]]; then
   printf 'expected CORS origin allowed: '
-  if curl -s -i -H "Origin: $CORS_ORIGIN" "https://$PUBLIC_API_DOMAIN/daily" | grep -qi "access-control-allow-origin: $CORS_ORIGIN"; then
+  if curl -sS -o /dev/null -D - -H "Origin: $CORS_ORIGIN" "https://$PUBLIC_API_DOMAIN/daily" | grep -qi "access-control-allow-origin: $CORS_ORIGIN"; then
     echo ok
   else
     echo fail
@@ -130,13 +138,15 @@ fi
 if [[ "$REQUIRE_TLS" -eq 1 ]]; then
   step "Verify TLS certificate"
   printf 'http redirects to https: '
-  if curl -s -i "http://$PUBLIC_API_DOMAIN/health" | grep -Eq '^HTTP/[0-9.]+ 301'; then
+  http_status="$(curl -sS -o /dev/null -w '%{http_code}' "http://$PUBLIC_API_DOMAIN/health")"
+  if [[ "$http_status" == "301" ]]; then
     echo ok
   else
     echo fail
     exit 1
   fi
 
+  info "presented certificate:"
   openssl s_client -connect "$PUBLIC_API_DOMAIN:443" -servername "$PUBLIC_API_DOMAIN" </dev/null 2>/dev/null \
     | openssl x509 -noout -subject -issuer -dates
 fi

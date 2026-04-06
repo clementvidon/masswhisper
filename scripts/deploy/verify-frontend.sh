@@ -3,6 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
+enable_error_trace
 
 usage() {
   cat <<USAGE
@@ -56,7 +57,8 @@ fi
 if [[ "$REQUIRE_TLS" -eq 1 ]]; then
   step "Verify dedicated API"
   printf 'public api health reachable: '
-  if curl -s -i "https://$PUBLIC_API_DOMAIN/health" | grep -Eq '^HTTP/[0-9.]+ 200'; then
+  http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$PUBLIC_API_DOMAIN/health")"
+  if [[ "$http_status" == "200" ]]; then
     echo ok
   else
     echo fail
@@ -64,7 +66,8 @@ if [[ "$REQUIRE_TLS" -eq 1 ]]; then
   fi
 
   printf 'public api daily reachable: '
-  if curl -s -i "https://$PUBLIC_API_DOMAIN/daily" | grep -Eq '^HTTP/[0-9.]+ 200'; then
+  http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$PUBLIC_API_DOMAIN/daily")"
+  if [[ "$http_status" == "200" ]]; then
     echo ok
   else
     echo fail
@@ -74,7 +77,8 @@ fi
 
 step "Verify frontend reachability"
 printf 'frontend reachable: '
-if curl -s -i "https://$DOMAIN" | grep -Eq '^HTTP/[0-9.]+ 200|^HTTP/[0-9.]+ 308'; then
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$DOMAIN")"
+if [[ "$http_status" == "200" || "$http_status" == "308" ]]; then
   echo ok
 else
   echo fail

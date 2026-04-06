@@ -13,10 +13,14 @@ const PromptBundleSchema = z.object({
 
 const SourceBundleSchema = z.object({
   variant: z.string().min(1),
-  sources: z.array(z.object({
-    kind: z.literal('reddit'),
-    url: z.string().url(),
-  })).min(1),
+  sources: z
+    .array(
+      z.object({
+        kind: z.literal('reddit'),
+        url: z.string().url(),
+      }),
+    )
+    .min(1),
 });
 
 export function validateLocalTopicBundles(
@@ -57,7 +61,7 @@ ${promptBundle.variant}`,
   );
   if (sourceBundle.variant !== manifest.sources_variant) {
     throw new Error(
-      `Source bundle variant mismatch: expected ${manifest.sources_variant}, got
+      `Sources bundle variant mismatch: expected ${manifest.sources_variant}, got
 ${sourceBundle.variant}`,
     );
   }

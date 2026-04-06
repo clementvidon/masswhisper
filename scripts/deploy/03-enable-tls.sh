@@ -3,10 +3,12 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
+enable_error_trace
 
 usage() {
-  cat <<USAGE
+  cat <<'USAGE'
 Usage:
+
   scripts/deploy/03-enable-tls.sh \
     --certbot-email <email> \
     [--dry-run]
@@ -34,6 +36,7 @@ require_cmd openssl
 
 SERVER_IP="$(tf_output server_ip)"
 PUBLIC_API_DOMAIN="$(tf_output public_api_domain)"
+STAGING_CERT_NAME="${PUBLIC_API_DOMAIN}-staging"
 
 step "03.1 Create the DNS A record"
 info "Type:   A"
@@ -103,33 +106,51 @@ else
 fi
 
 step "03.4 Validate ACME HTTP-01 challenge (staging)"
-run_ssh_root_script "$SERVER_IP" "
-set -eu
-certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m '$CERTBOT_EMAIL' \
-  --webroot -w /var/www/certbot -d '$PUBLIC_API_DOMAIN'
-"
+current_issuer="$(ssh "root@$SERVER_IP" "openssl x509 -in '/etc/letsencrypt/live/$STAGING_CERT_NAME/fullchain.pem' -noout -issuer 2>/dev/null || true")"
 
-printf 'staging certificate issued: '
-if ssh "root@$SERVER_IP" "openssl x509 -in '/etc/letsencrypt/live/$PUBLIC_API_DOMAIN/fullchain.pem' -noout -issuer | grep -q \"(STAGING) Let's Encrypt\""; then
-  echo ok
+if grep -q "(STAGING) Let's Encrypt" <<<"$current_issuer"; then
+    printf 'staging certificate issued: '
+    echo "ok (staging certificate already present)"
 else
-  echo fail
-  exit 1
+  run_ssh_root_script "$SERVER_IP" '
+set -eu
+CERTBOT_EMAIL='"$CERTBOT_EMAIL"'
+PUBLIC_API_DOMAIN='"$PUBLIC_API_DOMAIN"'
+STAGING_CERT_NAME='"$STAGING_CERT_NAME"'
+certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
+  --cert-name "$STAGING_CERT_NAME" \
+  --webroot -w /var/www/certbot -d "$PUBLIC_API_DOMAIN"
+'
+  printf 'staging certificate issued: '
+  current_issuer="$(ssh "root@$SERVER_IP" "openssl x509 -in '/etc/letsencrypt/live/$STAGING_CERT_NAME/fullchain.pem' -noout -issuer")"
+  if grep -q "(STAGING) Let's Encrypt" <<<"$current_issuer"; then
+    echo ok
+  else
+    fail "staging certificate issued: fail"
+  fi
 fi
 
 step "03.5 Issue production TLS certificate"
-run_ssh_root_script "$SERVER_IP" "
-set -eu
-certbot certonly --keep-until-expiring --non-interactive --agree-tos --no-eff-email -m '$CERTBOT_EMAIL' \
-  --webroot -w /var/www/certbot -d '$PUBLIC_API_DOMAIN'
-"
+current_issuer="$(ssh "root@$SERVER_IP" "openssl x509 -in '/etc/letsencrypt/live/$PUBLIC_API_DOMAIN/fullchain.pem' -noout -issuer 2>/dev/null || true")"
 
 printf 'production certificate issued: '
-if ssh "root@$SERVER_IP" "openssl x509 -in '/etc/letsencrypt/live/$PUBLIC_API_DOMAIN/fullchain.pem' -noout -issuer | grep -q \"O = Let's Encrypt\""; then
-  echo ok
+if grep -q "O = Let's Encrypt" <<<"$current_issuer" && ! grep -q "(STAGING)" <<<"$current_issuer"; then
+  echo "ok (production certificate already present)"
 else
-  echo fail
-  exit 1
+  run_ssh_root_script "$SERVER_IP" '
+set -eu
+CERTBOT_EMAIL='"$CERTBOT_EMAIL"'
+PUBLIC_API_DOMAIN='"$PUBLIC_API_DOMAIN"'
+certbot certonly --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
+  --cert-name "$PUBLIC_API_DOMAIN" \
+  --webroot -w /var/www/certbot -d "$PUBLIC_API_DOMAIN"
+'
+  current_issuer="$(ssh "root@$SERVER_IP" "openssl x509 -in '/etc/letsencrypt/live/$PUBLIC_API_DOMAIN/fullchain.pem' -noout -issuer")"
+  if grep -q "O = Let's Encrypt" <<<"$current_issuer" && ! grep -q "(STAGING)" <<<"$current_issuer"; then
+    echo ok
+  else
+    fail "production certificate issued: fail"
+  fi
 fi
 
 step "03.6 Install the renewal reload hook"
@@ -166,7 +187,8 @@ fi
 
 step "03.8 Verify public HTTP redirect and HTTPS read routing"
 printf 'http redirects to https: '
-if curl -s -i "http://$PUBLIC_API_DOMAIN/health" | grep -Eq '^HTTP/[0-9.]+ 301'; then
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "http://$PUBLIC_API_DOMAIN/health")"
+if [[ "$http_status" == "301" ]]; then
   echo ok
 else
   echo fail
@@ -174,7 +196,8 @@ else
 fi
 
 printf 'https health endpoint reachable: '
-if curl -s -i "https://$PUBLIC_API_DOMAIN/health" | grep -Eq '^HTTP/[0-9.]+ 200'; then
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$PUBLIC_API_DOMAIN/health")"
+if [[ "$http_status" == "200" ]]; then
   echo ok
 else
   echo fail
@@ -182,7 +205,8 @@ else
 fi
 
 printf 'https daily endpoint reachable: '
-if curl -s -i "https://$PUBLIC_API_DOMAIN/daily" | grep -Eq '^HTTP/[0-9.]+ 200'; then
+http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$PUBLIC_API_DOMAIN/daily")"
+if [[ "$http_status" == "200" ]]; then
   echo ok
 else
   echo fail
@@ -193,7 +217,7 @@ step "03.9 Inspect the presented certificate"
 openssl s_client -connect "$PUBLIC_API_DOMAIN:443" -servername "$PUBLIC_API_DOMAIN" </dev/null 2>/dev/null \
   | openssl x509 -noout -subject -issuer -dates
 
-step "03.10 Verify automatic renewal"
+step "03.10 Verify automatic renewal with a dry run"
 run_ssh_root_script "$SERVER_IP" '
 certbot renew --dry-run --no-random-sleep-on-renew -v
 '

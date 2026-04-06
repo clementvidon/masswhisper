@@ -3,10 +3,12 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
+enable_error_trace
 
 usage() {
-  cat <<USAGE
+  cat <<'USAGE'
 Usage:
+
   scripts/deploy/01-bootstrap-vm.sh \
     --topic-slug <slug> \
     --environment <env> \
@@ -61,12 +63,42 @@ terraform_apply_var_file "$VAR_FILE"
 
 SERVER_IP="$(tf_output server_ip)"
 
+info "Clearing stale SSH host key for $SERVER_IP"
+ssh-keygen -R "$SERVER_IP" >/dev/null 2>&1 || true
+
+wait_for_ssh() {
+  local host="$1"
+  local tries=30
+  local attempt=1
+
+  info "Waiting for SSH..."
+
+  while (( tries > 0 )); do
+    if ssh "${SSH_OPTS[@]}" "root@$host" true >/dev/null 2>&1; then
+      info "SSH is ready on $host"
+      return 0
+    fi
+
+    info "SSH not ready yet, retry $attempt/30"
+    sleep 5
+    tries=$((tries - 1))
+    attempt=$((attempt + 1))
+  done
+
+  fail "SSH not ready on $host"
+}
+
+wait_for_ssh "$SERVER_IP"
+
 step "01.5 Verify cloud-init output"
+info "Waiting for cloud-init to finish..."
 run_ssh_root_script "$SERVER_IP" '
-cloud-init status --wait
+cloud-init status --wait >/dev/null
+printf '%-32s' "cloud-init:"
+cloud-init status | sed -n "s/^status: //p"
 
 echo "[cloud-init] prepare ops user"
-printf "ops user: "
+printf '%-32s' "ops user: "
 if id -u massops >/dev/null 2>&1; then
   echo ok
 else
@@ -74,7 +106,7 @@ else
   exit 1
 fi
 
-printf "ops authorized key: "
+printf '%-32s' "ops authorized key: "
 if test -s /home/massops/.ssh/authorized_keys; then
   echo ok
 else
@@ -82,7 +114,7 @@ else
   exit 1
 fi
 
-printf "ops sudoers file: "
+printf '%-32s' "ops sudoers file: "
 if test -s /etc/sudoers.d/90-massops; then
   echo ok
 else
@@ -91,24 +123,24 @@ else
 fi
 
 echo "[cloud-init] install Node"
-printf "node: "
+printf '%-32s' "node: "
 if node -v >/dev/null 2>&1; then
-  node -v
+  echo ok
 else
   echo fail
   exit 1
 fi
 
-printf "npm: "
+printf '%-32s' "npm: "
 if npm -v >/dev/null 2>&1; then
-  npm -v
+  echo ok
 else
   echo fail
   exit 1
 fi
 
 echo "[cloud-init] bootstrap repo"
-printf "user: "
+printf '%-32s' "user: "
 if id -u masswhisper >/dev/null 2>&1; then
   echo ok
 else
@@ -116,7 +148,7 @@ else
   exit 1
 fi
 
-printf "repo: "
+printf '%-32s' "repo: "
 if test -d /opt/masswhisper; then
   echo ok
 else
@@ -125,23 +157,23 @@ else
 fi
 
 echo "[cloud-init] prepare runtime"
-printf "env: "
+printf '%-32s' "env: "
 if test -f /etc/masswhisper/backend.env; then
-  stat -c "%U:%G %a %n" /etc/masswhisper/backend.env
+  echo ok
 else
   echo fail
   exit 1
 fi
 
-printf "topic runtime env: "
+printf '%-32s' "topic runtime env: "
 if test -f /etc/masswhisper/topic-runtime.env; then
-  stat -c "%U:%G %a %n" /etc/masswhisper/topic-runtime.env
+  echo ok
 else
   echo fail
   exit 1
 fi
 
-printf "unit: "
+printf '%-32s' "unit: "
 if test -s /etc/systemd/system/masswhisper-topic.service; then
   echo ok
 else
@@ -150,7 +182,7 @@ else
 fi
 
 echo "[cloud-init] prepare scheduler"
-printf "capture wrapper installed: "
+printf '%-32s' "capture wrapper installed: "
 if test -x /usr/local/bin/run-capture.sh; then
   echo ok
 else
@@ -158,7 +190,7 @@ else
   exit 1
 fi
 
-printf "cron file installed: "
+printf '%-32s' "cron file installed: "
 if test -s /etc/cron.d/masswhisper-topic; then
   echo ok
 else
@@ -167,7 +199,7 @@ else
 fi
 
 echo "[cloud-init] harden ssh"
-printf "ssh drop-in installed: "
+printf '%-32s' "ssh drop-in installed: "
 if test -f /etc/ssh/sshd_config.d/99-masswhisper.conf; then
   echo ok
 else
@@ -175,7 +207,7 @@ else
   exit 1
 fi
 
-printf "sshd config valid: "
+printf '%-32s' "sshd config valid: "
 if sshd -t >/dev/null 2>&1; then
   echo ok
 else
@@ -184,7 +216,7 @@ else
 fi
 
 echo "[cloud-init] configure Nginx"
-printf "nginx site: "
+printf '%-32s' "nginx site: "
 if test -s /etc/nginx/sites-available/public-api.conf; then
   echo ok
 else
@@ -192,7 +224,7 @@ else
   exit 1
 fi
 
-printf "nginx link: "
+printf '%-32s' "nginx link: "
 if test -L /etc/nginx/sites-enabled/public-api.conf; then
   echo ok
 else
@@ -200,7 +232,7 @@ else
   exit 1
 fi
 
-printf "nginx config: "
+printf '%-32s' "nginx config: "
 if nginx -t >/dev/null 2>&1; then
   echo ok
 else
@@ -209,7 +241,7 @@ else
 fi
 
 echo "[cloud-init] configure certbot"
-printf "certbot installed: "
+printf '%-32s' "certbot installed: "
 if certbot --version >/dev/null 2>&1; then
   echo ok
 else
@@ -217,7 +249,7 @@ else
   exit 1
 fi
 
-printf "acme webroot exists: "
+printf '%-32s' "acme webroot exists: "
 if test -d /var/www/certbot/.well-known/acme-challenge; then
   echo ok
 else
