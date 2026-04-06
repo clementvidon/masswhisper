@@ -1,5 +1,5 @@
 topic_slug: fr-dev-job-market
-topic_name: French Dev Job Market
+topic_name: DevBarometer
 environment: prod
 schedule: '0 6 * * *'
 sources_variant: fr-dev-job-market-v1
