@@ -137,7 +137,7 @@ export type ReadApiConfig = {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const defaultDailyBundlePath = path.resolve(
   __dirname,
-  '../../../frontend/public/daily.json',
+  '../../../../frontend/public/daily.json',
 );
 
 export function loadReadApiConfig(env: Env = process.env): ReadApiConfig {
