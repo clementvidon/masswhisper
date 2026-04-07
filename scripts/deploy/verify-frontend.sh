@@ -6,12 +6,18 @@ source "$SCRIPT_DIR/common.sh"
 enable_error_trace
 
 usage() {
-  cat <<USAGE
+  cat <<'USAGE'
 Usage:
   scripts/deploy/verify-frontend.sh \
     --manifest <path> \
     [--require-tls] \
     [--dry-run]
+
+Example:
+
+  bash scripts/deploy/verify-frontend.sh \
+    --manifest instances/fr-dev-job-market/prod.yaml \
+    --require-tls
 USAGE
 }
 

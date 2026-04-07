@@ -23,7 +23,7 @@ Notes:
 Example:
 
   pass show masswhisper/runtime/fr-dev-job-market-prod/backend.env | \
-    scripts/deploy/02-post-boot-backend.sh \
+    bash scripts/deploy/02-post-boot-backend.sh \
       --topic-slug fr-dev-job-market \
       --environment prod \
       --local-topic-config-dir local/topic-config \

@@ -8,6 +8,7 @@ enable_error_trace
 usage() {
   cat <<'USAGE'
 Usage:
+
   scripts/deploy/update-backend.sh \
     --target <backend|shared|dependencies|systemd|nginx|backend-env|topic-runtime-env> \
     [--backend-env-file <path|->] \
@@ -15,6 +16,10 @@ Usage:
 
 Notes:
   --backend-env-file <path|->   Required for --target backend-env. Use - to read from stdin.
+
+Example:
+
+  bash scripts/deploy/update-backend.sh --target backend
 USAGE
 }
 

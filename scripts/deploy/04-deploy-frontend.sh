@@ -12,6 +12,11 @@ Usage:
   scripts/deploy/04-deploy-frontend.sh \
     --manifest <path> \
     [--dry-run]
+
+Example:
+
+  bash scripts/deploy/04-deploy-frontend.sh \
+    --manifest instances/fr-dev-job-market/prod.yaml
 USAGE
 }
 

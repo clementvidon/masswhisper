@@ -14,6 +14,13 @@ Usage:
     --environment <env> \
     --local-topic-config-dir <dir> \
     [--dry-run]
+
+Example:
+
+  bash scripts/deploy/01-bootstrap-vm.sh \
+    --topic-slug fr-dev-job-market \
+    --environment prod \
+    --local-topic-config-dir local/topic-config
 USAGE
 }
 

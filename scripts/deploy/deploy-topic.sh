@@ -27,20 +27,31 @@ Usage:
     [--backend-env-file <path>] \
     [--dry-run]
 
+
 Example:
 
-  umask 077
-  tmp_backend_env="$(mktemp)"
-  trap 'rm -f "$tmp_backend_env"' EXIT
-  pass show masswhisper/runtime/fr-dev-job-market-prod/backend.env > "$tmp_backend_env"
+  Bootstrap:
 
-  scripts/deploy/deploy-topic.sh \
-    --manifest instances/fr-dev-job-market/prod.yaml \
-    --local-topic-config-dir local/topic-config \
-    --certbot-email cvidon@student.42.fr \
-    --backend-env-file "$tmp_backend_env"
+    umask 077
+    tmp_backend_env="$(mktemp)"
+    trap 'rm -f "$tmp_backend_env"' EXIT
+    pass show masswhisper/runtime/fr-dev-job-market-prod/backend.env > "$tmp_backend_env"
 
-  rm -f "$tmp_backend_env"
+    bash scripts/deploy/deploy-topic.sh \
+      --manifest instances/fr-dev-job-market/prod.yaml \
+      --local-topic-config-dir local/topic-config \
+      --certbot-email cvidon@student.42.fr \
+      --backend-env-file "$tmp_backend_env"
+
+    rm -f "$tmp_backend_env"
+
+  Update backend code:
+
+    bash scripts/deploy/deploy-topic.sh \
+        --mode update \
+        --manifest instances/fr-dev-job-market/prod.yaml \
+        --local-topic-config-dir local/topic-config \
+        --update-target backend \
 USAGE
 }
 

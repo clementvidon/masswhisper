@@ -6,12 +6,19 @@ source "$SCRIPT_DIR/common.sh"
 enable_error_trace
 
 usage() {
-  cat <<USAGE
+  cat <<'USAGE'
 Usage:
+
   scripts/deploy/verify-backend.sh \
     [--cors-origin <origin>] \
     [--require-tls] \
     [--dry-run]
+
+Example:
+
+  bash scripts/deploy/verify-backend.sh \
+    --cors-origin "https://fr-dev-job-market.masswhisper.com" \
+    --require-tls
 USAGE
 }
 

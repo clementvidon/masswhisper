@@ -12,6 +12,11 @@ Usage:
   scripts/deploy/03-enable-tls.sh \
     --certbot-email <email> \
     [--dry-run]
+
+Example:
+
+  bash scripts/deploy/03-enable-tls.sh \
+    --certbot-email cvidon@student.42.fr
 USAGE
 }
 
