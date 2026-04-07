@@ -1,11 +1,11 @@
 # Contributing to MassWhisper
 
-Thank you for your interest in contributing to **MassWhisper**! 🎉  
+Thank you for your interest in contributing to **MassWhisper**!
 Your contributions help make the project better, more reliable, and more impactful.
 
 ## Contribution Guidelines
 
-- Follow the [Git Workflow](docs/git_workflow.md).
+- Follow the [Git Workflow](docs/workflow/git_workflow.md).
 - Maintain the project's coding style and conventions.
 - Ensure your pull request (PR) passes all CI checks before submitting.
 
@@ -18,11 +18,18 @@ Your contributions help make the project better, more reliable, and more impactf
 
 ## Commit Messages
 
-Please use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+- Follow the commit format in `docs/convention/commit_message_convention.md`.
+
+Before opening a PR, run:
+
+- `npm run check`
+- targeted workspace commands when relevant
+
+Use npm workspace commands from the repository root.
 
 ## Code Review
 
-Your PR will be reviewed as soon as possible.  
+Your PR will be reviewed as soon as possible.
 We may suggest improvements or request changes to ensure consistency and quality before merging.
 
 ---

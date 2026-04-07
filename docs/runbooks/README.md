@@ -1,5 +1,7 @@
 # Runbooks
 
+These runbooks currently cover the dedicated deployment model.
+
 - `01-terraform-hetzner.md` → provision the VM
 - `02-backend-post-boot.md` → complete backend setup after first boot
 - `03-backend-api-dns-tls.md` → expose the backend API with DNS and TLS

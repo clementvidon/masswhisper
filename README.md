@@ -20,7 +20,7 @@ MassWhisper builds topic-specific sentiment timelines from public online discour
 
 ## Overview
 
-MassWhisper is a manifest-driven system for turning public online discourse into topic-specific emotional barometers. It ingests source material for a given topic, extracts a daily sentiment read model, and publishes it through static or dedicated deployments.
+MassWhisper is a manifest-driven system that turns public online discourse into topic-specific emotional barometers. It ingests source material for a given topic, builds a daily report, and publishes it as either a static site or a client-server application.
 
 ## Quick Start
 
@@ -45,8 +45,10 @@ cp backend/.env.example backend/.env
 
 - Generate a local daily bundle: `npm run generate-daily-bundle`
 - Backend read API (Express): `npm --workspace backend run dev` then GET `http://localhost:3000/daily`
-- Frontend static mode: `npm --workspace frontend run dev:static`
-- Frontend dedicated mode: `npm --workspace frontend run dev:dedicated`
+- Frontend in static mode: `npm --workspace frontend run dev:static`
+- Frontend in client-server mode: `npm --workspace frontend run dev:dedicated`
+
+For frontend local development details, see `docs/frontend/local-development.md`.
 
 ### Useful scripts
 
@@ -55,12 +57,26 @@ cp backend/.env.example backend/.env
 
 ## Automation
 
-Daily GitHub Actions build and publish the static site. Maintainers can trigger a full update locally:
+MassWhisper currently supports two deployment models:
+
+- Static publishing: daily GitHub Actions build and publish the static site.
+- Dedicated client-server deployment: the operational setup is documented in the runbooks.
+
+For static publishing, maintainers can trigger a full update locally:
 
 ```bash
 npm run generate-daily-bundle # backend: produce JSON daily bundle
 npm run update-site # build frontend and deploy to GitHub Pages
 ```
+
+For deployment model details, see:
+
+- `docs/ops/deployment-model.md`
+
+For dedicated operational procedures, see:
+
+- `docs/ops/deployment-model-dedicated.md`
+- `docs/runbooks/README.md`
 
 ---
 

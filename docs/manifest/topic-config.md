@@ -1,6 +1,6 @@
 # Topic Config
 
-`topic-config` contains the local topic artifacts used by the manifest to provision a dedicated deployment.
+`topic-config` contains the local topic bundles referenced by the manifest and consumed by deployment tooling.
 
 ## Directory Structure
 
@@ -116,7 +116,7 @@ These fields are important both for the current analysis pipeline and for future
 
 ## Validation
 
-A topic config is validated together with the manifest.
+Topic config is validated together with the manifest.
 
 ```bash
 npm run validate-manifest -- instances/<topic-slug>/<environment>.yaml local/topic-config

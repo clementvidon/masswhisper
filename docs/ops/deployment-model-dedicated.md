@@ -1,21 +1,19 @@
-# Runtime Model
+# Dedicated Deployment Model
 
-This document defines the runtime model of the dedicated deployment path for the client/server phase of MassWhisper.
-
-Its purpose is to remove deployment and operations ambiguity for the dedicated deployment path.
+This document defines the dedicated deployment model.
 
 ## Runtime Principles
 
 The runtime must stay:
 
 - simple to operate
-- easy to explain
-- reproducible for additional dedicated deployments
-- narrow in public exposure
+- reproducible with IaC
+- minimal in public exposure
+- clear in component boundaries
 
 ## Process Model
 
-- one long-lived backend service runs per dedicated deployment
+- one long-lived backend service runs for the deployment
 - `Nginx` stays the only public HTTP entrypoint on the VM
 - the Node backend stays private behind the proxy
 - `cron` runs alongside the backend service and triggers capture through a single entrypoint
@@ -24,8 +22,8 @@ The runtime must stay:
 
 The runtime is intentionally simple:
 
-- the public frontend is hosted on a dedicated domain such as `<domain>`
-- the public API is exposed on a dedicated domain such as `api.<domain>`
+- the public frontend is hosted on its public domain such as `<domain>`
+- the public API is exposed on its public API domain such as `api.<domain>`
 - `Nginx` is the public reverse proxy on the backend VM
 - the Node backend listens only on a local interface behind `Nginx`
 - one backend runtime serves one real deployed topic
@@ -38,7 +36,7 @@ The runtime is intentionally simple:
 
 - serves the frontend SPA
 - handles public frontend hosting
-- serves the dedicated frontend domain of the deployment
+- serves the frontend domain of the deployment
 
 ### Nginx
 
@@ -72,8 +70,8 @@ The runtime is intentionally simple:
 
 The network model is deliberately narrow:
 
-- the frontend is public on a dedicated frontend domain
-- the API is public on a dedicated API domain
+- the frontend is public on its frontend domain
+- the API is public on its API domain
 - the Node backend is not publicly reachable
 - the backend listens only on a local interface such as `127.0.0.1`
 - the initial fixed backend listener target is `127.0.0.1:3000`
@@ -96,18 +94,13 @@ Normal public entrypoints:
 - frontend: `https://<domain>`
 - API: `https://api.<domain>`
 
-Temporary entrypoints:
-
-- a Vercel deployment URL may be used temporarily for frontend validation during DNS or TLS cutover
-- temporary frontend origins must be removed from CORS allowlists after cutover
-
 ## DNS And Cutover Assumptions
 
 - the target frontend domain is deployment-specific
 - the target API domain is deployment-specific
-- Vercel is the intended serving target for the dedicated frontend domain
-- the backend VM is the intended traffic target for the dedicated API domain
-- DNS TTL should be lowered before cutover when possible to reduce propagation delay
+- Vercel is the intended serving target for the frontend domain
+- the backend VM is the intended traffic target for the API domain
+- DNS TTL may be lowered before cutover to reduce propagation delay
 
 ## CORS Model
 
@@ -123,10 +116,7 @@ Normal target origin:
 
 - `https://<domain>`
 
-Temporary fallback origin:
-
-- a Vercel deployment URL may be allowed temporarily during cutover
-- its removal after cutover is mandatory
+Temporary fallback origins may be allowed during cutover and must be removed afterward.
 
 ## Scheduler Model
 

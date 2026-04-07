@@ -1,14 +1,6 @@
-# Routing Model
+# Shared Routing Model
 
-> Status: shared-platform design document.
-> This document does not describe the current dedicated deployment path.
-> For the dedicated frontend workflow, use `docs/runbooks/04-frontend-dedicated-vercel.md`.
-
-This document defines the frontend routing model of Shared Platform.
-
-Its purpose is to freeze how public frontend URLs are resolved before Vercel cutover.
-
-It does not describe Dedicated Deployment.
+This document defines the frontend routing model of the shared deployment model.
 
 ## Goal
 
@@ -16,7 +8,7 @@ The routing model is chosen to stay:
 
 - simple to explain
 - path-based
-- compatible with a single SPA deployment
+- compatible with a SPA deployment
 - compatible with a read-only backend API
 - easy to deploy on Vercel
 - easy to evolve across topics without one frontend build per topic
@@ -69,22 +61,14 @@ Rules:
 
 ## API Routing Contract
 
-The frontend does not derive data from static JSON files anymore.
+The frontend reads data from the shared API.
 
 Rules:
 
 - the frontend reads `topic_slug` from the URL
 - the frontend calls `api.masswhisper.com/api/v1/topics/<topic-slug>/...`
 - the API base URL is injected at build time through `VITE_API_BASE_URL`
-- GitHub Pages JSON artifacts are no longer the runtime source of truth
 
-## Target And Temporary Frontend Origins
-
-Normal target frontend origin:
+## Frontend Origin
 
 - `https://masswhisper.com`
-
-Temporary fallback frontend origin:
-
-- a Vercel deployment URL may be used temporarily during DNS or TLS cutover
-- that temporary origin must be removed from backend CORS allowlists after cutover
