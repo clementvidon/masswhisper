@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-LOCK_FILE="/run/masswhisper-topic-capture.lock"
+LOCK_FILE="/run/masswhisper/topic-capture.lock"
 export PATH="/usr/local/bin:/usr/bin:/bin"
 
 cd /opt/masswhisper
