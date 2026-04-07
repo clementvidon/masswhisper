@@ -1,20 +1,15 @@
 {
-  "generatedAt": "2026-04-06T18:12:26.785Z",
-  "snapshotCreatedAt": "2026-04-06T18:11:51.280Z",
+  "generatedAt": "2026-04-07T10:52:59.313Z",
+  "snapshotCreatedAt": "2026-04-07T10:52:14.692Z",
   "report": {
-    "text": "Marché tech sous pression, perspectives dégradées et prudence marquée",
+    "text": "Marché tech sous pression, perspectives détériorées et recrutements ralentis",
     "emoji": "🌧️"
   },
   "headlines": [
     {
       "title": "Dev depuis 10 ans je me sens inutile depuis que j'utilise cursor",
-      "weight": "4",
+      "weight": "5",
       "itemRef": "https://reddit.com/comments/1sdtfwc"
-    },
-    {
-      "title": "Quel métiers en IT (technique ou non) qui sont très demandés par les entreprises (pénurie de candidats ou plus d'offres que de candidats ) , notamment pour les profils seniors",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1salmnf"
     },
     {
       "title": "Mon tour est arrivé",
@@ -22,9 +17,29 @@
       "itemRef": "https://reddit.com/comments/1sab4qt"
     },
     {
+      "title": "Informatique dans l’armée",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1s9lzub"
+    },
+    {
       "title": "Quel salaire demander ? ingénieur IA / data (junio) seul sur ses projets en province",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1sbdcsz"
+    },
+    {
+      "title": "Je fais tout avec l’IA au boulot… mon manager est content mais j’ai peur de me faire virer",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1s8si11"
+    },
+    {
+      "title": "BREAKING: Oracle a envoyé des emails à 6 heures du matin “Aujourd'hui est votre dernier jour de travail” à des milliers d'employés sans avertissement, sans appel du manager, et avec révocation immédiate de l'accès au système",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1s9dkjx"
+    },
+    {
+      "title": "Quel métiers en IT (technique ou non) qui sont très demandés par les entreprises (pénurie de candidats ou plus d'offres que de candidats ) , notamment pour les profils seniors",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1salmnf"
     },
     {
       "title": "Presque aucune augmentation en 4 ans , je reste safe ou je m'aventure ?",
@@ -32,29 +47,14 @@
       "itemRef": "https://reddit.com/comments/1sbijzu"
     },
     {
-      "title": "Pourquoi les apps françaises c'est de la merde ?",
+      "title": "Est ce que les autres secteurs d'activités sont plus bouché que l'IT ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1s9jcqt"
-    },
-    {
-      "title": "Informatique dans l’armée",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1s9lzub"
-    },
-    {
-      "title": "Je fais tout avec l’IA au boulot… mon manager est content mais j’ai peur de me faire virer",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1s8si11"
+      "itemRef": "https://reddit.com/comments/1sc1pmf"
     },
     {
       "title": "Pas augmenté cette année, comment négocier ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1sba9uy"
-    },
-    {
-      "title": "Est ce que les autres secteurs d'activités sont plus bouché que l'IT ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sc1pmf"
     }
   ],
   "sentimentHistory": [
@@ -5099,24 +5099,24 @@
       }
     },
     {
-      "createdAt": "2026-04-06T18:11:51.280Z",
-      "count": 11,
-      "confidenceMass": 17.507276,
+      "createdAt": "2026-04-07T10:52:14.692Z",
+      "count": 13,
+      "confidenceMass": 21.462242,
       "emotions": {
-        "joy": 0.064221,
-        "trust": 0.221436,
-        "anger": 0.306383,
-        "fear": 0.503152,
-        "sadness": 0.44344,
-        "disgust": 0.13893
+        "joy": 0.064228,
+        "trust": 0.197092,
+        "anger": 0.272518,
+        "fear": 0.533469,
+        "sadness": 0.45868,
+        "disgust": 0.134595
       },
       "tonalities": {
-        "positive": 0.108856,
-        "negative": 0.601256,
-        "positive_surprise": 0.047768,
-        "negative_surprise": 0.436552,
-        "optimistic_anticipation": 0.158496,
-        "pessimistic_anticipation": 0.601059
+        "positive": 0.145977,
+        "negative": 0.616045,
+        "positive_surprise": 0.061315,
+        "negative_surprise": 0.443496,
+        "optimistic_anticipation": 0.175099,
+        "pessimistic_anticipation": 0.636851
       }
     }
   ]
