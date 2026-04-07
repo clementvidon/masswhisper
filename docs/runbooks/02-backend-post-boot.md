@@ -277,7 +277,7 @@ set +a
 cd /opt/masswhisper
 /usr/local/bin/npm --workspace backend run export -- "$1" >/dev/null 2>&1
 EOF_EXPORT_BEFORE
-  sudo -u masswhisper -H flock -n /tmp/masswhisper-topic-capture.lock sleep 15 &
+  sudo -u masswhisper -H flock -n /run/masswhisper/topic-capture.lock sleep 15 &
   lock_holder=$!
   sleep 1
   sudo -u masswhisper -H bash -seEu -o pipefail -- "$after_file" <<'\''EOF_CAPTURE_AFTER'\''

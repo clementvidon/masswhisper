@@ -76,6 +76,8 @@ runcmd:
     install -d -m 755 /etc/masswhisper
     install -m 640 -o root -g ${service_user} /dev/null /etc/masswhisper/backend.env
     install -D -m 0644 ${repo_dir}/deploy/systemd/${service_name}.service /etc/systemd/system/${service_name}.service
+    install -D -m 0644 ${repo_dir}/deploy/systemd/masswhisper.conf /etc/tmpfiles.d/masswhisper.conf
+    systemd-tmpfiles --create /etc/tmpfiles.d/masswhisper.conf
   - |
     set -eu
     echo "[cloud-init] setup cron scheduler: ${capture_schedule}"

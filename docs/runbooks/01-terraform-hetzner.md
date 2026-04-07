@@ -81,6 +81,7 @@ ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new "ma
 
   echo "[cloud-init] prepare scheduler"
   printf "capture wrapper installed: "; test -x /usr/local/bin/run-capture.sh && echo ok || { echo fail; exit 1; }
+  printf "runtime dir exists: "; sudo test -d /run/masswhisper && echo ok || { echo fail; exit 1; }
   printf "cron file installed: "; sudo test -s /etc/cron.d/masswhisper-topic && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] harden ssh"

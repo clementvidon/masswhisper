@@ -197,6 +197,14 @@ else
   exit 1
 fi
 
+printf '%-32s' "runtime dir exists: "
+if sudo test -d /run/masswhisper; then
+  echo ok
+else
+  echo fail
+  exit 1
+fi
+
 printf '%-32s' "cron file installed: "
 if sudo test -s /etc/cron.d/masswhisper-topic; then
   echo ok
