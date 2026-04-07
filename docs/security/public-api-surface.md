@@ -1,5 +1,10 @@
 # Public API Surface
 
+> Status: shared-platform design document.
+> This document defines the target public API surface of Shared Platform.
+> It is not the operational source of truth for the current dedicated deployment path.
+> For the dedicated runtime and deployment workflow, use `docs/ops/runtime-model.md` and `docs/runbooks/`.
+
 This document defines the public HTTP surface of Shared Platform.
 
 Its purpose is to freeze what is publicly reachable, what stays private, and where the MVP intentionally draws the line.

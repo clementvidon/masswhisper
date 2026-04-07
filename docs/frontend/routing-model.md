@@ -1,5 +1,9 @@
 # Routing Model
 
+> Status: shared-platform design document.
+> This document does not describe the current dedicated deployment path.
+> For the dedicated frontend workflow, use `docs/runbooks/04-frontend-dedicated-vercel.md`.
+
 This document defines the frontend routing model of Shared Platform.
 
 Its purpose is to freeze how public frontend URLs are resolved before Vercel cutover.

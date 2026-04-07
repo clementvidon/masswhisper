@@ -1,5 +1,9 @@
 # Client-Server Transition
 
+> Status: design/transition document.
+> This document explains the static-to-client/server transition and the shared-platform target model.
+> For the current dedicated deployment workflow, use `docs/runbooks/` and `docs/ops/runtime-model.md` as the operational source of truth.
+
 This document freezes the client/server design and its relation to the static runtime.
 
 Its goal is to make the two deployment designs and their relationship easy to explain and defend.
@@ -52,6 +56,8 @@ flowchart LR
 
 ## Client-Server Contract
 
+This section describes the target shared-platform contract, not the current dedicated deployment runbooks.
+
 - frontend is public on `masswhisper.com/<topic-slug>`
 - frontend is deployed on Vercel as a SPA
 - frontend routing is path-based and falls back to `index.html`
@@ -82,6 +88,14 @@ flowchart LR
 - the public API is exposed on `api.<domain>`
 - the dedicated frontend is wired to the dedicated backend
 - this mode is the infrastructure proof and the isolated deployment story
+
+The detailed operational flow for this mode lives in:
+
+- `docs/runbooks/01-terraform-hetzner.md`
+- `docs/runbooks/02-backend-post-boot.md`
+- `docs/runbooks/03-backend-api-dns-tls.md`
+- `docs/runbooks/04-frontend-dedicated-vercel.md`
+- `docs/runbooks/05-backend-vm-update.md`
 
 ## What Changes
 

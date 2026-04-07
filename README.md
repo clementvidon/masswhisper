@@ -6,7 +6,7 @@
 
 # MassWhisper
 
-The dev job market barometer — powered by Reddit sentiment.
+MassWhisper builds topic-specific sentiment timelines from public online discourse.
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@ The dev job market barometer — powered by Reddit sentiment.
 
 ## Overview
 
-MassWhisper tracks the French developer job market’s mood from Reddit activity. Posts are ingested, filtered, and scored to produce a daily sentiment report, published to GitHub Pages.
+MassWhisper is a manifest-driven system for turning public online discourse into topic-specific emotional barometers. It ingests source material for a given topic, extracts a daily sentiment read model, and publishes it through static or dedicated deployments.
 
 ## Quick Start
 
@@ -66,7 +66,7 @@ npm run update-site # build frontend and deploy to GitHub Pages
 
 ## Contributing
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md). Run `npm run check` before pushing. See `docs/git_workflow.md` for the suggested branching/PR process.
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md). Run `npm run check` before pushing. See [docs/workflow/git_workflow.md](docs/workflow/git_workflow.md) for the suggested branching/PR process.
 
 ---
 
