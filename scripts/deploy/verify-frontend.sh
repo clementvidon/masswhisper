@@ -91,4 +91,5 @@ else
   exit 1
 fi
 
-info 'manual browser check: verify https://api.<domain>/daily is used and /daily.json is not fetched from the frontend origin'
+info 'manual browser check: verify the dedicated frontend is configured to use https://api.<domain>/daily and not /daily.json from the frontend origin'
+info 'if /daily is not visible in Network, open DevTools Console and run: sessionStorage.removeItem("masswhisper:daily:v2"); location.reload()'

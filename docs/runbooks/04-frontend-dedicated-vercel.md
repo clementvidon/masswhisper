@@ -139,10 +139,18 @@ Ensure the new deployment reaches the `Ready` state before continuing.
 Verify:
 
 - frontend loads on `https://<domain>`
-- browser fetches `https://api.<domain>/daily`
-- the browser does not fetch `/daily.json` from the frontend origin
+- the dedicated frontend is configured to use `https://api.<domain>/daily`
+- the frontend does not rely on `/daily.json` from the frontend origin in dedicated mode
 
 Use the browser network inspector to confirm the runtime requests.
+If no `/daily` request appears, the app may be serving a same-day cached payload from `sessionStorage` without a new network request. Clear the cache and reload before checking again.
+
+In DevTools Console:
+
+```js
+sessionStorage.removeItem('masswhisper:daily:v2');
+location.reload();
+```
 
 ## State After This Runbook
 
