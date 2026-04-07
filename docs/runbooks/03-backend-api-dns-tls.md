@@ -24,6 +24,8 @@ export CERTBOT_EMAIL=cvidon@student.42.fr
 
 This runbook uses `certbot certonly --webroot`, so Certbot issues the certificate without editing the Nginx configuration. HTTPS and the public read API routes are enabled explicitly in step 7.
 
+If this VM was rebuilt and a certificate backup already exists, restore it first. See the appendix section "Restore a Saved Certificate to a Rebuilt VM".
+
 ## 1. Create The DNS A Record
 
 Create an `A` record pointing the dedicated `public_api_domain` to the server IPv4 address.
@@ -120,8 +122,10 @@ ssh "massops@$server_ip" "
 
 ssh "massops@$server_ip" "
   printf 'production certificate issued: '
-  sudo openssl x509 -in \"/etc/letsencrypt/live/$public_api_domain/fullchain.pem\" -noout -issuer \
-    | grep -q \"O = Let's Encrypt\" && ! grep -q \"(STAGING)\" && echo ok || { echo fail; exit 1; }
+  issuer=\$(sudo openssl x509 -in \"/etc/letsencrypt/live/$public_api_domain/fullchain.pem\" -noout -issuer)
+  printf '%s\n' \"\$issuer\" | grep -q \"O = Let's Encrypt\" &&
+  printf '%s\n' \"\$issuer\" | grep -qv \"(STAGING)\" &&
+  echo ok || { echo fail; exit 1; }
 "
 ```
 

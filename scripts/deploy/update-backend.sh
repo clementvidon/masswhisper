@@ -19,7 +19,16 @@ Notes:
 
 Example:
 
-  bash scripts/deploy/update-backend.sh --target backend
+  Update backend code:
+
+    bash scripts/deploy/update-backend.sh --target backend
+
+  Update backend env:
+
+    pass show masswhisper/runtime/fr-dev-job-market-prod/backend.env | \
+      bash scripts/deploy/update-backend.sh \
+        --target backend \
+        --backend-env-file -
 USAGE
 }
 

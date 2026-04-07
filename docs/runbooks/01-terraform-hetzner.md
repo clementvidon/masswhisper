@@ -15,7 +15,7 @@ Operator variables:
 ```zsh
 export TOPIC_SLUG=fr-dev-job-market
 export ENVIRONMENT=prod
-export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/topic-config
+export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/assets/topic-config
 ```
 
 `LOCAL_TOPIC_CONFIG_DIR` must follow the format documented in `docs/topic-config.md`.
@@ -57,7 +57,7 @@ Expected result:
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh-keygen -R $server_ip 2>/dev/null
+ssh-keygen -R $server_ip >/dev/null 2>/dev/null
 ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new "massops@$server_ip" '
   sudo cloud-init status --wait
 

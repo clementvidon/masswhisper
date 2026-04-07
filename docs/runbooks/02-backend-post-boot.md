@@ -16,7 +16,7 @@ Operator variables:
 
 ```zsh
 export PASS_SECRET_PATH=masswhisper/runtime/fr-dev-job-market-prod/backend.env
-export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/topic-config
+export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/assets/topic-config
 export TOPIC_SLUG=fr-dev-job-market
 ```
 

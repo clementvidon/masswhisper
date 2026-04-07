@@ -51,7 +51,7 @@ Example:
         --mode update \
         --manifest instances/fr-dev-job-market/prod.yaml \
         --local-topic-config-dir local/assets/topic-config \
-        --update-target backend \
+        --update-target backend
 USAGE
 }
 
