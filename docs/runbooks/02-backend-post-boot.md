@@ -7,7 +7,7 @@ Estimated hands-on time: 5 minutes
 It assumes:
 
 - Ubuntu 24.04
-- SSH access as `root`
+- SSH access as `massops`
 - the repository is reachable from the VM
 - the dedicated Neon database already exists
 - the backend secrets are available outside git
@@ -32,24 +32,31 @@ Transfer the local topic config files to `/etc/masswhisper/`
 ```zsh
 setopt nullglob
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" 'install -d -m 700 /tmp/prompts /tmp/sources'
-scp "$LOCAL_TOPIC_CONFIG_DIR"/prompts/${TOPIC_SLUG}-v*.json "root@$server_ip:/tmp/prompts/"
-scp "$LOCAL_TOPIC_CONFIG_DIR"/sources/${TOPIC_SLUG}-v*.json "root@$server_ip:/tmp/sources/"
-ssh "root@$server_ip" '
-  set -eu
+remote_stage_dir="$(ssh "massops@$server_ip" 'umask 077 && mktemp -d /tmp/masswhisper-deploy.XXXXXX')"
+trap 'ssh "massops@$server_ip" "rm -rf -- \"$remote_stage_dir\""' EXIT
 
-  install -d -m 750 -o root -g masswhisper /etc/masswhisper/prompts
-  for file in /tmp/prompts/'"${TOPIC_SLUG}"'-v*.json; do
-    install -o root -g masswhisper -m 640 "$file" /etc/masswhisper/prompts/
+ssh "massops@$server_ip" "install -d -m 700 '$remote_stage_dir/prompts' '$remote_stage_dir/sources'"
+scp "$LOCAL_TOPIC_CONFIG_DIR"/prompts/${TOPIC_SLUG}-v*.json "massops@$server_ip:$remote_stage_dir/prompts/"
+scp "$LOCAL_TOPIC_CONFIG_DIR"/sources/${TOPIC_SLUG}-v*.json "massops@$server_ip:$remote_stage_dir/sources/"
+ssh "massops@$server_ip" '
+  set -eu
+  remote_stage_dir='"$remote_stage_dir"'
+
+  sudo install -d -m 750 -o root -g masswhisper /etc/masswhisper/prompts
+  for file in "$remote_stage_dir"/prompts/'"${TOPIC_SLUG}"'-v*.json; do
+    sudo install -o root -g masswhisper -m 640 "$file" /etc/masswhisper/prompts/
     rm -f "$file"
   done
 
-  install -d -m 750 -o root -g masswhisper /etc/masswhisper/sources
-  for file in /tmp/sources/'"${TOPIC_SLUG}"'-v*.json; do
-    install -o root -g masswhisper -m 640 "$file" /etc/masswhisper/sources/
+  sudo install -d -m 750 -o root -g masswhisper /etc/masswhisper/sources
+  for file in "$remote_stage_dir"/sources/'"${TOPIC_SLUG}"'-v*.json; do
+    sudo install -o root -g masswhisper -m 640 "$file" /etc/masswhisper/sources/
     rm -f "$file"
   done
 '
+
+trap - EXIT
+ssh "massops@$server_ip" "rm -rf -- \"$remote_stage_dir\""
 ```
 
 ## 2. Securely Transfer The Runtime Env
@@ -60,13 +67,13 @@ Transfer the backend env file to `/etc/masswhisper/backend.env` over SSH.
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 : "${PASS_SECRET_PATH:?PASS_SECRET_PATH must be set}"
 pass show "$PASS_SECRET_PATH" | \
-  ssh "root@$server_ip" '
+  ssh "massops@$server_ip" '
     set -eu
-    install -d -m 755 /etc/masswhisper
+    sudo install -d -m 755 /etc/masswhisper
     tmp=$(mktemp)
     trap "rm -f \"$tmp\"" EXIT
     cat > "$tmp"
-    install -o root -g masswhisper -m 640 "$tmp" /etc/masswhisper/backend.env
+    sudo install -o root -g masswhisper -m 640 "$tmp" /etc/masswhisper/backend.env
 '
 ```
 
@@ -78,15 +85,17 @@ Load the runtime env file and apply the pending database migrations before start
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
-  set -a
-  source /etc/masswhisper/topic-runtime.env
-  source /etc/masswhisper/backend.env
-  set +a
-
-  cd /opt/masswhisper
-  npm --workspace backend run db:migrate
+  sudo -u masswhisper -H bash -seEu -o pipefail <<'\''EOF_MIGRATE'\''
+set -eu
+set -a
+source /etc/masswhisper/topic-runtime.env
+source /etc/masswhisper/backend.env
+set +a
+cd /opt/masswhisper
+/usr/local/bin/npm --workspace backend run db:migrate
+EOF_MIGRATE
 '
 ```
 
@@ -96,14 +105,14 @@ Once the env file and schema are ready, enable the backend service at boot and s
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
-  systemctl enable masswhisper-topic
-  systemctl start masswhisper-topic
-  systemctl status masswhisper-topic
+  sudo systemctl enable masswhisper-topic
+  sudo systemctl start masswhisper-topic
+  sudo systemctl status masswhisper-topic
 
   printf "masswhisper-topic service active: "
-  systemctl is-active --quiet masswhisper-topic && echo ok || { echo fail; exit 1; }
+  sudo systemctl is-active --quiet masswhisper-topic && echo ok || { echo fail; exit 1; }
 '
 ```
 
@@ -113,14 +122,14 @@ Enable cron only after the runtime env is in place and the database is migrated.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
-  systemctl enable cron
-  systemctl start cron
-  systemctl status cron
+  sudo systemctl enable cron
+  sudo systemctl start cron
+  sudo systemctl status cron
 
   printf "cron service active: "
-  systemctl is-active --quiet cron && echo ok || { echo fail; exit 1; }
+  sudo systemctl is-active --quiet cron && echo ok || { echo fail; exit 1; }
 '
 ```
 
@@ -132,12 +141,12 @@ If you rerun this after TLS activation, `301` is also acceptable on Nginx HTTP c
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
   public_api_domain='"$public_api_domain"'
 
   printf "node binds local port 3000: "
-  ss -ltnp | grep -E "127\.0\.0\.1:3000.*node" >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
+  sudo ss -ltnp | grep -E "127\.0\.0\.1:3000.*node" >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
   printf "nginx local health route works: "
   http_status="$(curl -sS -o /dev/null -w "%{http_code}" -H "Host: $public_api_domain" http://127.0.0.1/health)"
@@ -181,7 +190,7 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 
 printf '%s' "public tcp/22 reachable: "
-ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
+ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
   && echo ok || { echo fail; exit 1; }
 
 printf '%s' "public tcp/80 reachable: "
@@ -199,27 +208,30 @@ Run the capture wrapper once as `masswhisper` and verify that one new snapshot i
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
   json_array_length() {
-    node -e "const fs=require('\''fs'\''); console.log(JSON.parse(fs.readFileSync(process.argv[1], '\''utf8'\'')).length)" "$1"
+    sudo node -e "const fs=require('\''fs'\''); console.log(JSON.parse(fs.readFileSync(process.argv[1], '\''utf8'\'')).length)" "$1"
   }
-  set -a
-  source /etc/masswhisper/topic-runtime.env
-  source /etc/masswhisper/backend.env
-  set +a
-  cd /opt/masswhisper
 
-  before_file=$(mktemp)
-  after_file=$(mktemp)
-  trap "rm -f \"$before_file\" \"$after_file\"" EXIT
+  before_file=$(sudo -u masswhisper -H mktemp)
+  after_file=$(sudo -u masswhisper -H mktemp)
+  trap "sudo rm -f \"$before_file\" \"$after_file\"" EXIT
 
-  npm --workspace backend run export -- "$before_file" >/dev/null 2>&1
-  su -s /bin/bash masswhisper -c "/usr/local/bin/run-capture.sh"
-  npm --workspace backend run export -- "$after_file" >/dev/null 2>&1
+  sudo -u masswhisper -H bash -seEu -o pipefail -- "$before_file" "$after_file" <<'\''EOF_CAPTURE'\''
+set -eu
+set -a
+source /etc/masswhisper/topic-runtime.env
+source /etc/masswhisper/backend.env
+set +a
+cd /opt/masswhisper
+/usr/local/bin/npm --workspace backend run export -- "$1" >/dev/null 2>&1
+/usr/local/bin/run-capture.sh
+/usr/local/bin/npm --workspace backend run export -- "$2" >/dev/null 2>&1
+EOF_CAPTURE
 
   printf "daily bundle file created: "
-  test -s /var/lib/masswhisper/read-api/daily-bundle.json && echo ok || { echo fail; exit 1; }
+  sudo test -s /var/lib/masswhisper/read-api/daily-bundle.json && echo ok || { echo fail; exit 1; }
 
   before=$(json_array_length "$before_file")
   after=$(json_array_length "$after_file")
@@ -237,7 +249,7 @@ Check the capture log in parallel in a separate terminal:
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" 'journalctl -f -t masswhisper-capture'
+ssh "massops@$server_ip" 'sudo journalctl -f -t masswhisper-capture'
 ```
 
 ## 10. Verify Lock Skip Behavior
@@ -246,27 +258,38 @@ Hold the capture lock manually, run the wrapper again, and verify that the run i
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
   json_array_length() {
-    node -e "const fs=require('\''fs'\''); console.log(JSON.parse(fs.readFileSync(process.argv[1], '\''utf8'\'')).length)" "$1"
+    sudo node -e "const fs=require('\''fs'\''); console.log(JSON.parse(fs.readFileSync(process.argv[1], '\''utf8'\'')).length)" "$1"
   }
-  set -a
-  source /etc/masswhisper/topic-runtime.env
-  source /etc/masswhisper/backend.env
-  set +a
 
-  cd /opt/masswhisper
-  before_file=$(mktemp)
-  after_file=$(mktemp)
-  trap "rm -f \"$before_file\" \"$after_file\"" EXIT
+  before_file=$(sudo -u masswhisper -H mktemp)
+  after_file=$(sudo -u masswhisper -H mktemp)
+  trap "sudo rm -f \"$before_file\" \"$after_file\"" EXIT
 
-  npm --workspace backend run export -- "$before_file" >/dev/null 2>&1
-  su -s /bin/bash masswhisper -c "flock -n /tmp/masswhisper-topic-capture.lock sleep 15" &
+  sudo -u masswhisper -H bash -seEu -o pipefail -- "$before_file" <<'\''EOF_EXPORT_BEFORE'\''
+set -eu
+set -a
+source /etc/masswhisper/topic-runtime.env
+source /etc/masswhisper/backend.env
+set +a
+cd /opt/masswhisper
+/usr/local/bin/npm --workspace backend run export -- "$1" >/dev/null 2>&1
+EOF_EXPORT_BEFORE
+  sudo -u masswhisper -H flock -n /tmp/masswhisper-topic-capture.lock sleep 15 &
   lock_holder=$!
   sleep 1
-  su -s /bin/bash masswhisper -c "/usr/local/bin/run-capture.sh"
-  npm --workspace backend run export -- "$after_file" >/dev/null 2>&1
+  sudo -u masswhisper -H bash -seEu -o pipefail -- "$after_file" <<'\''EOF_CAPTURE_AFTER'\''
+set -eu
+set -a
+source /etc/masswhisper/topic-runtime.env
+source /etc/masswhisper/backend.env
+set +a
+cd /opt/masswhisper
+/usr/local/bin/run-capture.sh
+/usr/local/bin/npm --workspace backend run export -- "$1" >/dev/null 2>&1
+EOF_CAPTURE_AFTER
 
   before=$(json_array_length "$before_file")
   after=$(json_array_length "$after_file")
@@ -275,7 +298,7 @@ ssh "root@$server_ip" '
   test "$after" = "$before" && echo ok || { echo fail; exit 1; }
 
   printf "lock skip is logged: "
-  journalctl -t masswhisper-capture --since "2 minutes ago" \
+  sudo journalctl -t masswhisper-capture --since "2 minutes ago" \
     | grep -q "capture skipped: lock held" && echo ok || { echo fail; exit 1; }
 
   wait "$lock_holder"
@@ -298,31 +321,35 @@ ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" "sudo -n true" >/d
   && echo ok || { echo fail; exit 1; }
 ```
 
-## 12. Enable DNS And TLS
-
-Follow `docs/runbooks/03-backend-api-dns-tls.md` to attach the current Terraform `public_api_domain` and enable TLS.
-
-## 13. Lock Root SSH Access
+## 12. Lock Root SSH Access
 
 Once massops access is validated, disable root SSH login entirely.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
-  install -D -m 0644 /opt/masswhisper/deploy/ssh/sshd_config.final.conf /etc/ssh/sshd_config.d/99-masswhisper.conf
-  sshd -t
-  systemctl reload ssh
+  sudo install -D -m 0644 /opt/masswhisper/deploy/ssh/sshd_config.final.conf /etc/ssh/sshd_config.d/99-masswhisper.conf
+  sudo sshd -t
+  sudo systemctl reload ssh
 '
 
 printf "ops ssh access still works: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" true >/dev/null 2>&1 \
   && echo ok || { echo fail; exit 1; }
 
+printf "ops passwordless sudo still works: "
+ssh -o BatchMode=yes -o ConnectTimeout=5 "massops@$server_ip" "sudo -n true" >/dev/null 2>&1 \
+  && echo ok || { echo fail; exit 1; }
+
 printf "root ssh access is denied: "
 ssh -o BatchMode=yes -o ConnectTimeout=5 "root@$server_ip" true >/dev/null 2>&1 \
   && { echo fail; exit 1; } || echo ok
 ```
+
+## 13. Enable DNS And TLS
+
+Follow `docs/runbooks/03-backend-api-dns-tls.md` to attach the current Terraform `public_api_domain` and enable TLS.
 
 ## 14. Closure Criteria
 
@@ -339,12 +366,12 @@ Consider the runtime closed only after a fresh end-to-end replay confirms that:
 - the backend runs as a long-lived service
 - the Node listener stays private on `127.0.0.1:3000`
 - Nginx is configured
-- `/health` responds locally and through Nginx
-- the public proxy surface is limited to `/health`
+- `/health` and `/daily` respond locally and through Nginx
+- the public proxy surface is limited to `/health` and `/daily`
 - local capture is configured through `cron` and `flock`
 - routine SSH access goes through massops
-- root SSH login is disabled after ops access validation
-- DNS/TLS are configured after the dedicated runbook is completed
+- root SSH login is disabled before the DNS/TLS runbook
+- DNS/TLS are configured after backend post-boot is fully closed
 
 Next step:
 

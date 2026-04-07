@@ -113,7 +113,7 @@ if [[ "$REQUIRE_TLS" -eq 1 ]]; then
   fi
 else
   printf 'public api health reachable: '
-  http_status_ip="$(curl -sS -o /dev/null -w '%{http_code}' "http://$SERVER_IP/health")"
+  http_status_ip="$(curl -sS -o /dev/null -w '%{http_code}' -H "Host: $PUBLIC_API_DOMAIN" "http://$SERVER_IP/health")"
   http_status_domain="$(curl -sS -o /dev/null -w '%{http_code}' "https://$PUBLIC_API_DOMAIN/health")"
   if [[ "$http_status_ip" == "200" || "$http_status_domain" == "200" ]]; then
     echo ok
@@ -123,7 +123,7 @@ else
   fi
 
   printf 'public api daily reachable: '
-  http_status_ip="$(curl -sS -o /dev/null -w '%{http_code}' "http://$SERVER_IP/daily")"
+  http_status_ip="$(curl -sS -o /dev/null -w '%{http_code}' -H "Host: $PUBLIC_API_DOMAIN" "http://$SERVER_IP/daily")"
   http_status_domain="$(curl -sS -o /dev/null -w '%{http_code}' "https://$PUBLIC_API_DOMAIN/daily")"
   if [[ "$http_status_ip" == "200" || "$http_status_domain" == "200" ]]; then
     echo ok

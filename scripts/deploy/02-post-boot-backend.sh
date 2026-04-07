@@ -63,14 +63,21 @@ require_dir "$LOCAL_TOPIC_CONFIG_DIR"
 SERVER_IP="$(tf_output server_ip)"
 PUBLIC_API_DOMAIN="$(tf_output public_api_domain)"
 
+REMOTE_STAGE_DIR=
 tmp_backend_env=$(mktemp)
-trap 'rm -f "$tmp_backend_env"' EXIT
+cleanup() {
+  if [[ -n "${tmp_backend_env:-}" ]]; then
+    rm -f "$tmp_backend_env"
+  fi
+  cleanup_remote_stage_dir_massops "$SERVER_IP" "$REMOTE_STAGE_DIR"
+}
+trap cleanup EXIT
 read_backend_env_to_temp "$BACKEND_ENV_FILE" "$tmp_backend_env"
 test -s "$tmp_backend_env" || fail "backend env file is empty"
+REMOTE_STAGE_DIR="$(create_remote_stage_dir_massops "$SERVER_IP")"
 
 step "02.1 Install the local topic config"
-ssh_root "$SERVER_IP" 'install -d -m 700 /tmp/prompts /tmp/sources'
-
+ssh_massops "$SERVER_IP" "install -d -m 700 '$REMOTE_STAGE_DIR/prompts' '$REMOTE_STAGE_DIR/sources'"
 shopt -s nullglob
 prompt_files=("$LOCAL_TOPIC_CONFIG_DIR"/prompts/${TOPIC_SLUG}-v*.json)
 source_files=("$LOCAL_TOPIC_CONFIG_DIR"/sources/${TOPIC_SLUG}-v*.json)
@@ -80,80 +87,85 @@ shopt -u nullglob
 ((${#source_files[@]} > 0)) || fail "no source files found for $TOPIC_SLUG"
 
 for file in "${prompt_files[@]}"; do
-  scp_to_root "$file" "$SERVER_IP" /tmp/prompts/
+  scp_to_massops "$file" "$SERVER_IP" "$REMOTE_STAGE_DIR/prompts/"
 done
 
 for file in "${source_files[@]}"; do
-  scp_to_root "$file" "$SERVER_IP" /tmp/sources/
+  scp_to_massops "$file" "$SERVER_IP" "$REMOTE_STAGE_DIR/sources/"
 done
 
-run_ssh_root_script "$SERVER_IP" '
+run_ssh_massops_script "$SERVER_IP" '
 set -eu
 TOPIC_SLUG='"$TOPIC_SLUG"'
+REMOTE_STAGE_DIR='"$REMOTE_STAGE_DIR"'
 
-install -d -m 750 -o root -g masswhisper /etc/masswhisper/prompts
-for file in /tmp/prompts/${TOPIC_SLUG}-v*.json; do
-  install -o root -g masswhisper -m 640 "$file" /etc/masswhisper/prompts/
+sudo install -d -m 750 -o root -g masswhisper /etc/masswhisper/prompts
+for file in "$REMOTE_STAGE_DIR"/prompts/${TOPIC_SLUG}-v*.json; do
+  sudo install -o root -g masswhisper -m 640 "$file" /etc/masswhisper/prompts/
   rm -f "$file"
 done
 
-install -d -m 750 -o root -g masswhisper /etc/masswhisper/sources
-for file in /tmp/sources/${TOPIC_SLUG}-v*.json; do
-  install -o root -g masswhisper -m 640 "$file" /etc/masswhisper/sources/
+sudo install -d -m 750 -o root -g masswhisper /etc/masswhisper/sources
+for file in "$REMOTE_STAGE_DIR"/sources/${TOPIC_SLUG}-v*.json; do
+  sudo install -o root -g masswhisper -m 640 "$file" /etc/masswhisper/sources/
   rm -f "$file"
 done
 '
 
 step "02.2 Securely transfer the runtime env"
-scp_to_root "$tmp_backend_env" "$SERVER_IP" /tmp/backend.env
+scp_to_massops "$tmp_backend_env" "$SERVER_IP" "$REMOTE_STAGE_DIR/backend.env"
 rm -f "$tmp_backend_env"
-trap - EXIT
-run_ssh_root_script "$SERVER_IP" '
+unset tmp_backend_env
+run_ssh_massops_script "$SERVER_IP" '
 set -eu
-install -d -m 755 /etc/masswhisper
-install -o root -g masswhisper -m 640 /tmp/backend.env /etc/masswhisper/backend.env
-rm -f /tmp/backend.env
+REMOTE_STAGE_DIR='"$REMOTE_STAGE_DIR"'
+sudo install -d -m 755 /etc/masswhisper
+sudo install -o root -g masswhisper -m 640 "$REMOTE_STAGE_DIR/backend.env" /etc/masswhisper/backend.env
+rm -f "$REMOTE_STAGE_DIR/backend.env"
 '
 
 step "02.3 Run database migrations"
-run_ssh_root_script "$SERVER_IP" '
+run_ssh_massops_script "$SERVER_IP" '
+set -eu
+sudo -u masswhisper -H bash -seEu -o pipefail <<\EOF_MIGRATE
 set -eu
 set -a
 source /etc/masswhisper/topic-runtime.env
 source /etc/masswhisper/backend.env
 set +a
 cd /opt/masswhisper
-npm --workspace backend run db:migrate
+/usr/local/bin/npm --workspace backend run db:migrate
+EOF_MIGRATE
 '
 
 step "02.4 Enable and start the service"
-run_ssh_root_script "$SERVER_IP" '
+run_ssh_massops_script "$SERVER_IP" '
 set -eu
-systemctl enable masswhisper-topic
-systemctl start masswhisper-topic
+sudo systemctl enable masswhisper-topic
+sudo systemctl start masswhisper-topic
 
 printf "masswhisper-topic service active: "
-if systemctl is-active --quiet masswhisper-topic; then
+if sudo systemctl is-active --quiet masswhisper-topic; then
   echo ok
 else
   echo fail
-  systemctl status masswhisper-topic --no-pager
+  sudo systemctl status masswhisper-topic --no-pager
   exit 1
 fi
 '
 
 step "02.5 Enable and start cron"
-run_ssh_root_script "$SERVER_IP" '
+run_ssh_massops_script "$SERVER_IP" '
 set -eu
-systemctl enable cron
-systemctl start cron
+sudo systemctl enable cron
+sudo systemctl start cron
 
 printf "cron service active: "
-if systemctl is-active --quiet cron; then
+if sudo systemctl is-active --quiet cron; then
   echo ok
 else
   echo fail
-  systemctl status cron --no-pager
+  sudo systemctl status cron --no-pager
   exit 1
 fi
 '
@@ -176,16 +188,19 @@ if [[ "$DRY_RUN" -eq 1 ]]; then
 
   step "02.11 Verify ops user access"
   info "skipped in dry-run"
+
+  step "02.12 Lock root SSH access"
+  info "skipped in dry-run"
   exit 0
 fi
 
 step "02.6 Verify local reachability"
-run_ssh_root_script "$SERVER_IP" '
+run_ssh_massops_script "$SERVER_IP" '
 set -eu
 PUBLIC_API_DOMAIN='"$PUBLIC_API_DOMAIN"'
 
 printf "node binds local port 3000: "
-if ss -ltnp | grep -E "127\.0\.0\.1:3000.*node" >/dev/null 2>&1; then
+if sudo ss -ltnp | grep -E "127\.0\.0\.1:3000.*node" >/dev/null 2>&1; then
   echo ok
 else
   echo fail
@@ -249,7 +264,7 @@ fi
 
 step "02.8 Verify minimal firewall exposure"
 printf 'public tcp/22 reachable: '
-if ssh "${SSH_OPTS[@]}" "root@$SERVER_IP" true >/dev/null 2>&1; then
+if ssh "${SSH_OPTS[@]}" "massops@$SERVER_IP" true >/dev/null 2>&1; then
   echo ok
 else
   echo fail
@@ -273,29 +288,31 @@ else
 fi
 
 step "02.9 Verify manual capture run"
-run_ssh_root_script "$SERVER_IP" '
+run_ssh_massops_script "$SERVER_IP" '
 set -eu
 
 json_array_length() {
-  node -e "const fs=require('\''fs'\''); console.log(JSON.parse(fs.readFileSync(process.argv[1], '\''utf8'\'')).length)" "$1"
+  sudo node -e "const fs=require('\''fs'\''); console.log(JSON.parse(fs.readFileSync(process.argv[1], '\''utf8'\'')).length)" "$1"
 }
 
+before_file=$(sudo -u masswhisper -H mktemp)
+after_file=$(sudo -u masswhisper -H mktemp)
+trap "sudo rm -f \"$before_file\" \"$after_file\"" EXIT
+
+sudo -u masswhisper -H bash -seEu -o pipefail -- "$before_file" "$after_file" <<\EOF_CAPTURE
+set -eu
 set -a
 source /etc/masswhisper/topic-runtime.env
 source /etc/masswhisper/backend.env
 set +a
 cd /opt/masswhisper
-
-before_file=$(mktemp)
-after_file=$(mktemp)
-trap "rm -f \"$before_file\" \"$after_file\"" EXIT
-
-npm --workspace backend run export -- "$before_file" >/dev/null 2>&1
-su -s /bin/bash masswhisper -c "/usr/local/bin/run-capture.sh"
-npm --workspace backend run export -- "$after_file" >/dev/null 2>&1
+/usr/local/bin/npm --workspace backend run export -- "$1" >/dev/null 2>&1
+/usr/local/bin/run-capture.sh
+/usr/local/bin/npm --workspace backend run export -- "$2" >/dev/null 2>&1
+EOF_CAPTURE
 
 printf "daily bundle file created: "
-if test -s /var/lib/masswhisper/read-api/daily-bundle.json; then
+if sudo test -s /var/lib/masswhisper/read-api/daily-bundle.json; then
   echo ok
 else
   echo fail
@@ -324,29 +341,39 @@ fi
 '
 
 step "02.10 Verify lock skip behavior"
-run_ssh_root_script "$SERVER_IP" '
+run_ssh_massops_script "$SERVER_IP" '
 set -eu
 
 json_array_length() {
-  node -e "const fs=require('\''fs'\''); console.log(JSON.parse(fs.readFileSync(process.argv[1], '\''utf8'\'')).length)" "$1"
+  sudo node -e "const fs=require('\''fs'\''); console.log(JSON.parse(fs.readFileSync(process.argv[1], '\''utf8'\'')).length)" "$1"
 }
 
+before_file=$(sudo -u masswhisper -H mktemp)
+after_file=$(sudo -u masswhisper -H mktemp)
+trap "sudo rm -f \"$before_file\" \"$after_file\"" EXIT
+
+sudo -u masswhisper -H bash -seEu -o pipefail -- "$before_file" <<\EOF_EXPORT_BEFORE
+set -eu
 set -a
 source /etc/masswhisper/topic-runtime.env
 source /etc/masswhisper/backend.env
 set +a
 cd /opt/masswhisper
-
-before_file=$(mktemp)
-after_file=$(mktemp)
-trap "rm -f \"$before_file\" \"$after_file\"" EXIT
-
-npm --workspace backend run export -- "$before_file" >/dev/null 2>&1
-su -s /bin/bash masswhisper -c "flock -n /tmp/masswhisper-topic-capture.lock sleep 15" &
+/usr/local/bin/npm --workspace backend run export -- "$1" >/dev/null 2>&1
+EOF_EXPORT_BEFORE
+sudo -u masswhisper -H flock -n /tmp/masswhisper-topic-capture.lock sleep 15 &
 lock_holder=$!
 sleep 1
-su -s /bin/bash masswhisper -c "/usr/local/bin/run-capture.sh"
-npm --workspace backend run export -- "$after_file" >/dev/null 2>&1
+sudo -u masswhisper -H bash -seEu -o pipefail -- "$after_file" <<\EOF_CAPTURE_AFTER
+set -eu
+set -a
+source /etc/masswhisper/topic-runtime.env
+source /etc/masswhisper/backend.env
+set +a
+cd /opt/masswhisper
+/usr/local/bin/run-capture.sh
+/usr/local/bin/npm --workspace backend run export -- "$1" >/dev/null 2>&1
+EOF_CAPTURE_AFTER
 
 before=$(json_array_length "$before_file")
 after=$(json_array_length "$after_file")
@@ -360,7 +387,7 @@ else
 fi
 
 printf "lock skip is logged: "
-if journalctl -t masswhisper-capture --since "2 minutes ago" | grep -q "capture skipped: lock held"; then
+if sudo journalctl -t masswhisper-capture --since "2 minutes ago" | grep -q "capture skipped: lock held"; then
   echo ok
 else
   echo fail
@@ -385,4 +412,36 @@ if ssh "${SSH_OPTS[@]}" "massops@$SERVER_IP" "sudo -n true" >/dev/null 2>&1; the
 else
   echo fail
   exit 1
+fi
+
+step "02.12 Lock root SSH access"
+run_ssh_massops_script "$SERVER_IP" '
+set -eu
+sudo install -D -m 0644 /opt/masswhisper/deploy/ssh/sshd_config.final.conf /etc/ssh/sshd_config.d/99-masswhisper.conf
+sudo sshd -t
+sudo systemctl reload ssh
+'
+
+printf 'ops ssh access still works: '
+if ssh "${SSH_OPTS[@]}" "massops@$SERVER_IP" true >/dev/null 2>&1; then
+  echo ok
+else
+  echo fail
+  exit 1
+fi
+
+printf 'ops passwordless sudo still works: '
+if ssh "${SSH_OPTS[@]}" "massops@$SERVER_IP" "sudo -n true" >/dev/null 2>&1; then
+  echo ok
+else
+  echo fail
+  exit 1
+fi
+
+printf 'root ssh access is denied: '
+if ssh "${SSH_OPTS[@]}" "root@$SERVER_IP" true >/dev/null 2>&1; then
+  echo fail
+  exit 1
+else
+  echo ok
 fi

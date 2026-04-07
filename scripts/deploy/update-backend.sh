@@ -41,11 +41,24 @@ esac
 require_cmd terraform
 require_cmd ssh
 SERVER_IP="$(tf_output server_ip)"
+REMOTE_STAGE_DIR=
+tmp_backend_env=
+tmp_topic_runtime_env=
+
+cleanup() {
+  if [[ -n "$tmp_backend_env" ]]; then
+    rm -f "$tmp_backend_env"
+  fi
+  if [[ -n "$tmp_topic_runtime_env" ]]; then
+    rm -f "$tmp_topic_runtime_env"
+  fi
+  cleanup_remote_stage_dir_massops "$SERVER_IP" "$REMOTE_STAGE_DIR"
+}
+trap cleanup EXIT
 
 if [[ "$TARGET" == "backend-env" ]]; then
   [[ -n "$BACKEND_ENV_FILE" ]] || fail "--backend-env-file is required for target backend-env"
   tmp_backend_env=$(mktemp)
-  trap 'rm -f "$tmp_backend_env"' EXIT
   read_backend_env_to_temp "$BACKEND_ENV_FILE" "$tmp_backend_env"
   test -s "$tmp_backend_env" || fail "backend env file is empty"
 fi
@@ -53,12 +66,14 @@ fi
 step "05.2 Apply the matching update"
 case "$TARGET" in
   backend-env)
-    scp_to_massops "$tmp_backend_env" "$SERVER_IP" /tmp/backend.env
+    REMOTE_STAGE_DIR="$(create_remote_stage_dir_massops "$SERVER_IP")"
+    scp_to_massops "$tmp_backend_env" "$SERVER_IP" "$REMOTE_STAGE_DIR/backend.env"
     run_ssh_massops_script "$SERVER_IP" '
 set -eu
+REMOTE_STAGE_DIR='"$REMOTE_STAGE_DIR"'
 sudo install -d -m 755 /etc/masswhisper
-sudo install -o root -g masswhisper -m 640 /tmp/backend.env /etc/masswhisper/backend.env
-sudo rm -f /tmp/backend.env
+sudo install -o root -g masswhisper -m 640 "$REMOTE_STAGE_DIR/backend.env" /etc/masswhisper/backend.env
+rm -f "$REMOTE_STAGE_DIR/backend.env"
 sudo systemctl restart masswhisper-topic
 '
     ;;
@@ -68,14 +83,15 @@ sudo systemctl restart masswhisper-topic
       info 'would export terraform output topic_runtime_env and install /etc/masswhisper/topic-runtime.env'
     else
       tmp_topic_runtime_env=$(mktemp)
-      trap 'rm -f "$tmp_topic_runtime_env"' EXIT
       terraform -chdir="$REPO_ROOT/infra/terraform" output -raw topic_runtime_env > "$tmp_topic_runtime_env"
-      scp_to_massops "$tmp_topic_runtime_env" "$SERVER_IP" /tmp/topic-runtime.env
+      REMOTE_STAGE_DIR="$(create_remote_stage_dir_massops "$SERVER_IP")"
+      scp_to_massops "$tmp_topic_runtime_env" "$SERVER_IP" "$REMOTE_STAGE_DIR/topic-runtime.env"
       run_ssh_massops_script "$SERVER_IP" '
 set -eu
+REMOTE_STAGE_DIR='"$REMOTE_STAGE_DIR"'
 sudo install -d -m 755 /etc/masswhisper
-sudo install -o root -g masswhisper -m 640 /tmp/topic-runtime.env /etc/masswhisper/topic-runtime.env
-sudo rm -f /tmp/topic-runtime.env
+sudo install -o root -g masswhisper -m 640 "$REMOTE_STAGE_DIR/topic-runtime.env" /etc/masswhisper/topic-runtime.env
+rm -f "$REMOTE_STAGE_DIR/topic-runtime.env"
 sudo systemctl restart masswhisper-topic
 '
     fi
@@ -93,7 +109,11 @@ sudo systemctl restart masswhisper-topic
     run_ssh_massops_script "$SERVER_IP" '
 set -eu
 sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
-sudo -u masswhisper -H bash -lc "cd /opt/masswhisper && npm run build-shared"
+sudo -u masswhisper -H bash -seEu -o pipefail <<\EOF_SHARED
+set -eu
+cd /opt/masswhisper
+npm run build-shared
+EOF_SHARED
 sudo systemctl restart masswhisper-topic
 '
     ;;
@@ -102,7 +122,12 @@ sudo systemctl restart masswhisper-topic
     run_ssh_massops_script "$SERVER_IP" '
 set -eu
 sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
-sudo -u masswhisper -H bash -lc "cd /opt/masswhisper && HUSKY=0 npm ci && npm run build-shared"
+sudo -u masswhisper -H bash -seEu -o pipefail <<\EOF_DEPENDENCIES
+set -eu
+cd /opt/masswhisper
+HUSKY=0 npm ci
+npm run build-shared
+EOF_DEPENDENCIES
 sudo systemctl restart masswhisper-topic
 '
     ;;

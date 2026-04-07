@@ -92,9 +92,9 @@ else
 fi
 
 step "03.3 Simulate ACME HTTP-01 challenge"
-run_ssh_root_script "$SERVER_IP" '
+run_ssh_massops_script "$SERVER_IP" '
 set -eu
-printf ok > /var/www/certbot/.well-known/acme-challenge/ping
+printf ok | sudo tee /var/www/certbot/.well-known/acme-challenge/ping >/dev/null
 '
 
 printf 'acme challenge served over http: '
@@ -106,23 +106,23 @@ else
 fi
 
 step "03.4 Validate ACME HTTP-01 challenge (staging)"
-current_issuer="$(ssh "root@$SERVER_IP" "openssl x509 -in '/etc/letsencrypt/live/$STAGING_CERT_NAME/fullchain.pem' -noout -issuer 2>/dev/null || true")"
+current_issuer="$(ssh "${SSH_OPTS[@]}" "massops@$SERVER_IP" "sudo openssl x509 -in '/etc/letsencrypt/live/$STAGING_CERT_NAME/fullchain.pem' -noout -issuer 2>/dev/null || true")"
 
 if grep -q "(STAGING) Let's Encrypt" <<<"$current_issuer"; then
     printf 'staging certificate issued: '
     echo "ok (staging certificate already present)"
 else
-  run_ssh_root_script "$SERVER_IP" '
+  run_ssh_massops_script "$SERVER_IP" '
 set -eu
 CERTBOT_EMAIL='"$CERTBOT_EMAIL"'
 PUBLIC_API_DOMAIN='"$PUBLIC_API_DOMAIN"'
 STAGING_CERT_NAME='"$STAGING_CERT_NAME"'
-certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
+sudo certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
   --cert-name "$STAGING_CERT_NAME" \
   --webroot -w /var/www/certbot -d "$PUBLIC_API_DOMAIN"
 '
   printf 'staging certificate issued: '
-  current_issuer="$(ssh "root@$SERVER_IP" "openssl x509 -in '/etc/letsencrypt/live/$STAGING_CERT_NAME/fullchain.pem' -noout -issuer")"
+  current_issuer="$(ssh "${SSH_OPTS[@]}" "massops@$SERVER_IP" "sudo openssl x509 -in '/etc/letsencrypt/live/$STAGING_CERT_NAME/fullchain.pem' -noout -issuer")"
   if grep -q "(STAGING) Let's Encrypt" <<<"$current_issuer"; then
     echo ok
   else
@@ -131,21 +131,21 @@ certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m "$C
 fi
 
 step "03.5 Issue production TLS certificate"
-current_issuer="$(ssh "root@$SERVER_IP" "openssl x509 -in '/etc/letsencrypt/live/$PUBLIC_API_DOMAIN/fullchain.pem' -noout -issuer 2>/dev/null || true")"
+current_issuer="$(ssh "${SSH_OPTS[@]}" "massops@$SERVER_IP" "sudo openssl x509 -in '/etc/letsencrypt/live/$PUBLIC_API_DOMAIN/fullchain.pem' -noout -issuer 2>/dev/null || true")"
 
 printf 'production certificate issued: '
 if grep -q "O = Let's Encrypt" <<<"$current_issuer" && ! grep -q "(STAGING)" <<<"$current_issuer"; then
   echo "ok (production certificate already present)"
 else
-  run_ssh_root_script "$SERVER_IP" '
+  run_ssh_massops_script "$SERVER_IP" '
 set -eu
 CERTBOT_EMAIL='"$CERTBOT_EMAIL"'
 PUBLIC_API_DOMAIN='"$PUBLIC_API_DOMAIN"'
-certbot certonly --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
+sudo certbot certonly --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
   --cert-name "$PUBLIC_API_DOMAIN" \
   --webroot -w /var/www/certbot -d "$PUBLIC_API_DOMAIN"
 '
-  current_issuer="$(ssh "root@$SERVER_IP" "openssl x509 -in '/etc/letsencrypt/live/$PUBLIC_API_DOMAIN/fullchain.pem' -noout -issuer")"
+  current_issuer="$(ssh "${SSH_OPTS[@]}" "massops@$SERVER_IP" "sudo openssl x509 -in '/etc/letsencrypt/live/$PUBLIC_API_DOMAIN/fullchain.pem' -noout -issuer")"
   if grep -q "O = Let's Encrypt" <<<"$current_issuer" && ! grep -q "(STAGING)" <<<"$current_issuer"; then
     echo ok
   else
@@ -154,15 +154,15 @@ certbot certonly --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL
 fi
 
 step "03.6 Install the renewal reload hook"
-run_ssh_root_script "$SERVER_IP" '
+run_ssh_massops_script "$SERVER_IP" '
 set -eu
-install -d -m 755 /etc/letsencrypt/renewal-hooks/deploy
-printf "%s\n" "#!/bin/sh" "systemctl reload nginx" > /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
-chmod 755 /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
+sudo install -d -m 755 /etc/letsencrypt/renewal-hooks/deploy
+printf "%s\n" "#!/bin/sh" "systemctl reload nginx" | sudo tee /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh >/dev/null
+sudo chmod 755 /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
 '
 
 printf 'certbot deploy hook installed: '
-if ssh "root@$SERVER_IP" "test -x /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && grep -qx 'systemctl reload nginx' /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh"; then
+if ssh "${SSH_OPTS[@]}" "massops@$SERVER_IP" "sudo test -x /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && sudo grep -qx 'systemctl reload nginx' /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh"; then
   echo ok
 else
   echo fail
@@ -170,15 +170,15 @@ else
 fi
 
 step "03.7 Activate the final TLS Nginx config"
-run_ssh_root_script "$SERVER_IP" '
+run_ssh_massops_script "$SERVER_IP" '
 set -eu
-install -D -m 0644 /etc/masswhisper/public-api.tls.conf /etc/nginx/sites-available/public-api.conf
-nginx -t
-systemctl reload nginx
+sudo install -D -m 0644 /etc/masswhisper/public-api.tls.conf /etc/nginx/sites-available/public-api.conf
+sudo nginx -t
+sudo systemctl reload nginx
 '
 
 printf 'nginx TLS config active: '
-if ssh "root@$SERVER_IP" "nginx -t >/dev/null 2>&1 && grep -q 'ssl_certificate' /etc/nginx/sites-available/public-api.conf"; then
+if ssh "${SSH_OPTS[@]}" "massops@$SERVER_IP" "sudo nginx -t >/dev/null 2>&1 && sudo grep -q 'ssl_certificate' /etc/nginx/sites-available/public-api.conf"; then
   echo ok
 else
   echo fail
@@ -218,6 +218,6 @@ openssl s_client -connect "$PUBLIC_API_DOMAIN:443" -servername "$PUBLIC_API_DOMA
   | openssl x509 -noout -subject -issuer -dates
 
 step "03.10 Verify automatic renewal with a dry run"
-run_ssh_root_script "$SERVER_IP" '
-certbot renew --dry-run --no-random-sleep-on-renew -v
+run_ssh_massops_script "$SERVER_IP" '
+sudo certbot renew --dry-run --no-random-sleep-on-renew -v
 '

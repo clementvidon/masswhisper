@@ -8,6 +8,7 @@ It assumes:
 
 - the Terraform and backend VM post-boot runbooks are already completed
 - the backend is healthy on the VM
+- root SSH login is already disabled and routine access goes through `massops`
 - the DNS zone of the dedicated deployment is under control
 - only an `A` record is used for now
 - the Hetzner firewall already allows inbound tcp `443`
@@ -65,9 +66,9 @@ Simulate the ACME HTTP-01 challenge to verify that the webroot is publicly acces
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
-  printf ok > /var/www/certbot/.well-known/acme-challenge/ping
+  printf ok | sudo tee /var/www/certbot/.well-known/acme-challenge/ping >/dev/null
 '
 
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
@@ -82,21 +83,22 @@ If it fails, stop here and fix DNS, HTTP reachability, or the Nginx ACME webroot
 ## 4. Validate ACME HTTP-01 Challenge (Staging)
 
 Request a staging certificate from Let's Encrypt in a separate Certbot lineage to validate the ACME HTTP-01 challenge end-to-end without hitting production rate limits.
+If the expected staging lineage is already present with a Let's Encrypt staging issuer, keep it and skip reissuing it.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 staging_cert_name="$public_api_domain-staging"
-ssh "root@$server_ip" "
+ssh "massops@$server_ip" "
   set -eu
-  certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m \"$CERTBOT_EMAIL\" \
+  sudo certbot certonly --test-cert --non-interactive --agree-tos --no-eff-email -m \"$CERTBOT_EMAIL\" \
     --cert-name \"$staging_cert_name\" \
     --webroot -w /var/www/certbot -d \"$public_api_domain\"
 "
 
-ssh "root@$server_ip" "
+ssh "massops@$server_ip" "
   printf 'staging certificate issued: '
-  openssl x509 -in \"/etc/letsencrypt/live/$staging_cert_name/fullchain.pem\" -noout -issuer \
+  sudo openssl x509 -in \"/etc/letsencrypt/live/$staging_cert_name/fullchain.pem\" -noout -issuer \
     | grep -q \"(STAGING) Let's Encrypt\" && echo ok || { echo fail; exit 1; }
 "
 ```
@@ -104,20 +106,21 @@ ssh "root@$server_ip" "
 ## 5. Issue Production TLS Certificate
 
 Request and install a production TLS certificate from Let's Encrypt using the ACME HTTP-01 challenge.
+If the existing production lineage already presents a valid Let's Encrypt production issuer, keep it and do not force reissuance.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
-ssh "root@$server_ip" "
+ssh "massops@$server_ip" "
   set -eu
-  certbot certonly --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
+  sudo certbot certonly --non-interactive --agree-tos --no-eff-email -m "$CERTBOT_EMAIL" \
     --cert-name \"$public_api_domain\" \
     --webroot -w /var/www/certbot -d \"$public_api_domain\"
 "
 
-ssh "root@$server_ip" "
+ssh "massops@$server_ip" "
   printf 'production certificate issued: '
-  openssl x509 -in \"/etc/letsencrypt/live/$public_api_domain/fullchain.pem\" -noout -issuer \
+  sudo openssl x509 -in \"/etc/letsencrypt/live/$public_api_domain/fullchain.pem\" -noout -issuer \
     | grep -q \"O = Let's Encrypt\" && ! grep -q \"(STAGING)\" && echo ok || { echo fail; exit 1; }
 "
 ```
@@ -131,17 +134,17 @@ Add a Certbot deploy hook to reload Nginx after each certificate renewal.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
-  install -d -m 755 /etc/letsencrypt/renewal-hooks/deploy
-  printf "%s\n" "#!/bin/sh" "systemctl reload nginx" > /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
-  chmod 755 /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
+  sudo install -d -m 755 /etc/letsencrypt/renewal-hooks/deploy
+  printf "%s\n" "#!/bin/sh" "systemctl reload nginx" | sudo tee /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh >/dev/null
+  sudo chmod 755 /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh
 '
 
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   printf "certbot deploy hook installed: "
-  test -x /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && \
-  grep -qx "systemctl reload nginx" /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && \
+  sudo test -x /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && \
+  sudo grep -qx "systemctl reload nginx" /etc/letsencrypt/renewal-hooks/deploy/reload-nginx.sh && \
   echo ok || { echo fail; exit 1; }
 '
 ```
@@ -152,17 +155,17 @@ Activate the final TLS-enabled Nginx configuration and reload the server.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
-  install -D -m 0644 /etc/masswhisper/public-api.tls.conf /etc/nginx/sites-available/public-api.conf
-  nginx -t
-  systemctl reload nginx
+  sudo install -D -m 0644 /etc/masswhisper/public-api.tls.conf /etc/nginx/sites-available/public-api.conf
+  sudo nginx -t
+  sudo systemctl reload nginx
 '
 
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   printf "nginx TLS config active: "
-  nginx -t >/dev/null 2>&1 && \
-  grep -q "ssl_certificate" /etc/nginx/sites-available/public-api.conf && \
+  sudo nginx -t >/dev/null 2>&1 && \
+  sudo grep -q "ssl_certificate" /etc/nginx/sites-available/public-api.conf && \
   echo ok || { echo fail; exit 1; }
 '
 ```
@@ -206,7 +209,7 @@ Dry-run renewal to ensure certificates can be renewed automatically.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" 'certbot renew --dry-run --no-random-sleep-on-renew -v'
+ssh "massops@$server_ip" 'sudo certbot renew --dry-run --no-random-sleep-on-renew -v'
 ```
 
 ## Fallback If DNS Is Not Ready
@@ -225,7 +228,7 @@ If the current `public_api_domain` cannot be pointed yet, use a temporary hostna
 
 Next step:
 
-- go back to `docs/runbooks/02-backend-post-boot.md` step 13
+- follow `docs/runbooks/04-frontend-dedicated-vercel.md` to deploy the dedicated frontend
 
 ## Appendix
 
@@ -242,7 +245,7 @@ backup_dir="$HOME/.local/share/masswhisper/tls-backups/$public_api_domain"
 umask 077
 
 mkdir -p "$backup_dir"
-rsync -a "root@$server_ip:/etc/letsencrypt/" "$backup_dir/letsencrypt/"
+rsync -a --rsync-path="sudo rsync" "massops@$server_ip:/etc/letsencrypt/" "$backup_dir/letsencrypt/"
 ```
 
 This preserves:
@@ -263,16 +266,16 @@ backup_dir="$HOME/.local/share/masswhisper/tls-backups/$public_api_domain"
 
 test -d "$backup_dir/letsencrypt" || { echo "missing local certificate backup"; exit 1; }
 
-rsync -a "$backup_dir/letsencrypt/" "root@$server_ip:/etc/letsencrypt/"
+rsync -a --rsync-path="sudo rsync" "$backup_dir/letsencrypt/" "massops@$server_ip:/etc/letsencrypt/"
 
-ssh "root@$server_ip" '
+ssh "massops@$server_ip" '
   set -eu
-  chown -R root:root /etc/letsencrypt
-  find /etc/letsencrypt -type d -exec chmod 755 {} \;
-  find /etc/letsencrypt -type f -exec chmod 644 {} \;
-  find /etc/letsencrypt/archive -type f -exec chmod 600 {} \;
-  nginx -t
-  systemctl reload nginx
+  sudo chown -R root:root /etc/letsencrypt
+  sudo find /etc/letsencrypt -type d -exec chmod 755 {} \;
+  sudo find /etc/letsencrypt -type f -exec chmod 644 {} \;
+  sudo find /etc/letsencrypt/archive -type f -exec chmod 600 {} \;
+  sudo nginx -t
+  sudo systemctl reload nginx
 '
 ```
 
@@ -281,5 +284,5 @@ ssh "root@$server_ip" '
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
-ssh "root@$server_ip" "openssl x509 -in '/etc/letsencrypt/live/$public_api_domain/fullchain.pem' -noout -subject -issuer -dates"
+ssh "massops@$server_ip" "sudo openssl x509 -in '/etc/letsencrypt/live/$public_api_domain/fullchain.pem' -noout -subject -issuer -dates"
 ```

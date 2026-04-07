@@ -76,23 +76,10 @@ terraform_apply_var_file() {
   run terraform -chdir="$REPO_ROOT/infra/terraform" apply -var-file="$var_file"
 }
 
-ssh_root() {
-  local host=$1
-  shift
-  run ssh "${SSH_OPTS[@]}" "root@$host" "$@"
-}
-
 ssh_massops() {
   local host=$1
   shift
   run ssh "${SSH_OPTS[@]}" "massops@$host" "$@"
-}
-
-scp_to_root() {
-  local src=$1
-  local host=$2
-  local dest=$3
-  run scp "$src" "root@$host:$dest"
 }
 
 scp_to_massops() {
@@ -102,22 +89,22 @@ scp_to_massops() {
   run scp "$src" "massops@$host:$dest"
 }
 
-run_ssh_root_script() {
+create_remote_stage_dir_massops() {
   local host=$1
-  local script=$2
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
-    printf "+ ssh root@%s 'bash -seu' <<'EOF'\n%s\nEOF\n" "$host" "$script"
+    printf '%s\n' "/tmp/masswhisper-deploy.dry-run"
   else
-    ssh "${SSH_OPTS[@]}" "root@$host" 'bash -seEu -o pipefail' <<EOF2
-trap '
-  status_code=\$?
-  printf "error: remote command failed (exit %s): %s\n" "\$status_code" "\$BASH_COMMAND" >&2
-  exit "\$status_code"
-' ERR
-$script
-EOF2
+    ssh "${SSH_OPTS[@]}" "massops@$host" 'umask 077 && mktemp -d /tmp/masswhisper-deploy.XXXXXX'
   fi
+}
+
+cleanup_remote_stage_dir_massops() {
+  local host=$1
+  local dir=$2
+
+  [[ -n "$dir" ]] || return 0
+  ssh_massops "$host" "rm -rf -- '$dir'"
 }
 
 run_ssh_massops_script() {

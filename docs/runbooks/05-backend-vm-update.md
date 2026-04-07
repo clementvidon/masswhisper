@@ -80,6 +80,7 @@ terraform -chdir=infra/terraform output -raw topic_runtime_env | \
     trap "rm -f \"$tmp\"" EXIT
     cat > "$tmp"
     sudo install -o root -g masswhisper -m 640 "$tmp" /etc/masswhisper/topic-runtime.env
+    sudo systemctl restart masswhisper-topic
 '
 ```
 
@@ -101,7 +102,11 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "massops@$server_ip" '
   set -eu
   sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
-  sudo -u masswhisper -H bash -lc "cd /opt/masswhisper && npm run build-shared"
+  sudo -u masswhisper -H bash -seEu -o pipefail <<'\''EOF_SHARED'\''
+set -eu
+cd /opt/masswhisper
+npm run build-shared
+EOF_SHARED
   sudo systemctl restart masswhisper-topic
 '
 ```
@@ -113,7 +118,12 @@ server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh "massops@$server_ip" '
   set -eu
   sudo -u masswhisper -H git -C /opt/masswhisper pull --ff-only
-  sudo -u masswhisper -H bash -lc "cd /opt/masswhisper && HUSKY=0 npm ci && npm run build-shared"
+  sudo -u masswhisper -H bash -seEu -o pipefail <<'\''EOF_DEPENDENCIES'\''
+set -eu
+cd /opt/masswhisper
+HUSKY=0 npm ci
+npm run build-shared
+EOF_DEPENDENCIES
   sudo systemctl restart masswhisper-topic
 '
 ```

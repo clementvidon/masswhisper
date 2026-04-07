@@ -74,7 +74,7 @@ wait_for_ssh() {
   info "Waiting for SSH..."
 
   while (( tries > 0 )); do
-    if ssh "${SSH_OPTS[@]}" "root@$host" true >/dev/null 2>&1; then
+    if ssh "${SSH_OPTS[@]}" "massops@$host" true >/dev/null 2>&1; then
       info "SSH is ready on $host"
       return 0
     fi
@@ -92,10 +92,10 @@ wait_for_ssh "$SERVER_IP"
 
 step "01.5 Verify cloud-init output"
 info "Waiting for cloud-init to finish..."
-run_ssh_root_script "$SERVER_IP" '
-cloud-init status --wait >/dev/null
+run_ssh_massops_script "$SERVER_IP" '
+sudo cloud-init status --wait >/dev/null
 printf '%-32s' "cloud-init:"
-cloud-init status | sed -n "s/^status: //p"
+sudo cloud-init status | sed -n "s/^status: //p"
 
 echo "[cloud-init] prepare ops user"
 printf '%-32s' "ops user: "
@@ -115,7 +115,7 @@ else
 fi
 
 printf '%-32s' "ops sudoers file: "
-if test -s /etc/sudoers.d/90-massops; then
+if sudo test -s /etc/sudoers.d/90-massops; then
   echo ok
 else
   echo fail
@@ -158,7 +158,7 @@ fi
 
 echo "[cloud-init] prepare runtime"
 printf '%-32s' "env: "
-if test -f /etc/masswhisper/backend.env; then
+if sudo test -f /etc/masswhisper/backend.env; then
   echo ok
 else
   echo fail
@@ -166,7 +166,7 @@ else
 fi
 
 printf '%-32s' "topic runtime env: "
-if test -f /etc/masswhisper/topic-runtime.env; then
+if sudo test -f /etc/masswhisper/topic-runtime.env; then
   echo ok
 else
   echo fail
@@ -174,7 +174,7 @@ else
 fi
 
 printf '%-32s' "unit: "
-if test -s /etc/systemd/system/masswhisper-topic.service; then
+if sudo test -s /etc/systemd/system/masswhisper-topic.service; then
   echo ok
 else
   echo fail
@@ -191,7 +191,7 @@ else
 fi
 
 printf '%-32s' "cron file installed: "
-if test -s /etc/cron.d/masswhisper-topic; then
+if sudo test -s /etc/cron.d/masswhisper-topic; then
   echo ok
 else
   echo fail
@@ -200,7 +200,7 @@ fi
 
 echo "[cloud-init] harden ssh"
 printf '%-32s' "ssh drop-in installed: "
-if test -f /etc/ssh/sshd_config.d/99-masswhisper.conf; then
+if sudo test -f /etc/ssh/sshd_config.d/99-masswhisper.conf; then
   echo ok
 else
   echo fail
@@ -208,7 +208,7 @@ else
 fi
 
 printf '%-32s' "sshd config valid: "
-if sshd -t >/dev/null 2>&1; then
+if sudo sshd -t >/dev/null 2>&1; then
   echo ok
 else
   echo fail
@@ -217,7 +217,7 @@ fi
 
 echo "[cloud-init] configure Nginx"
 printf '%-32s' "nginx site: "
-if test -s /etc/nginx/sites-available/public-api.conf; then
+if sudo test -s /etc/nginx/sites-available/public-api.conf; then
   echo ok
 else
   echo fail
@@ -225,7 +225,7 @@ else
 fi
 
 printf '%-32s' "nginx link: "
-if test -L /etc/nginx/sites-enabled/public-api.conf; then
+if sudo test -L /etc/nginx/sites-enabled/public-api.conf; then
   echo ok
 else
   echo fail
@@ -233,7 +233,7 @@ else
 fi
 
 printf '%-32s' "nginx config: "
-if nginx -t >/dev/null 2>&1; then
+if sudo nginx -t >/dev/null 2>&1; then
   echo ok
 else
   echo fail
@@ -250,7 +250,7 @@ else
 fi
 
 printf '%-32s' "acme webroot exists: "
-if test -d /var/www/certbot/.well-known/acme-challenge; then
+if sudo test -d /var/www/certbot/.well-known/acme-challenge; then
   echo ok
 else
   echo fail

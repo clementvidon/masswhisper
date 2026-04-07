@@ -58,13 +58,13 @@ Expected result:
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
 ssh-keygen -R $server_ip 2>/dev/null
-ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new "root@$server_ip" '
-  cloud-init status --wait
+ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new "massops@$server_ip" '
+  sudo cloud-init status --wait
 
   echo "[cloud-init] prepare ops user"
   printf "ops user: "; id -u massops >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
   printf "ops authorized key: "; test -s /home/massops/.ssh/authorized_keys && echo ok || { echo fail; exit 1; }
-  printf "ops sudoers file: "; test -s /etc/sudoers.d/90-massops && echo ok || { echo fail; exit 1; }
+  printf "ops sudoers file: "; sudo test -s /etc/sudoers.d/90-massops && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] install Node"
   printf "node: "; node -v >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
@@ -75,26 +75,26 @@ ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new "ro
   printf "repo: "; test -d /opt/masswhisper && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] prepare runtime"
-  printf "env: " test -f /etc/masswhisper/backend.env && echo ok || { echo fail; exit 1; }
-  printf "topic runtime env: "; test -f /etc/masswhisper/topic-runtime.env && echo ok || { echo fail; exit 1; }
-  printf "unit: "; test -s /etc/systemd/system/masswhisper-topic.service && echo ok || { echo fail; exit 1; }
+  printf "env: "; sudo test -f /etc/masswhisper/backend.env && echo ok || { echo fail; exit 1; }
+  printf "topic runtime env: "; sudo test -f /etc/masswhisper/topic-runtime.env && echo ok || { echo fail; exit 1; }
+  printf "unit: "; sudo test -s /etc/systemd/system/masswhisper-topic.service && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] prepare scheduler"
   printf "capture wrapper installed: "; test -x /usr/local/bin/run-capture.sh && echo ok || { echo fail; exit 1; }
-  printf "cron file installed: "; test -s /etc/cron.d/masswhisper-topic && echo ok || { echo fail; exit 1; }
+  printf "cron file installed: "; sudo test -s /etc/cron.d/masswhisper-topic && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] harden ssh"
-  printf "ssh drop-in installed: "; test -f /etc/ssh/sshd_config.d/99-masswhisper.conf && echo ok || { echo fail; exit 1; }
-  printf "sshd config valid: "; sshd -t >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
+  printf "ssh drop-in installed: "; sudo test -f /etc/ssh/sshd_config.d/99-masswhisper.conf && echo ok || { echo fail; exit 1; }
+  printf "sshd config valid: "; sudo sshd -t >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] configure Nginx"
-  printf "nginx site: "; test -s /etc/nginx/sites-available/public-api.conf && echo ok || { echo fail; exit 1; }
-  printf "nginx link: "; test -L /etc/nginx/sites-enabled/public-api.conf && echo ok || { echo fail; exit 1; }
-  printf "nginx config: "; nginx -t >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
+  printf "nginx site: "; sudo test -s /etc/nginx/sites-available/public-api.conf && echo ok || { echo fail; exit 1; }
+  printf "nginx link: "; sudo test -L /etc/nginx/sites-enabled/public-api.conf && echo ok || { echo fail; exit 1; }
+  printf "nginx config: "; sudo nginx -t >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] configure certbot"
   printf "certbot installed: "; certbot --version >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
-  printf "acme webroot exists: "; test -d /var/www/certbot/.well-known/acme-challenge && echo ok || { echo fail; exit 1; }
+  printf "acme webroot exists: "; sudo test -d /var/www/certbot/.well-known/acme-challenge && echo ok || { echo fail; exit 1; }
 '
 ```
 
@@ -102,7 +102,7 @@ If the step fails, inspect the cloud-init logs first:
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "root@$server_ip" 'journalctl -u cloud-init -u cloud-final -n 40'
+ssh "massops@$server_ip" 'sudo journalctl -u cloud-init -u cloud-final -n 40'
 ```
 
 If cloud-init must be replayed after a template fix, recreate the server:
