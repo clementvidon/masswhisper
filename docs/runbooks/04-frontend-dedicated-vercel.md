@@ -2,10 +2,12 @@
 
 This runbook deploys the dedicated mono-topic frontend on `https://<domain>` and wires it to the dedicated backend on `https://api.<domain>`.
 
-If the dedicated frontend is already live on `<domain>`, you usually do not need to repeat the full Vercel and DNS setup.
-Update the required production environment variables if needed, then trigger a new production redeploy.
+- verifies dedicated backend readiness
+- configures the Vercel frontend project
+- maps the frontend domain to Vercel
+- redeploys and validates frontend to backend integration
 
-Estimated hands-on time: 10 minutes
+_Estimated hands-on time: 10 minutes_
 
 It assumes:
 
@@ -14,6 +16,9 @@ It assumes:
 - the operator controls the DNS zone of `<domain>`
 - the instance manifest already exists
 - the Vercel project is available to the operator account
+
+If the dedicated frontend is already live on `<domain>`, you usually do not need to repeat the full Vercel and DNS setup.
+Update the required production environment variables if needed, then trigger a new production redeploy.
 
 Operator variables:
 

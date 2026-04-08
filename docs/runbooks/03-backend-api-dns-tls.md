@@ -2,7 +2,12 @@
 
 This runbook attaches the dedicated `public_api_domain` to the already bootstrapped backend VM and enables TLS on the public API.
 
-Estimated hands-on time: 5 minutes
+- points the API domain to the VM
+- validates DNS and ACME challenge readiness
+- issues and activates the TLS certificate
+- verifies HTTPS exposure and renewal readiness
+
+_Estimated hands-on time: 5 minutes_
 
 It assumes:
 

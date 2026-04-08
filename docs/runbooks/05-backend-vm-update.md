@@ -2,7 +2,7 @@
 
 This runbook updates the backend repository on an already provisioned VM and reapplies the required runtime artifacts depending on the modified files.
 
-Estimated hands-on time: 2 minutes
+_Estimated hands-on time: 2 minutes_
 
 It assumes:
 

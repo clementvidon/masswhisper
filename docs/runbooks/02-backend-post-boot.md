@@ -2,7 +2,12 @@
 
 This runbook completes the `masswhisper` backend setup on a VM already bootstrapped by Terraform + cloud-init, then enables the local capture scheduler.
 
-Estimated hands-on time: 5 minutes
+- installs the topic config and runtime secrets
+- migrates the database and starts the backend service
+- enables the local capture scheduler
+- verifies the runtime, proxy, firewall, and capture flow
+
+_Estimated hands-on time: 5 minutes_
 
 It assumes:
 
