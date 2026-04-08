@@ -30,7 +30,7 @@
   "dependencies": {
     "@masswhisper/shared": "*",
     "dotenv": "^16.5.0",
-    "drizzle-orm": "^0.43.1",
+    "drizzle-orm": "^0.45.2",
     "express": "^5.1.0",
     "openai": "^6.27.0",
     "p-limit": "^5.0.0",
