@@ -62,7 +62,7 @@ runcmd:
     npm -v
   - |
     set -eu
-    echo "[cloud-init] clone and build repo: ${repo_url}"
+    echo "[cloud-init] prepare app user and repo: ${repo_url}"
     id -u ${service_user} >/dev/null 2>&1 || adduser --system --group --home ${repo_dir} ${service_user}
     chown root:${service_user} /etc/masswhisper/topic-runtime.env
     chmod 640 /etc/masswhisper/topic-runtime.env
@@ -72,7 +72,7 @@ runcmd:
     install -d -m 750 -o ${service_user} -g ${service_user} /var/lib/masswhisper/read-api
   - |
     set -eu
-    echo "[cloud-init] deploy systemd service: ${service_name}"
+    echo "[cloud-init] install systemd unit and runtime files: ${service_name}"
     install -d -m 755 /etc/masswhisper
     install -m 640 -o root -g ${service_user} /dev/null /etc/masswhisper/backend.env
     install -D -m 0644 ${repo_dir}/deploy/systemd/${service_name}.service /etc/systemd/system/${service_name}.service
@@ -94,7 +94,7 @@ runcmd:
     systemctl reload ssh
   - |
     set -eu
-    echo "[cloud-init] configure nginx vhost"
+    echo "[cloud-init] configure nginx public api vhost"
     rm -f /etc/nginx/sites-enabled/default
     ln -sf /etc/nginx/sites-available/public-api.conf /etc/nginx/sites-enabled/public-api.conf
     nginx -t

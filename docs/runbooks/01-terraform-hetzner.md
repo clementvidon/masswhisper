@@ -72,39 +72,39 @@ ssh-keygen -R $server_ip >/dev/null 2>/dev/null
 ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new "massops@$server_ip" '
   sudo cloud-init status --wait
 
-  echo "[cloud-init] prepare ops user"
+  echo "[cloud-init] setup admin user"
   printf "ops user: "; id -u massops >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
   printf "ops authorized key: "; test -s /home/massops/.ssh/authorized_keys && echo ok || { echo fail; exit 1; }
   printf "ops sudoers file: "; sudo test -s /etc/sudoers.d/90-massops && echo ok || { echo fail; exit 1; }
 
-  echo "[cloud-init] install Node"
+  echo "[cloud-init] install node.js"
   printf "node: "; node -v >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
   printf "npm: "; npm -v >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
-  echo "[cloud-init] bootstrap repo"
+  echo "[cloud-init] prepare app user and repo"
   printf "user: "; id -u masswhisper >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
   printf "repo: "; test -d /opt/masswhisper && echo ok || { echo fail; exit 1; }
 
-  echo "[cloud-init] prepare runtime"
+  echo "[cloud-init] install systemd unit and runtime files"
   printf "env: "; sudo test -f /etc/masswhisper/backend.env && echo ok || { echo fail; exit 1; }
   printf "topic runtime env: "; sudo test -f /etc/masswhisper/topic-runtime.env && echo ok || { echo fail; exit 1; }
   printf "unit: "; sudo test -s /etc/systemd/system/masswhisper-topic.service && echo ok || { echo fail; exit 1; }
 
-  echo "[cloud-init] prepare scheduler"
+  echo "[cloud-init] setup cron scheduler"
   printf "capture wrapper installed: "; test -x /usr/local/bin/run-capture.sh && echo ok || { echo fail; exit 1; }
   printf "runtime dir exists: "; sudo test -d /run/masswhisper && echo ok || { echo fail; exit 1; }
   printf "cron file installed: "; sudo test -s /etc/cron.d/masswhisper-topic && echo ok || { echo fail; exit 1; }
 
-  echo "[cloud-init] harden ssh"
+  echo "[cloud-init] harden ssh security"
   printf "ssh drop-in installed: "; sudo test -f /etc/ssh/sshd_config.d/99-masswhisper.conf && echo ok || { echo fail; exit 1; }
   printf "sshd config valid: "; sudo sshd -t >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
-  echo "[cloud-init] configure Nginx"
+  echo "[cloud-init] configure nginx public api vhost"
   printf "nginx site: "; sudo test -s /etc/nginx/sites-available/public-api.conf && echo ok || { echo fail; exit 1; }
   printf "nginx link: "; sudo test -L /etc/nginx/sites-enabled/public-api.conf && echo ok || { echo fail; exit 1; }
   printf "nginx config: "; sudo nginx -t >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
-  echo "[cloud-init] configure certbot"
+  echo "[cloud-init] prepare certbot webroot"
   printf "certbot installed: "; certbot --version >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
   printf "acme webroot exists: "; sudo test -d /var/www/certbot/.well-known/acme-challenge && echo ok || { echo fail; exit 1; }
 '
