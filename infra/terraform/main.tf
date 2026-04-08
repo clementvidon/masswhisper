@@ -1,6 +1,7 @@
 locals {
   app_name          = "masswhisper"
   server_name       = "${local.app_name}-api-${var.topic_backend.topic_slug}-${var.topic_backend.environment}"
+  ssh_key_name      = "${local.app_name}-key"
   ssh_public_key    = trimspace(file(pathexpand(var.ssh_public_key_path)))
   public_api_domain = "api.${var.topic_backend.domain}"
   topic_runtime_env = <<-EOT
@@ -38,7 +39,7 @@ locals {
 }
 
 resource "hcloud_ssh_key" "default" {
-  name       = var.ssh_key_name
+  name       = local.ssh_key_name
   public_key = local.ssh_public_key
 }
 

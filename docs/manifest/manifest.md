@@ -25,7 +25,6 @@ environment: prod
 schedule: '0 6 * * *'
 sources_variant: fr-dev-job-market-v1
 prompt_variant: fr-dev-job-market-v1
-database_name: masswhisper_fr_dev_job_market_prod
 domain: fr-dev-job-market.masswhisper.com
 ```
 
@@ -36,6 +35,7 @@ Stable topic identifier used in naming, routing, and bundle validation.
 
 `topic_name`
 Human-readable topic name exposed to the frontend and deployment tooling.
+This field is intended for frontend-facing deployment steps and is not consumed by Terraform.
 
 `environment`
 Deployment environment.
@@ -55,7 +55,9 @@ Must match `<topic-slug>-vN`.
 These variants resolve to the private prompt and source bundles documented in `docs/manifest/topic-config.md`.
 
 `database_name`
-Database name used by the deployment.
+Informational identifier for the dedicated database expected for this deployment.
+Runtime connectivity is provided separately through secrets such as `DATABASE_URL`.
+This field is declarative and is not consumed by Terraform.
 
 `domain`
 Public frontend domain of the deployment.
@@ -66,6 +68,7 @@ Public frontend domain of the deployment.
 - scripts may read and validate the manifest
 - scripts must not mutate the manifest
 - Terraform input is derived from the manifest, not from handwritten tfvars
+- not every manifest field is consumed by Terraform; some fields are used by other deployment tooling
 - `sources_variant` and `prompt_variant` must match the topic slug
 
 ## Validation

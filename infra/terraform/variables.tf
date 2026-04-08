@@ -3,12 +3,10 @@ variable "topic_backend" {
 
   type = object({
     topic_slug      = string
-    topic_name      = string
     environment     = string
     schedule        = string
     sources_variant = string
     prompt_variant  = string
-    database_name   = string
     domain          = string
   })
 }
@@ -29,12 +27,6 @@ variable "server_image" {
   description = "Hetzner image name."
   type        = string
   default     = "ubuntu-24.04"
-}
-
-variable "ssh_key_name" {
-  description = "Hetzner SSH key resource name."
-  type        = string
-  default     = "masswhisper-key"
 }
 
 variable "ssh_public_key_path" {

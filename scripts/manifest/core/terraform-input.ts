@@ -7,12 +7,10 @@ export function deriveTerraformInput(manifest: TopicManifest) {
   return {
     topic_backend: {
       topic_slug: manifest.topic_slug,
-      topic_name: manifest.topic_name,
       environment: manifest.environment,
       schedule: manifest.schedule,
       sources_variant: manifest.sources_variant,
       prompt_variant: manifest.prompt_variant,
-      database_name: manifest.database_name,
       domain: manifest.domain,
     },
   };
