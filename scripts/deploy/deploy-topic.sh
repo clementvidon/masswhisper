@@ -39,7 +39,7 @@ Example:
 
     bash scripts/deploy/deploy-topic.sh \
       --manifest instances/fr-dev-job-market/prod.yaml \
-      --local-topic-config-dir local/assets/topic-config \
+      --local-topic-config-dir local/config/topic-config \
       --certbot-email cvidon@student.42.fr \
       --backend-env-file "$tmp_backend_env"
 
@@ -50,7 +50,7 @@ Example:
     bash scripts/deploy/deploy-topic.sh \
         --mode update \
         --manifest instances/fr-dev-job-market/prod.yaml \
-        --local-topic-config-dir local/assets/topic-config \
+        --local-topic-config-dir local/config/topic-config \
         --update-target backend
 USAGE
 }

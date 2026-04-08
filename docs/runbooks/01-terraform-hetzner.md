@@ -20,7 +20,7 @@ Operator variables:
 ```zsh
 export TOPIC_SLUG=fr-dev-job-market
 export ENVIRONMENT=prod
-export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/assets/topic-config
+export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/config/topic-config
 ```
 
 `LOCAL_TOPIC_CONFIG_DIR` must follow the format documented in `docs/topic-config.md`.

@@ -20,7 +20,7 @@ Example:
   bash scripts/deploy/01-bootstrap-vm.sh \
     --topic-slug fr-dev-job-market \
     --environment prod \
-    --local-topic-config-dir local/assets/topic-config
+    --local-topic-config-dir local/config/topic-config
 USAGE
 }
 

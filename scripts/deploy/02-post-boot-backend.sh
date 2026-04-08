@@ -26,7 +26,7 @@ Example:
     bash scripts/deploy/02-post-boot-backend.sh \
       --topic-slug fr-dev-job-market \
       --environment prod \
-      --local-topic-config-dir local/assets/topic-config \
+      --local-topic-config-dir local/config/topic-config \
       --backend-env-file -
 USAGE
 }
