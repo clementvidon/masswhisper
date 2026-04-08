@@ -32,6 +32,9 @@ Example:
 
   Bootstrap:
 
+    export HCLOUD_TOKEN="$(pass show masswhisper/infra/hcloud/token)"
+    export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
+
     umask 077
     tmp_backend_env="$(mktemp)"
     trap 'rm -f "$tmp_backend_env"' EXIT

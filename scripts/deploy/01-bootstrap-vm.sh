@@ -17,6 +17,9 @@ Usage:
 
 Example:
 
+  export HCLOUD_TOKEN="$(pass show masswhisper/infra/hcloud/token)"
+  export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
+
   bash scripts/deploy/01-bootstrap-vm.sh \
     --topic-slug fr-dev-job-market \
     --environment prod \
@@ -49,6 +52,7 @@ require_cmd ssh
 require_cmd grep
 require_cmd sed
 require_env HCLOUD_TOKEN
+require_env TF_VAR_ssh_public_key
 
 MANIFEST_PATH="$REPO_ROOT/instances/$TOPIC_SLUG/$ENVIRONMENT.yaml"
 VAR_FILE="generated/${TOPIC_SLUG}-${ENVIRONMENT}.tfvars.json"

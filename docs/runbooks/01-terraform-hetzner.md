@@ -25,12 +25,13 @@ export LOCAL_TOPIC_CONFIG_DIR=$HOME/projects/masswhisper/local/config/topic-conf
 
 `LOCAL_TOPIC_CONFIG_DIR` must follow the format documented in `docs/topic-config.md`.
 
-## 1. Securely Export The Hetzner Token
+## 1. Securely Export Terraform Secrets
 
-Terraform reads the Hetzner cloud api token from the shell environment.
+Terraform reads the Hetzner cloud api token and the SSH public key content from the shell environment.
 
 ```zsh
 export HCLOUD_TOKEN="$(pass show masswhisper/infra/hcloud/token)"
+export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
 ```
 
 ## 2. Generate The Terraform Input

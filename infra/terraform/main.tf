@@ -2,7 +2,7 @@ locals {
   app_name          = "masswhisper"
   server_name       = "${local.app_name}-api-${var.topic_manifest.topic_slug}-${var.topic_manifest.environment}"
   ssh_key_name      = "${local.app_name}-ops-key"
-  ssh_public_key    = trimspace(file(pathexpand(var.ssh_public_key_path)))
+  ssh_public_key    = trimspace(var.ssh_public_key)
   public_api_domain = "api.${var.topic_manifest.domain}"
   topic_runtime_env = <<-EOT
   TOPIC_SLUG='${var.topic_manifest.topic_slug}'
