@@ -4,6 +4,8 @@ locals {
   ssh_key_name      = "${local.app_name}-ops-key"
   ssh_public_key    = trimspace(var.ssh_public_key)
   public_api_domain = "api.${var.topic_manifest.domain}"
+
+  # Non-sensitive runtime env only. Values defined here are exposed through Terraform state and outputs.
   topic_runtime_env = <<-EOT
   TOPIC_SLUG='${var.topic_manifest.topic_slug}'
   READ_API_DAILY_BUNDLE_PATH='/var/lib/masswhisper/read-api/daily-bundle.json'
