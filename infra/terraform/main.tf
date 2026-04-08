@@ -13,7 +13,7 @@ locals {
   TOPIC_SOURCES_BUNDLE_PATH='/etc/masswhisper/sources/${var.topic_manifest.sources_variant}.json'
   EOT
 
-  bootstrap = {
+  cloud_init_vars = {
     node_version      = "22.22.2"
     node_arch         = "linux-x64"
     service_user      = local.app_name
@@ -77,7 +77,7 @@ resource "hcloud_server" "vm" {
   location    = var.server_location
   image       = var.server_image
 
-  user_data = templatefile("${path.module}/cloud-init.yaml.tftpl", local.bootstrap)
+  user_data = templatefile("${path.module}/cloud-init.yaml.tftpl", local.cloud_init_vars)
 
   ssh_keys     = [hcloud_ssh_key.default.id]
   firewall_ids = [hcloud_firewall.public_http.id]
