@@ -5,7 +5,7 @@ import type { TopicManifest } from './topic-manifest.js';
 
 export function deriveTerraformInput(manifest: TopicManifest) {
   return {
-    topic_backend: {
+    topic_manifest: {
       topic_slug: manifest.topic_slug,
       environment: manifest.environment,
       schedule: manifest.schedule,

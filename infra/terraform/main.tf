@@ -1,16 +1,16 @@
 locals {
   app_name          = "masswhisper"
-  server_name       = "${local.app_name}-api-${var.topic_backend.topic_slug}-${var.topic_backend.environment}"
-  ssh_key_name      = "${local.app_name}-key"
+  server_name       = "${local.app_name}-api-${var.topic_manifest.topic_slug}-${var.topic_manifest.environment}"
+  ssh_key_name      = "${local.app_name}-ops-key"
   ssh_public_key    = trimspace(file(pathexpand(var.ssh_public_key_path)))
-  public_api_domain = "api.${var.topic_backend.domain}"
+  public_api_domain = "api.${var.topic_manifest.domain}"
   topic_runtime_env = <<-EOT
-  TOPIC_SLUG='${var.topic_backend.topic_slug}'
+  TOPIC_SLUG='${var.topic_manifest.topic_slug}'
   READ_API_DAILY_BUNDLE_PATH='/var/lib/masswhisper/read-api/daily-bundle.json'
-  TOPIC_PROMPT_VARIANT='${var.topic_backend.prompt_variant}'
-  TOPIC_PROMPT_BUNDLE_PATH='/etc/masswhisper/prompts/${var.topic_backend.prompt_variant}.json'
-  TOPIC_SOURCES_VARIANT='${var.topic_backend.sources_variant}'
-  TOPIC_SOURCES_BUNDLE_PATH='/etc/masswhisper/sources/${var.topic_backend.sources_variant}.json'
+  TOPIC_PROMPT_VARIANT='${var.topic_manifest.prompt_variant}'
+  TOPIC_PROMPT_BUNDLE_PATH='/etc/masswhisper/prompts/${var.topic_manifest.prompt_variant}.json'
+  TOPIC_SOURCES_VARIANT='${var.topic_manifest.sources_variant}'
+  TOPIC_SOURCES_BUNDLE_PATH='/etc/masswhisper/sources/${var.topic_manifest.sources_variant}.json'
   EOT
 
   bootstrap = {
@@ -21,7 +21,7 @@ locals {
     repo_url          = "https://github.com/clementvidon/masswhisper"
     repo_dir          = "/opt/masswhisper"
     service_name      = "masswhisper-topic"
-    capture_schedule  = var.topic_backend.schedule
+    capture_schedule  = var.topic_manifest.schedule
     topic_runtime_env = local.topic_runtime_env
     ssh_public_key    = local.ssh_public_key
     public_api_domain = local.public_api_domain

@@ -1,5 +1,5 @@
-variable "topic_backend" {
-  description = "Declarative backend instance input derived from an instance manifest."
+variable "topic_manifest" {
+  description = "Terraform input derived from the topic manifest."
 
   type = object({
     topic_slug      = string
