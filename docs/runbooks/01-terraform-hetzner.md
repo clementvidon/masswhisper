@@ -2,7 +2,12 @@
 
 This runbook provisions a Hetzner VM for the `masswhisper backend` and bootstraps the machine with cloud-init.
 
-Estimated hands-on time: 5 minutes
+- creates the target infrastructure layer
+- prepares the host runtime and repository setup
+- installs the essential operating components for the backend runtime
+- confirms the machine is ready for post-boot backend setup
+
+_Estimated hands-on time: 5 minutes_
 
 It assumes:
 
@@ -34,16 +39,22 @@ export HCLOUD_TOKEN="$(pass show masswhisper/infra/hcloud/token)"
 npm run generate-topic-tf-input -- instances/$TOPIC_SLUG/$ENVIRONMENT.yaml "$LOCAL_TOPIC_CONFIG_DIR"
 ```
 
-## 3. Initialize Terraform
+## 3. Initialize Terraform, Plan, Review and Apply
 
 ```zsh
-terraform -chdir=infra/terraform init
-```
+set -euo pipefail
+TF_DIR="infra/terraform"
+PLAN_FILE=$(mktemp)
+trap "rm -f $PLAN_FILE" EXIT
 
-## 4. Review The Plan And Apply
+terraform -chdir=$TF_DIR init
 
-```zsh
-terraform -chdir=infra/terraform apply -var-file="generated/${TOPIC_SLUG}-${ENVIRONMENT}.tfvars.json"
+terraform -chdir=$TF_DIR plan \
+  -var-file="generated/${TOPIC_SLUG}-${ENVIRONMENT}.tfvars.json" \
+  -out=$PLAN_FILE
+
+terraform -chdir=$TF_DIR show $PLAN_FILE
+terraform -chdir=$TF_DIR apply $PLAN_FILE
 ```
 
 Expected result:
@@ -53,7 +64,7 @@ Expected result:
 - the backend `public_api_domain` is exposed as an output
 - inbound tcp `22`, `80`, and `443` are allowed
 
-## 5. Verify Cloud-Init Output
+## 4. Verify Cloud-Init Output
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"

@@ -62,11 +62,14 @@ run npm run validate-manifest -- "$MANIFEST_PATH" "$LOCAL_TOPIC_CONFIG_DIR"
 step "01.2 Generate the Terraform input"
 run npm run generate-topic-tf-input -- "instances/$TOPIC_SLUG/$ENVIRONMENT.yaml" "$LOCAL_TOPIC_CONFIG_DIR"
 
-step "01.3 Initialize Terraform"
-terraform_init
+step "01.3. Initialize Terraform, Plan, Review and Apply"
+TF_DIR="$REPO_ROOT/infra/terraform"
+PLAN_FILE="$(mktemp)"
+trap 'rm -f "$PLAN_FILE"' EXIT
 
-step "01.4 Review the plan and apply"
-terraform_apply_var_file "$VAR_FILE"
+run terraform -chdir="$TF_DIR" init
+run terraform -chdir="$TF_DIR" plan -input=false -var-file="$VAR_FILE" -out="$PLAN_FILE"
+run terraform -chdir="$TF_DIR" show "$PLAN_FILE" run terraform -chdir="$TF_DIR" apply -input=false "$PLAN_FILE"
 
 SERVER_IP="$(tf_output server_ip)"
 
@@ -97,7 +100,7 @@ wait_for_ssh() {
 
 wait_for_ssh "$SERVER_IP"
 
-step "01.5 Verify cloud-init output"
+step "01.4 Verify cloud-init output"
 info "Waiting for cloud-init to finish..."
 run_ssh_massops_script "$SERVER_IP" '
 sudo cloud-init status --wait >/dev/null

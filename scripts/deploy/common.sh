@@ -67,15 +67,6 @@ tf_output() {
   terraform -chdir="$REPO_ROOT/infra/terraform" output -raw "$1"
 }
 
-terraform_init() {
-  run terraform -chdir="$REPO_ROOT/infra/terraform" init
-}
-
-terraform_apply_var_file() {
-  local var_file=$1
-  run terraform -chdir="$REPO_ROOT/infra/terraform" apply -var-file="$var_file"
-}
-
 ssh_massops() {
   local host=$1
   shift
