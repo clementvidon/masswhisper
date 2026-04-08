@@ -43,19 +43,19 @@ npm run generate-topic-tf-input -- instances/$TOPIC_SLUG/$ENVIRONMENT.yaml "$LOC
 ## 3. Initialize Terraform, Plan, Review and Apply
 
 ```zsh
-set -euo pipefail
-TF_DIR="infra/terraform"
-PLAN_FILE=$(mktemp)
-trap "rm -f $PLAN_FILE" EXIT
+(
+  set -eu
+  TF_DIR="infra/terraform"
+  PLAN_FILE=$(mktemp)
+  trap 'rm -f "$PLAN_FILE"' EXIT
 
-terraform -chdir=$TF_DIR init
-
-terraform -chdir=$TF_DIR plan \
-  -var-file="generated/${TOPIC_SLUG}-${ENVIRONMENT}.tfvars.json" \
-  -out=$PLAN_FILE
-
-terraform -chdir=$TF_DIR show $PLAN_FILE
-terraform -chdir=$TF_DIR apply $PLAN_FILE
+  terraform -chdir="$TF_DIR" init
+  terraform -chdir="$TF_DIR" plan \
+    -var-file="generated/${TOPIC_SLUG}-${ENVIRONMENT}.tfvars.json" \
+    -out="$PLAN_FILE"
+  terraform -chdir="$TF_DIR" show "$PLAN_FILE"
+  terraform -chdir="$TF_DIR" apply "$PLAN_FILE"
+)
 ```
 
 Expected result:
@@ -69,14 +69,22 @@ Expected result:
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh-keygen -R $server_ip >/dev/null 2>/dev/null
+ssh-keygen -R "$server_ip" >/dev/null 2>/dev/null || true
+for attempt in {1..30}; do
+  if ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new "massops@$server_ip" true >/dev/null 2>&1; then
+    echo "SSH ready"
+    break
+  fi
+  echo "SSH not ready yet ($attempt/30)"
+  sleep 5
+done
 ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=accept-new "massops@$server_ip" '
   sudo cloud-init status --wait
 
   echo "[cloud-init] setup admin user"
   printf "ops user: "; id -u massops >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
   printf "ops authorized key: "; test -s /home/massops/.ssh/authorized_keys && echo ok || { echo fail; exit 1; }
-  printf "ops sudoers file: "; sudo test -s /etc/sudoers.d/90-massops && echo ok || { echo fail; exit 1; }
+  printf "ops passwordless sudo: "; sudo -n true >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }
 
   echo "[cloud-init] install node.js"
   printf "node: "; node -v >/dev/null 2>&1 && echo ok || { echo fail; exit 1; }

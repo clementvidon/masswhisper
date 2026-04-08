@@ -73,7 +73,8 @@ trap 'rm -f "$PLAN_FILE"' EXIT
 
 run terraform -chdir="$TF_DIR" init
 run terraform -chdir="$TF_DIR" plan -input=false -var-file="$VAR_FILE" -out="$PLAN_FILE"
-run terraform -chdir="$TF_DIR" show "$PLAN_FILE" run terraform -chdir="$TF_DIR" apply -input=false "$PLAN_FILE"
+run terraform -chdir="$TF_DIR" show "$PLAN_FILE"
+run terraform -chdir="$TF_DIR" apply -input=false "$PLAN_FILE"
 
 SERVER_IP="$(tf_output server_ip)"
 
@@ -128,8 +129,8 @@ else
   exit 1
 fi
 
-printf '%-32s' "ops sudoers file: "
-if sudo test -s /etc/sudoers.d/90-massops; then
+printf '%-32s' "ops passwordless sudo: "
+if sudo -n true >/dev/null 2>&1; then
   echo ok
 else
   echo fail
