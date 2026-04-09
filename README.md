@@ -4,9 +4,9 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-✓-blue)
 ![Last commit](https://img.shields.io/github/last-commit/clementvidon/masswhisper)
 
-# MassWhisper
+# masswhisper
 
-MassWhisper builds topic-specific sentiment timelines from public online discourse.
+A monitoring system for qualitative signals.
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@ MassWhisper builds topic-specific sentiment timelines from public online discour
 
 ## Overview
 
-MassWhisper is a manifest-driven system that turns public online discourse into topic-specific emotional barometers. It ingests source material for a given topic, builds a daily report, and publishes it as either a static site or a client-server application.
+Masswhisper generates topic-specific eight-emotion timelines from public online discourse.
 
 ## Quick Start
 
@@ -57,7 +57,7 @@ For frontend local development details, see `docs/frontend/local-development.md`
 
 ## Automation
 
-MassWhisper currently supports two deployment models:
+Masswhisper currently supports two deployment models:
 
 - Static publishing: daily GitHub Actions build and publish the static site.
 - Dedicated client-server deployment: the operational setup is documented in the runbooks.
