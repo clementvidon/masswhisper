@@ -24,6 +24,41 @@ Architecture:
 
 This model stays simple to publish and simple to serve.
 
+### Diagram
+
+```mermaid
+flowchart LR
+    browser([Browser])
+
+    subgraph publish[Publishing flow]
+        ci([Maintainer / CI])
+        sources([Public source material])
+        analysis[Backend analysis pipeline]
+        bundle[(Generated daily.json)]
+        build[Frontend static build]
+        publish_artifacts[Publish static artifacts]
+        ci --> analysis
+        sources --> analysis
+        analysis --> bundle
+        ci --> build
+        build --> publish_artifacts
+        bundle --> publish_artifacts
+    end
+
+    subgraph static_site[Static hosting]
+        host[Static host / GitHub Pages]
+        frontend[Built frontend assets]
+        served_bundle[(Served /masswhisper/daily.json)]
+        host --> frontend
+        host --> served_bundle
+    end
+
+
+    publish_artifacts --> host
+    browser --> host
+    browser -->|fetch daily.json| served_bundle
+```
+
 ## Dedicated
 
 The dedicated model deploys one frontend and one backend runtime for one topic.
@@ -47,6 +82,37 @@ Operational detail lives in:
 - `docs/runbooks/`
 - `docs/manifest/manifest.md`
 
+### Diagram
+
+```mermaid
+flowchart LR
+    browser([Browser])
+
+    subgraph frontend_side[Frontend]
+        vercel[Vercel frontend]
+    end
+
+    subgraph backend_vm[Backend VM]
+        nginx[Nginx]
+        node[Node backend]
+        cron[Cron]
+        capture[run-capture.sh]
+        bundle[(daily bundle)]
+        cron --> capture
+        capture --> node
+        nginx --> node
+        node --> bundle
+    end
+
+    subgraph data_layer[Data]
+        db[(Neon / Postgres)]
+    end
+
+    browser --> vercel
+    browser -->|GET /daily| nginx
+    node --> db
+```
+
 ## Shared
 
 The shared model is planned but not implemented yet.
@@ -63,6 +129,35 @@ Target architecture:
 - platform boundaries stay read-only on the public side
 
 This model is the planned multi-topic platform architecture.
+
+### Diagram
+
+```mermaid
+flowchart LR
+    browser([Browser])
+
+    subgraph frontend_side[Shared frontend]
+        frontend[Shared frontend SPA]
+        routing{Topic path routing}
+        frontend --> routing
+    end
+
+    subgraph backend_side[Shared platform API]
+        api[Shared API]
+        app[Multi-topic backend]
+        scheduler[Shared scheduler]
+        scheduler --> app
+        api --> app
+    end
+
+    subgraph data_layer[Shared data]
+        db[(Shared database)]
+    end
+
+    browser --> frontend
+    routing --> api
+    app --> db
+```
 
 ## Cross-Model Differences
 
