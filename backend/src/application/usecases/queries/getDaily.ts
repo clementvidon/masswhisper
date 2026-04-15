@@ -47,10 +47,8 @@ async function buildDailySentimentHistory(
 export async function getDaily(
   persistence: PersistencePort,
 ): Promise<DailyDto> {
-  const [latestSnapshot, sentimentHistory] = await Promise.all([
-    persistence.getLatestSnapshot(),
-    buildDailySentimentHistory(persistence),
-  ]);
+  const latestSnapshot = await persistence.getLatestSnapshot();
+  const sentimentHistory = await buildDailySentimentHistory(persistence);
   if (!latestSnapshot) {
     throw new Error('Cannot build daily bundle without latest snapshot');
   }

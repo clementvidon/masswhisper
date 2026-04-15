@@ -12,6 +12,7 @@ import {
   type SnapshotData,
   SnapshotDataSchema,
 } from '../../domain/value-objects/PipelineSnapshot';
+import { sleep } from '../../lib/async/sleep';
 import { snapshotsTable } from './schema';
 
 const pg = postgres as unknown as (...args: Parameters<typeof postgres>) => Sql;
@@ -37,6 +38,21 @@ function mapRowToSnapshot(row: SnapshotRow, source: string): PipelineSnapshot {
   });
 }
 
+function isRetryablePostgresReadError(err: unknown): boolean {
+  const message = err instanceof Error ? err.message : String(err);
+  const cause =
+    err instanceof Error && err.cause instanceof Error ? err.cause.message : '';
+  const text = `${message} ${cause}`;
+
+  return (
+    text.includes('CONNECT_TIMEOUT') ||
+    text.includes('Control plane request failed') ||
+    text.includes('ECONNRESET') ||
+    text.includes('ETIMEDOUT') ||
+    text.includes('Connection terminated unexpectedly')
+  );
+}
+
 export class PostgresAdapter implements PersistencePort {
   private readonly db: PostgresJsDatabase;
 
@@ -57,29 +73,51 @@ export class PostgresAdapter implements PersistencePort {
     });
   }
 
+  private async read<T>(operation: string, fn: () => Promise<T>): Promise<T> {
+    const attempts = 3;
+
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+      try {
+        return await fn();
+      } catch (err) {
+        if (attempt === attempts || !isRetryablePostgresReadError(err)) {
+          throw err;
+        }
+
+        await sleep(250 * attempt);
+      }
+    }
+
+    throw new Error(`[${operation}] Postgres read retry exhausted`);
+  }
+
   async getLatestSnapshot(): Promise<PipelineSnapshot | null> {
-    const rows = await this.db
-      .select({
-        id: snapshotsTable.id,
-        data: snapshotsTable.data,
-        createdAt: snapshotsTable.date_created,
-      })
-      .from(snapshotsTable)
-      .orderBy(desc(snapshotsTable.date_created))
-      .limit(1);
+    const rows = await this.read('getLatestSnapshot', () =>
+      this.db
+        .select({
+          id: snapshotsTable.id,
+          data: snapshotsTable.data,
+          createdAt: snapshotsTable.date_created,
+        })
+        .from(snapshotsTable)
+        .orderBy(desc(snapshotsTable.date_created))
+        .limit(1),
+    );
 
     if (rows.length === 0) return null;
     return mapRowToSnapshot(rows[0], 'PostgresAdapter.getLatestSnapshot');
   }
 
   async getSentimentHistory(): Promise<SentimentHistoryPoint[]> {
-    const rows = await this.db
-      .select({
-        data: snapshotsTable.data,
-        createdAt: snapshotsTable.date_created,
-      })
-      .from(snapshotsTable)
-      .orderBy(asc(snapshotsTable.date_created));
+    const rows = await this.read('getSentimentHistory', () =>
+      this.db
+        .select({
+          data: snapshotsTable.data,
+          createdAt: snapshotsTable.date_created,
+        })
+        .from(snapshotsTable)
+        .orderBy(asc(snapshotsTable.date_created)),
+    );
 
     return rows.map((row) => {
       const payload = SnapshotDataSchema.parse(row.data);
@@ -99,14 +137,16 @@ export class PostgresAdapter implements PersistencePort {
   }
 
   async getSnapshots(): Promise<PipelineSnapshot[]> {
-    const rows = await this.db
-      .select({
-        id: snapshotsTable.id,
-        data: snapshotsTable.data,
-        createdAt: snapshotsTable.date_created,
-      })
-      .from(snapshotsTable)
-      .orderBy(desc(snapshotsTable.date_created));
+    const rows = await this.read('getSnapshots', () =>
+      this.db
+        .select({
+          id: snapshotsTable.id,
+          data: snapshotsTable.data,
+          createdAt: snapshotsTable.date_created,
+        })
+        .from(snapshotsTable)
+        .orderBy(desc(snapshotsTable.date_created)),
+    );
 
     return rows.map((row) =>
       mapRowToSnapshot(row, 'PostgresAdapter.getSnapshots'),
