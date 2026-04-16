@@ -1,60 +1,60 @@
 {
-  "generatedAt": "2026-04-15T10:57:03.128Z",
-  "snapshotCreatedAt": "2026-04-15T10:56:15.204Z",
+  "generatedAt": "2026-04-16T11:00:11.713Z",
+  "snapshotCreatedAt": "2026-04-16T10:59:28.818Z",
   "report": {
-    "text": "Marché tech en net repli, tensions et prudence dominent",
+    "text": "Marché tech en dégradation, tensions et prudence accrues",
     "emoji": "🌧️"
   },
   "headlines": [
+    {
+      "title": "3 processus de recrutement et zéro respect du temps des candidats",
+      "weight": "4",
+      "itemRef": "https://reddit.com/comments/1sla35i"
+    },
+    {
+      "title": "Pression ESN intercontrat",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1sm198k"
+    },
+    {
+      "title": "Désespoir",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1slqgca"
+    },
     {
       "title": "Tout le monde est devenu ingénieur?",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1sju840"
     },
     {
-      "title": "Mais c'est la seule choses que j'ai envie de faire... J'abandonne ?",
+      "title": "Conseillerez vous à un jeune lycéen de faire ingénieur informaticien en 2026?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1skjtzp"
+      "itemRef": "https://reddit.com/comments/1sh15fh"
     },
     {
-      "title": "Depuis l'IA vous êtes plus ou moins heureux ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sgm8zc"
-    },
-    {
-      "title": "3 processus de recrutement et zéro respect du temps des candidats",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sla35i"
+      "title": "L'impression d'être mauvais",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1slepgi"
     },
     {
       "title": "Junior dev Java autodidacte sur Lyon — pourquoi aucun recruteur ne me donne ma chance ?",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1si7jqv"
+    },
+    {
+      "title": "Recherche projet .NET pour volontariat",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1sldg6w"
+    },
+    {
+      "title": "En attente d'une résultat d'entretien depuis 3 semaines, malgré retour positif du n+1 & n+2",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1shl2vh"
     },
     {
       "title": "Y a-t-il un avenir pour VueJS?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1skfcyf"
-    },
-    {
-      "title": "Désespoir",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1slqgca"
-    },
-    {
-      "title": "Recherche projet .NET pour volontariat",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sldg6w"
-    },
-    {
-      "title": "Legacy code, stop ou encore ?!",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1slbk2p"
-    },
-    {
-      "title": "C'est décidé, je Red Flag ces entretiens",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sgiwy0"
     }
   ],
   "sentimentHistory": [
@@ -5285,6 +5285,27 @@
         "negative_surprise": 0.333281,
         "optimistic_anticipation": 0.15618,
         "pessimistic_anticipation": 0.573971
+      }
+    },
+    {
+      "createdAt": "2026-04-16T10:59:28.818Z",
+      "count": 12,
+      "confidenceMass": 21.302011,
+      "emotions": {
+        "joy": 0.054423,
+        "trust": 0.189754,
+        "anger": 0.274682,
+        "fear": 0.408437,
+        "sadness": 0.472653,
+        "disgust": 0.147294
+      },
+      "tonalities": {
+        "positive": 0.10598,
+        "negative": 0.662378,
+        "positive_surprise": 0.009851,
+        "negative_surprise": 0.367041,
+        "optimistic_anticipation": 0.157327,
+        "pessimistic_anticipation": 0.574561
       }
     }
   ]
