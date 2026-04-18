@@ -10,8 +10,10 @@ usage() {
 Usage:
 
   scripts/deploy/update-backend.sh \
-    --target <backend|shared|dependencies|systemd|nginx|backend-env|topic-runtime-env> \
+    --target <backend|shared|dependencies|systemd|nginx|backend-env|topic-runtime-env|tls-backup|tls-restore> \
     [--backend-env-file <path|->] \
+    [--tls-backup-to <dir>] \
+    [--tls-restore-from <dir>] \
     [--dry-run]
 
 Notes:
@@ -34,11 +36,15 @@ USAGE
 
 TARGET=
 BACKEND_ENV_FILE=
+TLS_BACKUP_TO=
+TLS_RESTORE_FROM=
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --target) TARGET=${2:?}; shift 2 ;;
     --backend-env-file) BACKEND_ENV_FILE=${2:?}; shift 2 ;;
+    --tls-backup-to) TLS_BACKUP_TO=${2:?}; shift 2 ;;
+    --tls-restore-from) TLS_RESTORE_FROM=${2:?}; shift 2 ;;
     --dry-run) DRY_RUN=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) fail "unknown argument: $1" ;;
@@ -48,13 +54,17 @@ done
 [[ -n "$TARGET" ]] || { usage; fail "--target is required"; }
 
 case "$TARGET" in
-  backend|shared|dependencies|systemd|nginx|backend-env|topic-runtime-env) ;;
+  backend|shared|dependencies|systemd|nginx|backend-env|topic-runtime-env|tls-backup|tls-restore) ;;
   *) fail "invalid --target: $TARGET" ;;
 esac
 
 require_cmd terraform
 require_cmd ssh
+if [[ "$TARGET" == "tls-backup" || "$TARGET" == "tls-restore" ]]; then
+  require_cmd rsync
+fi
 SERVER_IP="$(tf_output server_ip)"
+PUBLIC_API_DOMAIN="$(tf_output public_api_domain)"
 REMOTE_STAGE_DIR=
 tmp_backend_env=
 tmp_topic_runtime_env=
@@ -76,6 +86,22 @@ if [[ "$TARGET" == "backend-env" ]]; then
   read_backend_env_to_temp "$BACKEND_ENV_FILE" "$tmp_backend_env"
   test -s "$tmp_backend_env" || fail "backend env file is empty"
 fi
+
+case "$TARGET" in
+  tls-backup)
+    [[ -n "$TLS_BACKUP_TO" ]] || fail "--tls-backup-to is required for target tls-backup"
+    [[ -z "$TLS_RESTORE_FROM" ]] || fail "--tls-restore-from is not valid for target tls-backup"
+    ;;
+  tls-restore)
+    [[ -n "$TLS_RESTORE_FROM" ]] || fail "--tls-restore-from is required for target tls-restore"
+    [[ -z "$TLS_BACKUP_TO" ]] || fail "--tls-backup-to is not valid for target tls-restore"
+    require_dir "$TLS_RESTORE_FROM/letsencrypt"
+    ;;
+  *)
+    [[ -z "$TLS_BACKUP_TO" ]] || fail "--tls-backup-to requires target tls-backup"
+    [[ -z "$TLS_RESTORE_FROM" ]] || fail "--tls-restore-from requires target tls-restore"
+    ;;
+esac
 
 step "05.2 Apply the matching update"
 case "$TARGET" in
@@ -164,5 +190,42 @@ sudo install -D -m 0644 /etc/masswhisper/public-api.tls.conf /etc/nginx/sites-av
 sudo nginx -t
 sudo systemctl reload nginx
 '
+    ;;
+
+  tls-backup)
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+      info "would back up /etc/letsencrypt to $TLS_BACKUP_TO/letsencrypt"
+    else
+      umask 077
+      mkdir -p "$TLS_BACKUP_TO"
+      rsync -a --rsync-path="sudo rsync" \
+        "massops@$SERVER_IP:/etc/letsencrypt/" \
+        "$TLS_BACKUP_TO/letsencrypt/"
+      [[ -s "$TLS_BACKUP_TO/letsencrypt/live/$PUBLIC_API_DOMAIN/fullchain.pem" ]] \
+        || fail "TLS backup is missing fullchain.pem for $PUBLIC_API_DOMAIN"
+      [[ -s "$TLS_BACKUP_TO/letsencrypt/live/$PUBLIC_API_DOMAIN/privkey.pem" ]] \
+        || fail "TLS backup is missing privkey.pem for $PUBLIC_API_DOMAIN"
+      printf 'tls backup saved: %s\n' "$TLS_BACKUP_TO/letsencrypt"
+    fi
+    ;;
+
+  tls-restore)
+    run rsync -a --rsync-path="sudo rsync" \
+      "$TLS_RESTORE_FROM/letsencrypt/" \
+      "massops@$SERVER_IP:/etc/letsencrypt/"
+
+    run_ssh_massops_script "$SERVER_IP" '
+set -eu
+PUBLIC_API_DOMAIN='"$PUBLIC_API_DOMAIN"'
+sudo chown -R root:root /etc/letsencrypt
+sudo find /etc/letsencrypt -type d -exec chmod 755 {} \;
+sudo find /etc/letsencrypt -type f -exec chmod 644 {} \;
+sudo find /etc/letsencrypt/archive -type f -exec chmod 600 {} \;
+sudo find /etc/letsencrypt/accounts -type f -exec chmod 600 {} \; 2>/dev/null || true
+sudo openssl x509 -in "/etc/letsencrypt/live/$PUBLIC_API_DOMAIN/fullchain.pem" -noout -checkend 86400 >/dev/null
+sudo nginx -t
+sudo systemctl reload nginx
+'
+    printf 'tls state restored: %s\n' "$TLS_RESTORE_FROM/letsencrypt"
     ;;
 esac

@@ -27,9 +27,9 @@ Operator variables:
 export CERTBOT_EMAIL=cvidon@student.42.fr
 ```
 
-This runbook uses `certbot certonly --webroot`, so Certbot issues the certificate without editing the Nginx configuration. HTTPS and the public read API routes are enabled explicitly in step 7.
+This runbook uses `certbot certonly --webroot`, so Certbot issues the certificate without editing the Nginx configuration. HTTPS and the public read API routes are enabled explicitly in step 8.
 
-If this VM was rebuilt and a certificate backup already exists, restore it first. See the appendix section "Restore a Saved Certificate to a Rebuilt VM".
+If this VM was rebuilt and a certificate backup already exists, restore it in step 3 before requesting a new certificate.
 
 ## 1. Create The DNS A Record
 
@@ -67,7 +67,45 @@ dig +short A "$public_api_domain" @8.8.8.8 | grep -qx "$server_ip" && echo ok ||
 
 If both checks fail, wait a few minutes for DNS propagation and retry.
 
-## 3. Simulate ACME HTTP-01 Challenge
+## 3. Restore Saved TLS State Optional
+
+If this VM was rebuilt and a production certificate backup already exists locally, restore the saved Let's Encrypt state before requesting new certificates.
+
+Skip this step when no trusted local backup exists.
+
+```zsh
+server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
+public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
+backup_dir="$HOME/.local/share/masswhisper/tls-backups/$public_api_domain"
+
+test -d "$backup_dir/letsencrypt" || { echo "missing local certificate backup"; exit 1; }
+
+rsync -a --rsync-path="sudo rsync" \
+  "$backup_dir/letsencrypt/" \
+  "massops@$server_ip:/etc/letsencrypt/"
+
+ssh "massops@$server_ip" "
+  set -eu
+  sudo chown -R root:root /etc/letsencrypt
+  sudo find /etc/letsencrypt -type d -exec chmod 755 {} \;
+  sudo find /etc/letsencrypt -type f -exec chmod 644 {} \;
+  sudo find /etc/letsencrypt/archive -type f -exec chmod 600 {} \;
+  sudo find /etc/letsencrypt/accounts -type f -exec chmod 600 {} \; 2>/dev/null || true
+  referenced_accounts=\"\$(sudo sed -n \"s/^account[[:space:]]*=[[:space:]]*//p\" /etc/letsencrypt/renewal/*.conf 2>/dev/null | sort -u)\"
+  for account_dir in /etc/letsencrypt/accounts/*/directory/*; do
+    [ -d \"\$account_dir\" ] || continue
+    account_id=\"\$(basename \"\$account_dir\")\"
+    if ! printf \"%s\n\" \"\$referenced_accounts\" | grep -qx \"\$account_id\"; then
+      sudo rm -rf \"\$account_dir\"
+    fi
+  done
+  sudo openssl x509 -in \"/etc/letsencrypt/live/$public_api_domain/fullchain.pem\" -noout -checkend 86400 >/dev/null
+"
+```
+
+The restore path must contain a `letsencrypt/` directory copied from `/etc/letsencrypt/`.
+
+## 4. Simulate ACME HTTP-01 Challenge
 
 Simulate the ACME HTTP-01 challenge to verify that the webroot is publicly accessible.
 
@@ -80,6 +118,11 @@ ssh "massops@$server_ip" '
 
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
 printf "acme challenge served over http: "
+curl -s --resolve "$public_api_domain:80:$server_ip" \
+  "http://$public_api_domain/.well-known/acme-challenge/ping" \
+  | grep -qx ok && echo ok || { echo fail; exit 1; }
+
+printf "acme challenge served over public DNS: "
 curl -s "http://$public_api_domain/.well-known/acme-challenge/ping" \
   | grep -qx ok && echo ok || { echo fail; exit 1; }
 ```
@@ -87,7 +130,7 @@ curl -s "http://$public_api_domain/.well-known/acme-challenge/ping" \
 This is the required preflight check.
 If it fails, stop here and fix DNS, HTTP reachability, or the Nginx ACME webroot before continuing.
 
-## 4. Validate ACME HTTP-01 Challenge (Staging)
+## 5. Validate ACME HTTP-01 Challenge (Staging)
 
 Request a staging certificate from Let's Encrypt in a separate Certbot lineage to validate the ACME HTTP-01 challenge end-to-end without hitting production rate limits.
 If the expected staging lineage is already present with a Let's Encrypt staging issuer, keep it and skip reissuing it.
@@ -110,7 +153,7 @@ ssh "massops@$server_ip" "
 "
 ```
 
-## 5. Issue Production TLS Certificate
+## 6. Issue Production TLS Certificate
 
 Request and install a production TLS certificate from Let's Encrypt using the ACME HTTP-01 challenge.
 If the existing production lineage already presents a valid Let's Encrypt production issuer, keep it and do not force reissuance.
@@ -137,7 +180,7 @@ ssh "massops@$server_ip" "
 Rerun: keep the existing production certificate until renewal is due.
 The staging validation uses a separate Certbot lineage and does not require `--force-renewal`.
 
-## 6. Install The Renewal Reload Hook
+## 7. Install The Renewal Reload Hook
 
 Add a Certbot deploy hook to reload Nginx after each certificate renewal.
 
@@ -158,7 +201,7 @@ ssh "massops@$server_ip" '
 '
 ```
 
-## 7. Activate The Final TLS Nginx Config
+## 8. Activate The Final TLS Nginx Config
 
 Activate the final TLS-enabled Nginx configuration and reload the server.
 
@@ -179,7 +222,7 @@ ssh "massops@$server_ip" '
 '
 ```
 
-## 8. Verify Public HTTP Redirect And HTTPS Read Routing
+## 9. Verify Public HTTP Redirect And HTTPS Read Routing
 
 Verify that HTTP requests are redirected to HTTPS and that routing behaves as expected.
 
@@ -198,7 +241,7 @@ http_status="$(curl -sS -o /dev/null -w '%{http_code}' "https://$public_api_doma
 [[ "$http_status" == "200" ]] && echo ok || { echo fail; exit 1; }
 ```
 
-## 9. Inspect The Presented Certificate
+## 10. Inspect The Presented Certificate
 
 ```zsh
 public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
@@ -212,13 +255,21 @@ Confirm that:
 - the certificate is not expired
 - the issuer is Let’s Encrypt production, not staging
 
-## 10. Verify Automatic Renewal
+## 11. Verify Automatic Renewal
 
 Dry-run renewal to ensure certificates can be renewed automatically.
 
 ```zsh
 server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-ssh "massops@$server_ip" 'sudo certbot renew --dry-run --no-random-sleep-on-renew -v'
+public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
+staging_cert_name="$public_api_domain-staging"
+ssh "massops@$server_ip" "
+  set -eu
+  sudo test -s \"/etc/letsencrypt/renewal/$public_api_domain.conf\"
+  sudo grep -Eq '^account[[:space:]]*=' \"/etc/letsencrypt/renewal/$public_api_domain.conf\"
+  sudo certbot renew --cert-name \"$public_api_domain\" --dry-run --no-random-sleep-on-renew -v
+  sudo rm -f \"/etc/letsencrypt/renewal/$staging_cert_name.conf\"
+"
 ```
 
 ## Fallback If DNS Is Not Ready
@@ -234,6 +285,7 @@ If the current `public_api_domain` cannot be pointed yet, use a temporary hostna
 - the API presents a valid TLS certificate
 - `/health` and `/daily` respond on the public HTTPS API
 - certificate renewal is testable
+- staging certificates are excluded from automatic renewal
 
 Next step:
 
@@ -266,27 +318,7 @@ This preserves:
 
 ### Restore a Saved Certificate to a Rebuilt VM
 
-If the VM was rebuilt and a production certificate backup already exists locally, restore it before trying to issue a new certificate.
-
-```zsh
-server_ip="$(terraform -chdir=infra/terraform output -raw server_ip)"
-public_api_domain="$(terraform -chdir=infra/terraform output -raw public_api_domain)"
-backup_dir="$HOME/.local/share/masswhisper/tls-backups/$public_api_domain"
-
-test -d "$backup_dir/letsencrypt" || { echo "missing local certificate backup"; exit 1; }
-
-rsync -a --rsync-path="sudo rsync" "$backup_dir/letsencrypt/" "massops@$server_ip:/etc/letsencrypt/"
-
-ssh "massops@$server_ip" '
-  set -eu
-  sudo chown -R root:root /etc/letsencrypt
-  sudo find /etc/letsencrypt -type d -exec chmod 755 {} \;
-  sudo find /etc/letsencrypt -type f -exec chmod 644 {} \;
-  sudo find /etc/letsencrypt/archive -type f -exec chmod 600 {} \;
-  sudo nginx -t
-  sudo systemctl reload nginx
-'
-```
+Use step 3 before requesting staging or production certificates.
 
 ### Verify the Restored Certificate
 
