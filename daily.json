@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-19T10:36:42.596Z",
-  "snapshotCreatedAt": "2026-04-19T10:36:00.000Z",
+  "generatedAt": "2026-04-20T11:18:22.774Z",
+  "snapshotCreatedAt": "2026-04-20T11:17:23.713Z",
   "report": {
-    "text": "Marché tech en dégradation, perspectives prudentes et tensions visibles",
+    "text": "Marché tech en dégradation, tensions et recrutements en recul",
     "emoji": "🌧️"
   },
   "headlines": [
@@ -12,49 +12,49 @@
       "itemRef": "https://reddit.com/comments/1so23ly"
     },
     {
-      "title": "Désespoir",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1slqgca"
-    },
-    {
       "title": "3 processus de recrutement et zéro respect du temps des candidats",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1sla35i"
     },
     {
-      "title": "L'impression d'être mauvais",
+      "title": "Comment les recruteurs font-ils vraiment la différence entre des profils très similaires aujourd’hui ?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1slepgi"
+      "itemRef": "https://reddit.com/comments/1spkry1"
+    },
+    {
+      "title": "Recherche projet .NET pour volontariat",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1sldg6w"
+    },
+    {
+      "title": "Legacy code, stop ou encore ?!",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1slbk2p"
     },
     {
       "title": "Pression ESN intercontrat",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1sm198k"
     },
     {
-      "title": "Blocage mental pour reprendre le dev après 2 ans —impossible de m’y remettre sérieusement",
+      "title": "Mais c'est la seule choses que j'ai envie de faire... J'abandonne ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sn7xhc"
+      "itemRef": "https://reddit.com/comments/1skjtzp"
     },
     {
-      "title": "Tout le monde est devenu ingénieur?",
+      "title": "Désespoir",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sju840"
+      "itemRef": "https://reddit.com/comments/1slqgca"
+    },
+    {
+      "title": "55k en IDF : j’ai l’impression d’être en dessous du marché",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1spttco"
     },
     {
       "title": "Y a-t-il un avenir pour VueJS?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1skfcyf"
-    },
-    {
-      "title": "Recherche projet .NET pour volontariat",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sldg6w"
-    },
-    {
-      "title": "Legacy code, stop ou encore ?!",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1slbk2p"
     }
   ],
   "sentimentHistory": [
@@ -5369,6 +5369,27 @@
         "negative_surprise": 0.343463,
         "optimistic_anticipation": 0.10368,
         "pessimistic_anticipation": 0.551349
+      }
+    },
+    {
+      "createdAt": "2026-04-20T11:17:23.713Z",
+      "count": 15,
+      "confidenceMass": 19.766164,
+      "emotions": {
+        "joy": 0.05,
+        "trust": 0.183466,
+        "anger": 0.261408,
+        "fear": 0.374739,
+        "sadness": 0.461716,
+        "disgust": 0.150908
+      },
+      "tonalities": {
+        "positive": 0.10896,
+        "negative": 0.669912,
+        "positive_surprise": 0.014609,
+        "negative_surprise": 0.352465,
+        "optimistic_anticipation": 0.138846,
+        "pessimistic_anticipation": 0.539069
       }
     }
   ]
