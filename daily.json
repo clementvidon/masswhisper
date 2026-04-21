@@ -1,50 +1,30 @@
 {
-  "generatedAt": "2026-04-20T11:18:22.774Z",
-  "snapshotCreatedAt": "2026-04-20T11:17:23.713Z",
+  "generatedAt": "2026-04-21T11:04:17.350Z",
+  "snapshotCreatedAt": "2026-04-21T11:03:05.183Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et recrutements en recul",
+    "text": "Marché tech en nette dégradation, tension et recul des opportunités",
     "emoji": "🌧️"
   },
   "headlines": [
-    {
-      "title": "Quelle a été votre augmentation salariale en 2026?",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1so23ly"
-    },
-    {
-      "title": "3 processus de recrutement et zéro respect du temps des candidats",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1sla35i"
-    },
-    {
-      "title": "Comment les recruteurs font-ils vraiment la différence entre des profils très similaires aujourd’hui ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1spkry1"
-    },
-    {
-      "title": "Recherche projet .NET pour volontariat",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1sldg6w"
-    },
     {
       "title": "Legacy code, stop ou encore ?!",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1slbk2p"
     },
     {
-      "title": "Pression ESN intercontrat",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sm198k"
+      "title": "Quelle a été votre augmentation salariale en 2026?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1so23ly"
     },
     {
-      "title": "Mais c'est la seule choses que j'ai envie de faire... J'abandonne ?",
+      "title": "Je ne sais plus comment me positionner",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1skjtzp"
+      "itemRef": "https://reddit.com/comments/1snz4jq"
     },
     {
-      "title": "Désespoir",
+      "title": "3 processus de recrutement et zéro respect du temps des candidats",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1slqgca"
+      "itemRef": "https://reddit.com/comments/1sla35i"
     },
     {
       "title": "55k en IDF : j’ai l’impression d’être en dessous du marché",
@@ -52,9 +32,29 @@
       "itemRef": "https://reddit.com/comments/1spttco"
     },
     {
-      "title": "Y a-t-il un avenir pour VueJS?",
+      "title": "Désespoir",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1skfcyf"
+      "itemRef": "https://reddit.com/comments/1slqgca"
+    },
+    {
+      "title": "Recherche projet .NET pour volontariat",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sldg6w"
+    },
+    {
+      "title": "Comment les recruteurs font-ils vraiment la différence entre des profils très similaires aujourd’hui ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1spkry1"
+    },
+    {
+      "title": "Pression ESN intercontrat",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sm198k"
+    },
+    {
+      "title": "L'impression d'être mauvais",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1slepgi"
     }
   ],
   "sentimentHistory": [
@@ -5390,6 +5390,27 @@
         "negative_surprise": 0.352465,
         "optimistic_anticipation": 0.138846,
         "pessimistic_anticipation": 0.539069
+      }
+    },
+    {
+      "createdAt": "2026-04-21T11:03:05.183Z",
+      "count": 17,
+      "confidenceMass": 15.880609,
+      "emotions": {
+        "joy": 0.056927,
+        "trust": 0.184161,
+        "anger": 0.287363,
+        "fear": 0.460251,
+        "sadness": 0.457928,
+        "disgust": 0.213063
+      },
+      "tonalities": {
+        "positive": 0.099535,
+        "negative": 0.650898,
+        "positive_surprise": 0.004408,
+        "negative_surprise": 0.296644,
+        "optimistic_anticipation": 0.137632,
+        "pessimistic_anticipation": 0.585617
       }
     }
   ]
