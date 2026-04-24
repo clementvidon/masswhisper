@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-23T11:06:13.143Z",
-  "snapshotCreatedAt": "2026-04-23T11:04:51.433Z",
+  "generatedAt": "2026-04-24T11:04:45.535Z",
+  "snapshotCreatedAt": "2026-04-24T11:04:00.537Z",
   "report": {
-    "text": "Marché tech sous tension, signes de fragilité et prudence nécessaires",
+    "text": "Marché tech en légère détérioration, tensions et prudence croissantes",
     "emoji": "🌧️"
   },
   "headlines": [
     {
       "title": "Employés en ESN et ailleurs, voyez-vous des changements avec l'arrivée imminente de la loi sur la transparence des salaires ?",
-      "weight": "4",
+      "weight": "3",
       "itemRef": "https://reddit.com/comments/1ssg8uv"
     },
     {
@@ -17,44 +17,44 @@
       "itemRef": "https://reddit.com/comments/1sqszda"
     },
     {
-      "title": "55k en IDF : j’ai l’impression d’être en dessous du marché",
+      "title": "\"Si tu as du mal à trouver un boulot, fais des projets en attendant\" Ok, comment ?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1spttco"
-    },
-    {
-      "title": "Je ne comprends pas la hyper autour de l'IA et j'ai l'impression de passer à côté de quelque chose",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1sqlfz6"
-    },
-    {
-      "title": "Profil Ingénieur/Développeur trop polyvalent ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1srmvh5"
-    },
-    {
-      "title": "Ai-je raison de stresser ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1sn4slx"
-    },
-    {
-      "title": "Quelle a été votre augmentation salariale en 2026?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1so23ly"
-    },
-    {
-      "title": "Comment les recruteurs font-ils vraiment la différence entre des profils très similaires aujourd’hui ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1spkry1"
-    },
-    {
-      "title": "Proposition en tant que futur jeune diplômé",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1snacyh"
+      "itemRef": "https://reddit.com/comments/1srhbdi"
     },
     {
       "title": "Je ne sais plus comment me positionner",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1snz4jq"
+    },
+    {
+      "title": "De développeur à Fonctionnel",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ssl2ic"
+    },
+    {
+      "title": "Secteurs non bouchés?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sqqlcf"
+    },
+    {
+      "title": "Quelle a été votre augmentation salariale en 2026?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1so23ly"
+    },
+    {
+      "title": "55k en IDF : j’ai l’impression d’être en dessous du marché",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1spttco"
+    },
+    {
+      "title": "Profil Ingénieur/Développeur trop polyvalent ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1srmvh5"
+    },
+    {
+      "title": "Comment les recruteurs font-ils vraiment la différence entre des profils très similaires aujourd’hui ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1spkry1"
     }
   ],
   "sentimentHistory": [
@@ -5453,6 +5453,27 @@
         "negative_surprise": 0.251086,
         "optimistic_anticipation": 0.303901,
         "pessimistic_anticipation": 0.4943
+      }
+    },
+    {
+      "createdAt": "2026-04-24T11:04:00.537Z",
+      "count": 12,
+      "confidenceMass": 15.786094,
+      "emotions": {
+        "joy": 0.096609,
+        "trust": 0.321195,
+        "anger": 0.280176,
+        "fear": 0.335248,
+        "sadness": 0.325265,
+        "disgust": 0.197049
+      },
+      "tonalities": {
+        "positive": 0.229385,
+        "negative": 0.509703,
+        "positive_surprise": 0.049785,
+        "negative_surprise": 0.210866,
+        "optimistic_anticipation": 0.293565,
+        "pessimistic_anticipation": 0.455466
       }
     }
   ]
