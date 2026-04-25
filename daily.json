@@ -1,45 +1,30 @@
 {
-  "generatedAt": "2026-04-24T11:04:45.535Z",
-  "snapshotCreatedAt": "2026-04-24T11:04:00.537Z",
+  "generatedAt": "2026-04-25T10:40:59.781Z",
+  "snapshotCreatedAt": "2026-04-25T10:40:02.145Z",
   "report": {
-    "text": "Marché tech en légère détérioration, tensions et prudence croissantes",
+    "text": "Marché tech à la baisse, tensions et prudence accrues",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Employés en ESN et ailleurs, voyez-vous des changements avec l'arrivée imminente de la loi sur la transparence des salaires ?",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1ssg8uv"
-    },
-    {
       "title": "On peut arrêter une seconde avec le vibe coding ?",
-      "weight": "3",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1sqszda"
     },
     {
-      "title": "\"Si tu as du mal à trouver un boulot, fais des projets en attendant\" Ok, comment ?",
+      "title": "Comment les recruteurs font-ils vraiment la différence entre des profils très similaires aujourd’hui ?",
       "weight": "2",
+      "itemRef": "https://reddit.com/comments/1spkry1"
+    },
+    {
+      "title": "Je ne comprends pas la hyper autour de l'IA et j'ai l'impression de passer à côté de quelque chose",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1sqlfz6"
+    },
+    {
+      "title": "\"Si tu as du mal à trouver un boulot, fais des projets en attendant\" Ok, comment ?",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1srhbdi"
-    },
-    {
-      "title": "Je ne sais plus comment me positionner",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1snz4jq"
-    },
-    {
-      "title": "De développeur à Fonctionnel",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ssl2ic"
-    },
-    {
-      "title": "Secteurs non bouchés?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sqqlcf"
-    },
-    {
-      "title": "Quelle a été votre augmentation salariale en 2026?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1so23ly"
     },
     {
       "title": "55k en IDF : j’ai l’impression d’être en dessous du marché",
@@ -52,9 +37,24 @@
       "itemRef": "https://reddit.com/comments/1srmvh5"
     },
     {
-      "title": "Comment les recruteurs font-ils vraiment la différence entre des profils très similaires aujourd’hui ?",
+      "title": "Test technique lunaire ou je fais mon difficile ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1spkry1"
+      "itemRef": "https://reddit.com/comments/1sung2h"
+    },
+    {
+      "title": "Pourquoi tant de recruteurs jurent que par le \"top école ingé\" même au niveau sénior ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sul9d3"
+    },
+    {
+      "title": "Avis sur ESN",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sunti2"
+    },
+    {
+      "title": "De développeur à Fonctionnel",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ssl2ic"
     }
   ],
   "sentimentHistory": [
@@ -5474,6 +5474,27 @@
         "negative_surprise": 0.210866,
         "optimistic_anticipation": 0.293565,
         "pessimistic_anticipation": 0.455466
+      }
+    },
+    {
+      "createdAt": "2026-04-25T10:40:02.145Z",
+      "count": 12,
+      "confidenceMass": 13.400495,
+      "emotions": {
+        "joy": 0.074626,
+        "trust": 0.255623,
+        "anger": 0.308354,
+        "fear": 0.383176,
+        "sadness": 0.283362,
+        "disgust": 0.244903
+      },
+      "tonalities": {
+        "positive": 0.136096,
+        "negative": 0.581939,
+        "positive_surprise": 0.014441,
+        "negative_surprise": 0.262488,
+        "optimistic_anticipation": 0.186042,
+        "pessimistic_anticipation": 0.53879
       }
     }
   ]
