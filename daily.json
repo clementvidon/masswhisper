@@ -1,25 +1,15 @@
 {
-  "generatedAt": "2026-05-02T10:47:18.537Z",
-  "snapshotCreatedAt": "2026-05-02T10:46:23.665Z",
+  "generatedAt": "2026-05-03T10:52:33.000Z",
+  "snapshotCreatedAt": "2026-05-03T10:51:31.589Z",
   "report": {
-    "text": "Marché tech nettement dégradé, tensions et recul des opportunités",
+    "text": "Marché tech sous pression, détérioration nette et inquiétante",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Les boîtes n'embauchent plus aucun nouveau développeur junior et virent tous ceux qui ont peu d'expérience.",
+      "title": "Aaah le développement",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1sw5ky0"
-    },
-    {
-      "title": "Trouver une voie de reorientation",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1syy4ld"
-    },
-    {
-      "title": "Les offres fullstack sont des offres backend",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1syu1t6"
+      "itemRef": "https://reddit.com/comments/1syv7r8"
     },
     {
       "title": "Est-ce que c’est cuit pour moi ?",
@@ -32,14 +22,9 @@
       "itemRef": "https://reddit.com/comments/1sx9m80"
     },
     {
-      "title": "Red flag ou belle opportunité ?",
+      "title": "Trouver une voie de reorientation",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1sz5u0x"
-    },
-    {
-      "title": "Trop tard pour trouver une alternance ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1szph1d"
+      "itemRef": "https://reddit.com/comments/1syy4ld"
     },
     {
       "title": "Trou de 2 ans post diplôme",
@@ -47,14 +32,29 @@
       "itemRef": "https://reddit.com/comments/1sy8531"
     },
     {
-      "title": "Est ce vraiment utile d'être certifié même en étant junior ?",
+      "title": "Offres : CDI ou alternance ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1syva8a"
+      "itemRef": "https://reddit.com/comments/1t0om1l"
     },
     {
-      "title": "Aaah le développement",
+      "title": "Que devrais-je faire ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1syv7r8"
+      "itemRef": "https://reddit.com/comments/1sxv7fu"
+    },
+    {
+      "title": "Les boîtes n'embauchent plus aucun nouveau développeur junior et virent tous ceux qui ont peu d'expérience.",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sw5ky0"
+    },
+    {
+      "title": "Les offres fullstack sont des offres backend",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1syu1t6"
+    },
+    {
+      "title": "J'ai facilement trouvé un taf",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1t2f8km"
     }
   ],
   "sentimentHistory": [
@@ -5642,6 +5642,27 @@
         "negative_surprise": 0.326959,
         "optimistic_anticipation": 0.169109,
         "pessimistic_anticipation": 0.577926
+      }
+    },
+    {
+      "createdAt": "2026-05-03T10:51:31.589Z",
+      "count": 17,
+      "confidenceMass": 20.646553,
+      "emotions": {
+        "joy": 0.103963,
+        "trust": 0.229847,
+        "anger": 0.24327,
+        "fear": 0.485979,
+        "sadness": 0.466681,
+        "disgust": 0.11002
+      },
+      "tonalities": {
+        "positive": 0.170412,
+        "negative": 0.597158,
+        "positive_surprise": 0.062638,
+        "negative_surprise": 0.37881,
+        "optimistic_anticipation": 0.169004,
+        "pessimistic_anticipation": 0.571223
       }
     }
   ]
