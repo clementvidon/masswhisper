@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-05-04T11:46:02.187Z",
-  "snapshotCreatedAt": "2026-05-04T11:44:59.878Z",
+  "generatedAt": "2026-05-05T11:15:06.701Z",
+  "snapshotCreatedAt": "2026-05-05T11:14:02.839Z",
   "report": {
-    "text": "Marché tech plutôt fragile, tendance négative et attentiste.",
+    "text": "Marché tech en léger recul, tensions et prudence dominent",
     "emoji": "🌧️"
   },
   "headlines": [
     {
       "title": "J'ai facilement trouvé un taf",
-      "weight": "5",
+      "weight": "4",
       "itemRef": "https://reddit.com/comments/1t2f8km"
     },
     {
@@ -17,44 +17,44 @@
       "itemRef": "https://reddit.com/comments/1syu1t6"
     },
     {
+      "title": "Est ce vraiment utile d'être certifié même en étant junior ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1syva8a"
+    },
+    {
       "title": "Aaah le développement",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1syv7r8"
     },
     {
-      "title": "Rendre son profil plus attrayant : Spécialisation ou diversification ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1t14ttp"
-    },
-    {
-      "title": "Trouver une voie de reorientation",
+      "title": "Trop tard pour trouver une alternance ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1syy4ld"
-    },
-    {
-      "title": "Comment se faire recruter dans une ESN ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sx9m80"
-    },
-    {
-      "title": "Red flag ou belle opportunité ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sz5u0x"
-    },
-    {
-      "title": "Est ce vraiment utile d'être certifié même en étant junior ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1syva8a"
-    },
-    {
-      "title": "Combien d'années d'expérience avant de trouver du travail facilement ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t2gd97"
+      "itemRef": "https://reddit.com/comments/1szph1d"
     },
     {
       "title": "Les périodes d'essai se rallongent ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1t2jrzc"
+    },
+    {
+      "title": "Trou de 2 ans post diplôme",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sy8531"
+    },
+    {
+      "title": "Offres : CDI ou alternance ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1t0om1l"
+    },
+    {
+      "title": "Négociation de RC bloquée avec mon ESN - besoin d’avis",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1t0tlo2"
+    },
+    {
+      "title": "Je F25, me \"réoriente\" et j'ai besoin de vos conseils/témoignages.",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sy0cjt"
     }
   ],
   "sentimentHistory": [
@@ -5684,6 +5684,27 @@
         "negative_surprise": 0.258744,
         "optimistic_anticipation": 0.25506,
         "pessimistic_anticipation": 0.446475
+      }
+    },
+    {
+      "createdAt": "2026-05-05T11:14:02.839Z",
+      "count": 19,
+      "confidenceMass": 25.395513,
+      "emotions": {
+        "joy": 0.152009,
+        "trust": 0.259114,
+        "anger": 0.177564,
+        "fear": 0.399555,
+        "sadness": 0.37841,
+        "disgust": 0.078259
+      },
+      "tonalities": {
+        "positive": 0.250664,
+        "negative": 0.522135,
+        "positive_surprise": 0.112727,
+        "negative_surprise": 0.269126,
+        "optimistic_anticipation": 0.206827,
+        "pessimistic_anticipation": 0.49439
       }
     }
   ]
