@@ -1,60 +1,60 @@
 {
-  "generatedAt": "2026-05-05T11:15:06.701Z",
-  "snapshotCreatedAt": "2026-05-05T11:14:02.839Z",
+  "generatedAt": "2026-05-06T11:46:34.039Z",
+  "snapshotCreatedAt": "2026-05-06T11:45:45.128Z",
   "report": {
-    "text": "Marché tech en léger recul, tensions et prudence dominent",
+    "text": "Marché tech prudent et sous tension, risques de recul perceptibles",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "J'ai facilement trouvé un taf",
+      "title": "Les chiffres de nos recrutements.",
       "weight": "4",
+      "itemRef": "https://reddit.com/comments/1t3uyo9"
+    },
+    {
+      "title": "Junior : 400+ candidatures, bcp d’esn, 0 offres",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1t3jb8k"
+    },
+    {
+      "title": "Y a-t-il de l’espoir hors ESN ?",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1t48b0p"
+    },
+    {
+      "title": "J'ai facilement trouvé un taf",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1t2f8km"
     },
     {
-      "title": "Les offres fullstack sont des offres backend",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1syu1t6"
-    },
-    {
-      "title": "Est ce vraiment utile d'être certifié même en étant junior ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1syva8a"
-    },
-    {
-      "title": "Aaah le développement",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1syv7r8"
-    },
-    {
-      "title": "Trop tard pour trouver une alternance ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1szph1d"
-    },
-    {
-      "title": "Les périodes d'essai se rallongent ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t2jrzc"
-    },
-    {
-      "title": "Trou de 2 ans post diplôme",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sy8531"
-    },
-    {
       "title": "Offres : CDI ou alternance ?",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1t0om1l"
     },
     {
-      "title": "Négociation de RC bloquée avec mon ESN - besoin d’avis",
+      "title": "Besoins d’avis svp",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t0tlo2"
+      "itemRef": "https://reddit.com/comments/1t0xg0t"
     },
     {
-      "title": "Je F25, me \"réoriente\" et j'ai besoin de vos conseils/témoignages.",
+      "title": "Trouver une voie de reorientation",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1sy0cjt"
+      "itemRef": "https://reddit.com/comments/1syy4ld"
+    },
+    {
+      "title": "Red flag ou belle opportunité ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1sz5u0x"
+    },
+    {
+      "title": "Combien d'années d'expérience avant de trouver du travail facilement ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1t2gd97"
+    },
+    {
+      "title": "Rendre son profil plus attrayant : Spécialisation ou diversification ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1t14ttp"
     }
   ],
   "sentimentHistory": [
@@ -5705,6 +5705,27 @@
         "negative_surprise": 0.269126,
         "optimistic_anticipation": 0.206827,
         "pessimistic_anticipation": 0.49439
+      }
+    },
+    {
+      "createdAt": "2026-05-06T11:45:45.128Z",
+      "count": 14,
+      "confidenceMass": 22.397984,
+      "emotions": {
+        "joy": 0.122419,
+        "trust": 0.256485,
+        "anger": 0.20848,
+        "fear": 0.41355,
+        "sadness": 0.3655,
+        "disgust": 0.104569
+      },
+      "tonalities": {
+        "positive": 0.22349,
+        "negative": 0.559856,
+        "positive_surprise": 0.085727,
+        "negative_surprise": 0.375956,
+        "optimistic_anticipation": 0.208086,
+        "pessimistic_anticipation": 0.561063
       }
     }
   ]
