@@ -1,50 +1,50 @@
 {
-  "generatedAt": "2026-05-08T11:10:29.002Z",
-  "snapshotCreatedAt": "2026-05-08T11:09:34.543Z",
+  "generatedAt": "2026-05-09T10:54:44.975Z",
+  "snapshotCreatedAt": "2026-05-09T10:53:59.430Z",
   "report": {
-    "text": "Marché tech sous tension, perspectives globalement négatives et prudentes.",
+    "text": "Marché tech sous pression, recrutement en recul et prudence marquée",
     "emoji": "🌧️"
   },
   "headlines": [
-    {
-      "title": "[RANT] Je viens de passer trois heures en deux jours à review du code IA... Je n'en peux plus",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1t66arw"
-    },
-    {
-      "title": "J'ai facilement trouvé un taf",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1t2f8km"
-    },
     {
       "title": "Les chiffres de nos recrutements.",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1t3uyo9"
     },
     {
-      "title": "Le Helpdesk est sous-estimé… et complètement saturé",
+      "title": "[RANT] Je viens de passer trois heures en deux jours à review du code IA... Je n'en peux plus",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1t4exg4"
+      "itemRef": "https://reddit.com/comments/1t66arw"
+    },
+    {
+      "title": "Quoi choisir pour être augmenté ses chances d’être recruté en Junior ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1t70i45"
     },
     {
       "title": "Les périodes d'essai se rallongent ?",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1t2jrzc"
     },
     {
+      "title": "Missions confiées à un junior : est-ce normal ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1t4s631"
+    },
+    {
       "title": "Junior : 400+ candidatures, bcp d’esn, 0 offres",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1t3jb8k"
     },
     {
       "title": "Y a-t-il de l’espoir hors ESN ?",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1t48b0p"
     },
     {
-      "title": "Où cherchez vous du travail?",
+      "title": "J'ai facilement trouvé un taf",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t5b1ax"
+      "itemRef": "https://reddit.com/comments/1t2f8km"
     },
     {
       "title": "Combien d'années d'expérience avant de trouver du travail facilement ?",
@@ -52,9 +52,9 @@
       "itemRef": "https://reddit.com/comments/1t2gd97"
     },
     {
-      "title": "Rendre son profil plus attrayant : Spécialisation ou diversification ?",
+      "title": "IT audit Big Four ou attendre un vrai job data ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t14ttp"
+      "itemRef": "https://reddit.com/comments/1t6h0zo"
     }
   ],
   "sentimentHistory": [
@@ -5768,6 +5768,27 @@
         "negative_surprise": 0.367672,
         "optimistic_anticipation": 0.26394,
         "pessimistic_anticipation": 0.524218
+      }
+    },
+    {
+      "createdAt": "2026-05-09T10:53:59.430Z",
+      "count": 13,
+      "confidenceMass": 16.681992,
+      "emotions": {
+        "joy": 0.12965,
+        "trust": 0.265325,
+        "anger": 0.267109,
+        "fear": 0.40946,
+        "sadness": 0.337156,
+        "disgust": 0.140283
+      },
+      "tonalities": {
+        "positive": 0.181248,
+        "negative": 0.575179,
+        "positive_surprise": 0.097383,
+        "negative_surprise": 0.385734,
+        "optimistic_anticipation": 0.223349,
+        "pessimistic_anticipation": 0.549699
       }
     }
   ]
