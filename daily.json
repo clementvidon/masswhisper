@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-12T11:51:32.845Z",
-  "snapshotCreatedAt": "2026-05-12T11:50:53.114Z",
+  "generatedAt": "2026-05-13T12:01:41.978Z",
+  "snapshotCreatedAt": "2026-05-13T12:00:56.354Z",
   "report": {
-    "text": "Marché tech plutôt tendu, signes de ralentissement et prudence accrue",
+    "text": "Marché tech en léger repli, tensions discrètes; vigilance recommandée",
     "emoji": "🌧️"
   },
   "headlines": [
@@ -12,44 +12,49 @@
       "itemRef": "https://reddit.com/comments/1t93me0"
     },
     {
+      "title": "Partir ou rester?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1tadlpv"
+    },
+    {
+      "title": "L''entreprise technologique Cloudflare licencie 1 100 personnes, car « l'utilisation de l'IA par Cloudflare a augmenté de plus de 600 % au cours des trois derniers mois seulement »",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1t7hhnm"
+    },
+    {
+      "title": "Où cherchez vous du travail?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1t5b1ax"
+    },
+    {
       "title": "[RANT] Je viens de passer trois heures en deux jours à review du code IA... Je n'en peux plus",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1t66arw"
     },
     {
-      "title": "ESN, délit de marchandage, les boulangers et le petit théâtre du 1er mai",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1t8z75e"
+      "title": "Freelance / la recherche est Whaou mais c’est pas impossible",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1taer7c"
     },
     {
       "title": "Quoi choisir pour être augmenté ses chances d’être recruté en Junior ?",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1t70i45"
     },
     {
-      "title": "Le Helpdesk est sous-estimé… et complètement saturé",
+      "title": "IT audit Big Four ou attendre un vrai job data ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t4exg4"
+      "itemRef": "https://reddit.com/comments/1t6h0zo"
     },
     {
-      "title": "L''entreprise technologique Cloudflare licencie 1 100 personnes, car « l'utilisation de l'IA par Cloudflare a augmenté de plus de 600 % au cours des trois derniers mois seulement »",
+      "title": "Doctorat en biologie → reconversion dev : refus automatique chez Sopra Steria, pourquoi ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t7hhnm"
+      "itemRef": "https://reddit.com/comments/1tb70zr"
     },
     {
-      "title": "Où cherchez vous du travail?",
+      "title": "ESN, délit de marchandage, les boulangers et le petit théâtre du 1er mai",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t5b1ax"
-    },
-    {
-      "title": "Partir ou rester?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tadlpv"
-    },
-    {
-      "title": "Missions confiées à un junior : est-ce normal ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t4s631"
+      "itemRef": "https://reddit.com/comments/1t8z75e"
     }
   ],
   "sentimentHistory": [
@@ -5847,6 +5852,27 @@
         "negative_surprise": 0.354124,
         "optimistic_anticipation": 0.188056,
         "pessimistic_anticipation": 0.465343
+      }
+    },
+    {
+      "createdAt": "2026-05-13T12:00:56.354Z",
+      "count": 10,
+      "confidenceMass": 13.800794,
+      "emotions": {
+        "joy": 0.105224,
+        "trust": 0.254991,
+        "anger": 0.272028,
+        "fear": 0.288368,
+        "sadness": 0.282668,
+        "disgust": 0.176653
+      },
+      "tonalities": {
+        "positive": 0.201972,
+        "negative": 0.49245,
+        "positive_surprise": 0.061931,
+        "negative_surprise": 0.31618,
+        "optimistic_anticipation": 0.21549,
+        "pessimistic_anticipation": 0.418962
       }
     }
   ]
