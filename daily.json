@@ -1,60 +1,55 @@
 {
-  "generatedAt": "2026-05-13T12:01:41.978Z",
-  "snapshotCreatedAt": "2026-05-13T12:00:56.354Z",
+  "generatedAt": "2026-05-14T11:49:33.616Z",
+  "snapshotCreatedAt": "2026-05-14T11:48:50.159Z",
   "report": {
-    "text": "Marché tech en léger repli, tensions discrètes; vigilance recommandée",
+    "text": "Marché tech en léger repli, prudence et sélectivité requises",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Pourquoi le full remote est devenu si rare en France ?",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1t93me0"
-    },
-    {
-      "title": "Partir ou rester?",
+      "title": "Doctorat en biologie → reconversion dev : refus automatique chez Sopra Steria, pourquoi ?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tadlpv"
-    },
-    {
-      "title": "L''entreprise technologique Cloudflare licencie 1 100 personnes, car « l'utilisation de l'IA par Cloudflare a augmenté de plus de 600 % au cours des trois derniers mois seulement »",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1t7hhnm"
-    },
-    {
-      "title": "Où cherchez vous du travail?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1t5b1ax"
-    },
-    {
-      "title": "[RANT] Je viens de passer trois heures en deux jours à review du code IA... Je n'en peux plus",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1t66arw"
+      "itemRef": "https://reddit.com/comments/1tb70zr"
     },
     {
       "title": "Freelance / la recherche est Whaou mais c’est pas impossible",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1taer7c"
     },
     {
       "title": "Quoi choisir pour être augmenté ses chances d’être recruté en Junior ?",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1t70i45"
     },
     {
-      "title": "IT audit Big Four ou attendre un vrai job data ?",
+      "title": "Partir ou rester?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t6h0zo"
+      "itemRef": "https://reddit.com/comments/1tadlpv"
     },
     {
-      "title": "Doctorat en biologie → reconversion dev : refus automatique chez Sopra Steria, pourquoi ?",
+      "title": "IA rien à voir avec le marché creux en IT - YouTube",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tb70zr"
+      "itemRef": "https://reddit.com/comments/1tc5sl0"
+    },
+    {
+      "title": "Pourquoi le full remote est devenu si rare en France ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1t93me0"
+    },
+    {
+      "title": "L''entreprise technologique Cloudflare licencie 1 100 personnes, car « l'utilisation de l'IA par Cloudflare a augmenté de plus de 600 % au cours des trois derniers mois seulement »",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1t7hhnm"
     },
     {
       "title": "ESN, délit de marchandage, les boulangers et le petit théâtre du 1er mai",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1t8z75e"
+    },
+    {
+      "title": "Vous avez déjà vu des prestas ne pas être gardés pour cause d’être pas assez bon?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tc8vvq"
     }
   ],
   "sentimentHistory": [
@@ -5873,6 +5868,27 @@
         "negative_surprise": 0.31618,
         "optimistic_anticipation": 0.21549,
         "pessimistic_anticipation": 0.418962
+      }
+    },
+    {
+      "createdAt": "2026-05-14T11:48:50.159Z",
+      "count": 9,
+      "confidenceMass": 10.254481,
+      "emotions": {
+        "joy": 0.146853,
+        "trust": 0.350144,
+        "anger": 0.245285,
+        "fear": 0.30708,
+        "sadness": 0.296089,
+        "disgust": 0.172532
+      },
+      "tonalities": {
+        "positive": 0.226477,
+        "negative": 0.436288,
+        "positive_surprise": 0.088253,
+        "negative_surprise": 0.303348,
+        "optimistic_anticipation": 0.270201,
+        "pessimistic_anticipation": 0.410599
       }
     }
   ]
