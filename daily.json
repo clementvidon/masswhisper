@@ -1,35 +1,40 @@
 {
-  "generatedAt": "2026-05-15T11:52:42.674Z",
-  "snapshotCreatedAt": "2026-05-15T11:52:07.475Z",
+  "generatedAt": "2026-05-16T11:00:42.215Z",
+  "snapshotCreatedAt": "2026-05-16T11:00:07.465Z",
   "report": {
-    "text": "Marché tech en net repli, tensions et réductions d’embauches",
+    "text": "Marché tech globalement dégradé, signes de recul et prudence accrue",
     "emoji": "🌧️"
   },
   "headlines": [
-    {
-      "title": "IA rien à voir avec le marché creux en IT - YouTube",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1tc5sl0"
-    },
     {
       "title": "Pourquoi le full remote est devenu si rare en France ?",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1t93me0"
     },
     {
+      "title": "Doctorat en biologie → reconversion dev : refus automatique chez Sopra Steria, pourquoi ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1tb70zr"
+    },
+    {
       "title": "Vous avez déjà vu des prestas ne pas être gardés pour cause d’être pas assez bon?",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1tc8vvq"
     },
     {
-      "title": "L''entreprise technologique Cloudflare licencie 1 100 personnes, car « l'utilisation de l'IA par Cloudflare a augmenté de plus de 600 % au cours des trois derniers mois seulement »",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1t7hhnm"
+      "title": "IA rien à voir avec le marché creux en IT - YouTube",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1tc5sl0"
     },
     {
-      "title": "Doctorat en biologie → reconversion dev : refus automatique chez Sopra Steria, pourquoi ?",
+      "title": "Reconversion en 2026, grosse erreur ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tb70zr"
+      "itemRef": "https://reddit.com/comments/1tduqn8"
+    },
+    {
+      "title": "J'ai un titre RNCP niveau 7 (Bac+5) et je me pose la question si repasser un vrai master vaut le coup",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1te67tq"
     },
     {
       "title": "Partir ou rester?",
@@ -5900,6 +5905,27 @@
         "negative_surprise": 0.368802,
         "optimistic_anticipation": 0.119872,
         "pessimistic_anticipation": 0.375283
+      }
+    },
+    {
+      "createdAt": "2026-05-16T11:00:07.465Z",
+      "count": 8,
+      "confidenceMass": 10.825539,
+      "emotions": {
+        "joy": 0.09001,
+        "trust": 0.247355,
+        "anger": 0.253802,
+        "fear": 0.298699,
+        "sadness": 0.292449,
+        "disgust": 0.116546
+      },
+      "tonalities": {
+        "positive": 0.140073,
+        "negative": 0.466764,
+        "positive_surprise": 0.029208,
+        "negative_surprise": 0.333385,
+        "optimistic_anticipation": 0.214797,
+        "pessimistic_anticipation": 0.447734
       }
     }
   ]
