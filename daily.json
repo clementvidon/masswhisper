@@ -1,35 +1,20 @@
 {
-  "generatedAt": "2026-05-18T13:42:58.645Z",
-  "snapshotCreatedAt": "2026-05-18T13:42:03.404Z",
+  "generatedAt": "2026-05-19T12:37:16.808Z",
+  "snapshotCreatedAt": "2026-05-19T12:36:33.030Z",
   "report": {
-    "text": "Marché tech en dégradation modérée, recrutements en repli et prudence accrue",
+    "text": "Marché tech en dégradation, tensions et recul des opportunités",
     "emoji": "🌧️"
   },
   "headlines": [
     {
       "title": "Reconversion en 2026, grosse erreur ?",
-      "weight": "3",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1tduqn8"
     },
     {
-      "title": "J'ai un titre RNCP niveau 7 (Bac+5) et je me pose la question si repasser un vrai master vaut le coup",
+      "title": "Doctorat en biologie → reconversion dev : refus automatique chez Sopra Steria, pourquoi ?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1te67tq"
-    },
-    {
-      "title": "IA rien à voir avec le marché creux en IT - YouTube",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tc5sl0"
-    },
-    {
-      "title": "Partir ou rester?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tadlpv"
-    },
-    {
-      "title": "Freelance / la recherche est Whaou mais c’est pas impossible",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1taer7c"
+      "itemRef": "https://reddit.com/comments/1tb70zr"
     },
     {
       "title": "Arthur Mensch (Mistral) - \"nos ingénieurs n'écrivent plus une ligne de code\"",
@@ -37,9 +22,24 @@
       "itemRef": "https://reddit.com/comments/1tep2hd"
     },
     {
+      "title": "IA rien à voir avec le marché creux en IT - YouTube",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tc5sl0"
+    },
+    {
+      "title": "J'ai un titre RNCP niveau 7 (Bac+5) et je me pose la question si repasser un vrai master vaut le coup",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1te67tq"
+    },
+    {
       "title": "Inter-contrat long : besoin de conseils",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1tepn1l"
+    },
+    {
+      "title": "Ingénieur télécom/réseaux : Toulouse ou Île-de-France pour commencer en France ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tb0cni"
     },
     {
       "title": "7/8 ans d’XP en dev et j’ai l’impression d’avoir stagné techniquement",
@@ -47,14 +47,9 @@
       "itemRef": "https://reddit.com/comments/1tfubdd"
     },
     {
-      "title": "Doctorat en biologie → reconversion dev : refus automatique chez Sopra Steria, pourquoi ?",
+      "title": "Vous avez déjà vu des prestas ne pas être gardés pour cause d’être pas assez bon?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tb70zr"
-    },
-    {
-      "title": "Ingénieur logiciel étranger en France : sécuriser mon Passeport Talent ou saisir une meilleure opportunité tech ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tb5zqg"
+      "itemRef": "https://reddit.com/comments/1tc8vvq"
     }
   ],
   "sentimentHistory": [
@@ -5978,6 +5973,27 @@
         "negative_surprise": 0.295728,
         "optimistic_anticipation": 0.241569,
         "pessimistic_anticipation": 0.539361
+      }
+    },
+    {
+      "createdAt": "2026-05-19T12:36:33.030Z",
+      "count": 9,
+      "confidenceMass": 10.450267,
+      "emotions": {
+        "joy": 0.07362,
+        "trust": 0.196586,
+        "anger": 0.29385,
+        "fear": 0.391525,
+        "sadness": 0.435583,
+        "disgust": 0.137265
+      },
+      "tonalities": {
+        "positive": 0.148827,
+        "negative": 0.561093,
+        "positive_surprise": 0.024075,
+        "negative_surprise": 0.372601,
+        "optimistic_anticipation": 0.232809,
+        "pessimistic_anticipation": 0.537019
       }
     }
   ]
