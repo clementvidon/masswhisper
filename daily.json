@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-05-21T12:43:04.518Z",
-  "snapshotCreatedAt": "2026-05-21T12:42:28.388Z",
+  "generatedAt": "2026-05-22T12:15:26.230Z",
+  "snapshotCreatedAt": "2026-05-22T12:15:03.005Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et inquiétudes persistantes",
-    "emoji": "🌧️"
+    "text": "Marché tech en dégradation, tensions et offres en recul",
+    "emoji": "🌩️"
   },
   "headlines": [
     {
@@ -13,23 +13,23 @@
     },
     {
       "title": "Reconversion en 2026, grosse erreur ?",
-      "weight": "3",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1tduqn8"
     },
     {
-      "title": "7/8 ans d’XP en dev et j’ai l’impression d’avoir stagné techniquement",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tfubdd"
-    },
-    {
       "title": "J'ai un titre RNCP niveau 7 (Bac+5) et je me pose la question si repasser un vrai master vaut le coup",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1te67tq"
     },
     {
       "title": "Inter-contrat long : besoin de conseils",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1tepn1l"
+    },
+    {
+      "title": "7/8 ans d’XP en dev et j’ai l’impression d’avoir stagné techniquement",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tfubdd"
     },
     {
       "title": "Arthur Mensch (Mistral) - \"nos ingénieurs n'écrivent plus une ligne de code\"",
@@ -6021,6 +6021,27 @@
         "negative_surprise": 0.414496,
         "optimistic_anticipation": 0.165867,
         "pessimistic_anticipation": 0.682305
+      }
+    },
+    {
+      "createdAt": "2026-05-22T12:15:03.005Z",
+      "count": 6,
+      "confidenceMass": 7.066571,
+      "emotions": {
+        "joy": 0.05,
+        "trust": 0.148821,
+        "anger": 0.271934,
+        "fear": 0.488208,
+        "sadness": 0.540331,
+        "disgust": 0.136556
+      },
+      "tonalities": {
+        "positive": 0.086322,
+        "negative": 0.719339,
+        "positive_surprise": 0.012736,
+        "negative_surprise": 0.468394,
+        "optimistic_anticipation": 0.099058,
+        "pessimistic_anticipation": 0.670283
       }
     }
   ]
