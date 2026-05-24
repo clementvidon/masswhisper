@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-05-23T11:08:18.077Z",
-  "snapshotCreatedAt": "2026-05-23T11:08:01.955Z",
+  "generatedAt": "2026-05-24T11:13:32.501Z",
+  "snapshotCreatedAt": "2026-05-24T11:13:02.132Z",
   "report": {
-    "text": "Marché tech clairement dégradé, offres en repli et tension persistante",
-    "emoji": "🌧️"
+    "text": "Marché tech en dégradation, tensions et recul des opportunités",
+    "emoji": "🌩️"
   },
   "headlines": [
     {
@@ -6043,6 +6043,27 @@
         "negative_surprise": 0.471819,
         "optimistic_anticipation": 0.032045,
         "pessimistic_anticipation": 0.7
+      }
+    },
+    {
+      "createdAt": "2026-05-24T11:13:02.132Z",
+      "count": 2,
+      "confidenceMass": 4.146051,
+      "emotions": {
+        "joy": 0.05,
+        "trust": 0.153148,
+        "anger": 0.214568,
+        "fear": 0.453148,
+        "sadness": 0.635432,
+        "disgust": 0.164568
+      },
+      "tonalities": {
+        "positive": 0.053148,
+        "negative": 0.782284,
+        "positive_surprise": 0,
+        "negative_surprise": 0.546852,
+        "optimistic_anticipation": 0.035432,
+        "pessimistic_anticipation": 0.664568
       }
     }
   ]
