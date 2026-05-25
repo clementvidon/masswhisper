@@ -1,20 +1,15 @@
 {
-  "generatedAt": "2026-05-24T11:13:32.501Z",
-  "snapshotCreatedAt": "2026-05-24T11:13:02.132Z",
+  "generatedAt": "2026-05-25T12:58:38.042Z",
+  "snapshotCreatedAt": "2026-05-25T12:58:16.826Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et recul des opportunités",
+    "text": "Marché tech en forte détérioration, pressions et coupes significatives visibles",
     "emoji": "🌩️"
   },
   "headlines": [
     {
       "title": "Bahhhhhhh, mdr je serais jamais qualifié",
-      "weight": "3",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1thz5w0"
-    },
-    {
-      "title": "7/8 ans d’XP en dev et j’ai l’impression d’avoir stagné techniquement",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tfubdd"
     }
   ],
   "sentimentHistory": [
@@ -6064,6 +6059,27 @@
         "negative_surprise": 0.546852,
         "optimistic_anticipation": 0.035432,
         "pessimistic_anticipation": 0.664568
+      }
+    },
+    {
+      "createdAt": "2026-05-25T12:58:16.826Z",
+      "count": 1,
+      "confidenceMass": 2.233408,
+      "emotions": {
+        "joy": 0.1,
+        "trust": 0.1,
+        "anger": 0.4,
+        "fear": 0.6,
+        "sadness": 0.7,
+        "disgust": 0.1
+      },
+      "tonalities": {
+        "positive": 0,
+        "negative": 0.8,
+        "positive_surprise": 0,
+        "negative_surprise": 0.6,
+        "optimistic_anticipation": 0,
+        "pessimistic_anticipation": 0.7
       }
     }
   ]
