@@ -1,15 +1,30 @@
 {
-  "generatedAt": "2026-05-25T12:58:38.042Z",
-  "snapshotCreatedAt": "2026-05-25T12:58:16.826Z",
+  "generatedAt": "2026-05-26T12:53:18.753Z",
+  "snapshotCreatedAt": "2026-05-26T12:52:41.891Z",
   "report": {
-    "text": "Marché tech en forte détérioration, pressions et coupes significatives visibles",
-    "emoji": "🌩️"
+    "text": "Marché tech plutôt tendu, avec inquiétudes et recul des embauches",
+    "emoji": "🌧️"
   },
   "headlines": [
     {
+      "title": "Aujourd'hui marque ma 300ème candidature",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tnjk5l"
+    },
+    {
       "title": "Bahhhhhhh, mdr je serais jamais qualifié",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1thz5w0"
+    },
+    {
+      "title": "Etat du marché des AI & ML Engineers vers Sophia-Antipolis / Nice",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tmfch8"
+    },
+    {
+      "title": "Vouloir faire des choses autre que le web/l'IA en 2026, c'est une idée nulle ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tjuw4p"
     }
   ],
   "sentimentHistory": [
@@ -6080,6 +6095,48 @@
         "negative_surprise": 0.6,
         "optimistic_anticipation": 0,
         "pessimistic_anticipation": 0.7
+      }
+    },
+    {
+      "createdAt": "2026-05-26T12:37:35.837Z",
+      "count": 4,
+      "confidenceMass": 3.904518,
+      "emotions": {
+        "joy": 0.121712,
+        "trust": 0.249186,
+        "anger": 0.283084,
+        "fear": 0.403259,
+        "sadness": 0.413562,
+        "disgust": 0.097695
+      },
+      "tonalities": {
+        "positive": 0.126776,
+        "negative": 0.595109,
+        "positive_surprise": 0,
+        "negative_surprise": 0.436087,
+        "optimistic_anticipation": 0.192085,
+        "pessimistic_anticipation": 0.577065
+      }
+    },
+    {
+      "createdAt": "2026-05-26T12:52:41.891Z",
+      "count": 4,
+      "confidenceMass": 3.35,
+      "emotions": {
+        "joy": 0.181343,
+        "trust": 0.235821,
+        "anger": 0.237313,
+        "fear": 0.421642,
+        "sadness": 0.385075,
+        "disgust": 0.104478
+      },
+      "tonalities": {
+        "positive": 0.2,
+        "negative": 0.556716,
+        "positive_surprise": 0.028358,
+        "negative_surprise": 0.361194,
+        "optimistic_anticipation": 0.2,
+        "pessimistic_anticipation": 0.528358
       }
     }
   ]
