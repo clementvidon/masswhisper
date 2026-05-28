@@ -1,35 +1,30 @@
 {
-  "generatedAt": "2026-05-27T12:50:17.985Z",
-  "snapshotCreatedAt": "2026-05-27T12:49:47.730Z",
+  "generatedAt": "2026-05-28T13:44:59.405Z",
+  "snapshotCreatedAt": "2026-05-28T13:44:18.290Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et hésitations croissantes",
+    "text": "Marché tech tendu, signes de ralentissement et prudence accrue",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Aujourd'hui marque ma 300ème candidature",
-      "weight": "4",
-      "itemRef": "https://reddit.com/comments/1tnjk5l"
-    },
-    {
-      "title": "Je dois créer une app from scratch pour un test technique",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1to82h1"
-    },
-    {
-      "title": "C'est possible de trouver une alternance en 2026?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tozvfb"
-    },
-    {
       "title": "Je t'aime, moi non mlus",
-      "weight": "1",
+      "weight": "3",
       "itemRef": "https://reddit.com/comments/1towb98"
     },
     {
-      "title": "Etat du marché des AI & ML Engineers vers Sophia-Antipolis / Nice",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tmfch8"
+      "title": "Aujourd'hui marque ma 300ème candidature",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1tnjk5l"
+    },
+    {
+      "title": "C'est possible de trouver une alternance en 2026?",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1tozvfb"
+    },
+    {
+      "title": "Je dois créer une app from scratch pour un test technique",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1to82h1"
     },
     {
       "title": "Vouloir faire des choses autre que le web/l'IA en 2026, c'est une idée nulle ?",
@@ -37,9 +32,19 @@
       "itemRef": "https://reddit.com/comments/1tjuw4p"
     },
     {
-      "title": "Rejoindre Capgemini France ou société de courtage",
+      "title": "Perdu dans le plan de carrière (Data Engineer)",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1toc2al"
+      "itemRef": "https://reddit.com/comments/1tpjhch"
+    },
+    {
+      "title": "Choix entre ESN et client final",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1to7q2w"
+    },
+    {
+      "title": "Etat du marché des AI & ML Engineers vers Sophia-Antipolis / Nice",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tmfch8"
     }
   ],
   "sentimentHistory": [
@@ -6152,6 +6157,27 @@
         "negative_surprise": 0.493902,
         "optimistic_anticipation": 0.2,
         "pessimistic_anticipation": 0.567186
+      }
+    },
+    {
+      "createdAt": "2026-05-28T13:44:18.290Z",
+      "count": 8,
+      "confidenceMass": 14.55886,
+      "emotions": {
+        "joy": 0.11664,
+        "trust": 0.29138,
+        "anger": 0.26979,
+        "fear": 0.433861,
+        "sadness": 0.409882,
+        "disgust": 0.113409
+      },
+      "tonalities": {
+        "positive": 0.152687,
+        "negative": 0.63709,
+        "positive_surprise": 0.033353,
+        "negative_surprise": 0.408089,
+        "optimistic_anticipation": 0.205064,
+        "pessimistic_anticipation": 0.546724
       }
     }
   ]
