@@ -1,25 +1,15 @@
 {
-  "generatedAt": "2026-05-28T13:44:59.405Z",
-  "snapshotCreatedAt": "2026-05-28T13:44:18.290Z",
+  "generatedAt": "2026-05-29T12:46:20.698Z",
+  "snapshotCreatedAt": "2026-05-29T12:45:45.365Z",
   "report": {
-    "text": "Marché tech tendu, signes de ralentissement et prudence accrue",
+    "text": "Marché tech en dégradation, tensions et prudence dominent",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Je t'aime, moi non mlus",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1towb98"
-    },
-    {
       "title": "Aujourd'hui marque ma 300ème candidature",
       "weight": "3",
       "itemRef": "https://reddit.com/comments/1tnjk5l"
-    },
-    {
-      "title": "C'est possible de trouver une alternance en 2026?",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1tozvfb"
     },
     {
       "title": "Je dois créer une app from scratch pour un test technique",
@@ -27,24 +17,29 @@
       "itemRef": "https://reddit.com/comments/1to82h1"
     },
     {
-      "title": "Vouloir faire des choses autre que le web/l'IA en 2026, c'est une idée nulle ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tjuw4p"
-    },
-    {
       "title": "Perdu dans le plan de carrière (Data Engineer)",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1tpjhch"
     },
     {
-      "title": "Choix entre ESN et client final",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1to7q2w"
+      "title": "C'est possible de trouver une alternance en 2026?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1tozvfb"
     },
     {
-      "title": "Etat du marché des AI & ML Engineers vers Sophia-Antipolis / Nice",
+      "title": "[RANT] les recruteurs tech...",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tmfch8"
+      "itemRef": "https://reddit.com/comments/1tq5kqy"
+    },
+    {
+      "title": "Je t'aime, moi non mlus",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1towb98"
+    },
+    {
+      "title": "Actuellement en CDI Dev, questions propositions ESN",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tqwl7e"
     }
   ],
   "sentimentHistory": [
@@ -6178,6 +6173,27 @@
         "negative_surprise": 0.408089,
         "optimistic_anticipation": 0.205064,
         "pessimistic_anticipation": 0.546724
+      }
+    },
+    {
+      "createdAt": "2026-05-29T12:45:45.365Z",
+      "count": 7,
+      "confidenceMass": 11.243405,
+      "emotions": {
+        "joy": 0.081625,
+        "trust": 0.222188,
+        "anger": 0.326519,
+        "fear": 0.391503,
+        "sadness": 0.420578,
+        "disgust": 0.173166
+      },
+      "tonalities": {
+        "positive": 0.133687,
+        "negative": 0.668868,
+        "positive_surprise": 0.01512,
+        "negative_surprise": 0.420229,
+        "optimistic_anticipation": 0.189809,
+        "pessimistic_anticipation": 0.58419
       }
     }
   ]
