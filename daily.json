@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-30T11:18:05.845Z",
-  "snapshotCreatedAt": "2026-05-30T11:17:31.683Z",
+  "generatedAt": "2026-05-31T11:40:12.915Z",
+  "snapshotCreatedAt": "2026-05-31T11:39:39.247Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et recul des opportunités.",
+    "text": "Marché tech en dégradation, tensions et réductions d'opportunités",
     "emoji": "🌧️"
   },
   "headlines": [
@@ -13,28 +13,28 @@
     },
     {
       "title": "Aujourd'hui marque ma 300ème candidature",
-      "weight": "3",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1tnjk5l"
     },
     {
-      "title": "Je t'aime, moi non mlus",
+      "title": "Ça existe les taff où un dev senior t’apprends à être dev senior ?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1towb98"
-    },
-    {
-      "title": "Actuellement en CDI Dev, questions propositions ESN",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tqwl7e"
+      "itemRef": "https://reddit.com/comments/1tr1uwq"
     },
     {
       "title": "Je dois créer une app from scratch pour un test technique",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1to82h1"
     },
     {
-      "title": "Perdu dans le plan de carrière (Data Engineer)",
+      "title": "Actuellement en CDI Dev, questions propositions ESN",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tpjhch"
+      "itemRef": "https://reddit.com/comments/1tqwl7e"
+    },
+    {
+      "title": "Je t'aime, moi non mlus",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1towb98"
     },
     {
       "title": "C'est possible de trouver une alternance en 2026?",
@@ -47,14 +47,14 @@
       "itemRef": "https://reddit.com/comments/1tr1411"
     },
     {
+      "title": "Perdu dans le plan de carrière (Data Engineer)",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tpjhch"
+    },
+    {
       "title": "Etat du marché des AI & ML Engineers vers Sophia-Antipolis / Nice",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1tmfch8"
-    },
-    {
-      "title": "Ça existe les taff où un dev senior t’apprends à être dev senior ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tr1uwq"
     }
   ],
   "sentimentHistory": [
@@ -6230,6 +6230,27 @@
         "negative_surprise": 0.441914,
         "optimistic_anticipation": 0.237372,
         "pessimistic_anticipation": 0.44571
+      }
+    },
+    {
+      "createdAt": "2026-05-31T11:39:39.247Z",
+      "count": 10,
+      "confidenceMass": 14.30328,
+      "emotions": {
+        "joy": 0.098836,
+        "trust": 0.190966,
+        "anger": 0.351143,
+        "fear": 0.320734,
+        "sadness": 0.414873,
+        "disgust": 0.187301
+      },
+      "tonalities": {
+        "positive": 0.150058,
+        "negative": 0.648465,
+        "positive_surprise": 0.014217,
+        "negative_surprise": 0.404909,
+        "optimistic_anticipation": 0.196171,
+        "pessimistic_anticipation": 0.490849
       }
     }
   ]
