@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-31T11:40:12.915Z",
-  "snapshotCreatedAt": "2026-05-31T11:39:39.247Z",
+  "generatedAt": "2026-06-01T15:53:50.210Z",
+  "snapshotCreatedAt": "2026-06-01T15:53:04.009Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et réductions d'opportunités",
+    "text": "Marché tech en dégradation, tensions et réductions d'opportunités.",
     "emoji": "🌧️"
   },
   "headlines": [
@@ -12,24 +12,24 @@
       "itemRef": "https://reddit.com/comments/1tq5kqy"
     },
     {
-      "title": "Aujourd'hui marque ma 300ème candidature",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tnjk5l"
-    },
-    {
       "title": "Ça existe les taff où un dev senior t’apprends à être dev senior ?",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1tr1uwq"
     },
     {
-      "title": "Je dois créer une app from scratch pour un test technique",
+      "title": "Actuellement en CDI Dev, questions propositions ESN",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1to82h1"
+      "itemRef": "https://reddit.com/comments/1tqwl7e"
     },
     {
-      "title": "Actuellement en CDI Dev, questions propositions ESN",
+      "title": "C'est possible de trouver une alternance en 2026?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1tozvfb"
+    },
+    {
+      "title": "Aujourd'hui marque ma 300ème candidature",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tqwl7e"
+      "itemRef": "https://reddit.com/comments/1tnjk5l"
     },
     {
       "title": "Je t'aime, moi non mlus",
@@ -37,14 +37,14 @@
       "itemRef": "https://reddit.com/comments/1towb98"
     },
     {
-      "title": "C'est possible de trouver une alternance en 2026?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tozvfb"
-    },
-    {
       "title": "Ovid: \"Typing Was Never the Bottleneck\"",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1tr1411"
+    },
+    {
+      "title": "Je dois créer une app from scratch pour un test technique",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1to82h1"
     },
     {
       "title": "Perdu dans le plan de carrière (Data Engineer)",
@@ -52,9 +52,9 @@
       "itemRef": "https://reddit.com/comments/1tpjhch"
     },
     {
-      "title": "Etat du marché des AI & ML Engineers vers Sophia-Antipolis / Nice",
+      "title": "Choix entre ESN et client final",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tmfch8"
+      "itemRef": "https://reddit.com/comments/1to7q2w"
     }
   ],
   "sentimentHistory": [
@@ -6251,6 +6251,27 @@
         "negative_surprise": 0.404909,
         "optimistic_anticipation": 0.196171,
         "pessimistic_anticipation": 0.490849
+      }
+    },
+    {
+      "createdAt": "2026-06-01T15:53:04.009Z",
+      "count": 11,
+      "confidenceMass": 14.53696,
+      "emotions": {
+        "joy": 0.078213,
+        "trust": 0.220538,
+        "anger": 0.388277,
+        "fear": 0.327318,
+        "sadness": 0.410603,
+        "disgust": 0.23317
+      },
+      "tonalities": {
+        "positive": 0.16574,
+        "negative": 0.618655,
+        "positive_surprise": 0.037579,
+        "negative_surprise": 0.451647,
+        "optimistic_anticipation": 0.231316,
+        "pessimistic_anticipation": 0.475552
       }
     }
   ]
