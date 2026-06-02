@@ -1,25 +1,15 @@
 {
-  "generatedAt": "2026-06-01T15:53:50.210Z",
-  "snapshotCreatedAt": "2026-06-01T15:53:04.009Z",
+  "generatedAt": "2026-06-02T13:58:47.033Z",
+  "snapshotCreatedAt": "2026-06-02T13:58:05.601Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et réductions d'opportunités.",
+    "text": "Marché tech en dégradation, tensions et opportunités limitées",
     "emoji": "🌧️"
   },
   "headlines": [
     {
       "title": "[RANT] les recruteurs tech...",
-      "weight": "3",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1tq5kqy"
-    },
-    {
-      "title": "Ça existe les taff où un dev senior t’apprends à être dev senior ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tr1uwq"
-    },
-    {
-      "title": "Actuellement en CDI Dev, questions propositions ESN",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tqwl7e"
     },
     {
       "title": "C'est possible de trouver une alternance en 2026?",
@@ -27,18 +17,18 @@
       "itemRef": "https://reddit.com/comments/1tozvfb"
     },
     {
-      "title": "Aujourd'hui marque ma 300ème candidature",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tnjk5l"
-    },
-    {
       "title": "Je t'aime, moi non mlus",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1towb98"
     },
     {
+      "title": "Ça existe les taff où un dev senior t’apprends à être dev senior ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1tr1uwq"
+    },
+    {
       "title": "Ovid: \"Typing Was Never the Bottleneck\"",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1tr1411"
     },
     {
@@ -47,14 +37,19 @@
       "itemRef": "https://reddit.com/comments/1to82h1"
     },
     {
+      "title": "Actuellement en CDI Dev, questions propositions ESN",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tqwl7e"
+    },
+    {
       "title": "Perdu dans le plan de carrière (Data Engineer)",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1tpjhch"
     },
     {
-      "title": "Choix entre ESN et client final",
+      "title": "Est ce possible de faire un job étudiant / job d'été en tant que dev ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1to7q2w"
+      "itemRef": "https://reddit.com/comments/1tqvqhh"
     }
   ],
   "sentimentHistory": [
@@ -6272,6 +6267,27 @@
         "negative_surprise": 0.451647,
         "optimistic_anticipation": 0.231316,
         "pessimistic_anticipation": 0.475552
+      }
+    },
+    {
+      "createdAt": "2026-06-02T13:58:05.601Z",
+      "count": 9,
+      "confidenceMass": 13.330806,
+      "emotions": {
+        "joy": 0.096275,
+        "trust": 0.226728,
+        "anger": 0.323738,
+        "fear": 0.313164,
+        "sadness": 0.410863,
+        "disgust": 0.211935
+      },
+      "tonalities": {
+        "positive": 0.165143,
+        "negative": 0.627797,
+        "positive_surprise": 0.051313,
+        "negative_surprise": 0.352613,
+        "optimistic_anticipation": 0.215824,
+        "pessimistic_anticipation": 0.470439
       }
     }
   ]
