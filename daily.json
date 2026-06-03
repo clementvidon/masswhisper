@@ -1,40 +1,35 @@
 {
-  "generatedAt": "2026-06-02T13:58:47.033Z",
-  "snapshotCreatedAt": "2026-06-02T13:58:05.601Z",
+  "generatedAt": "2026-06-03T14:26:09.841Z",
+  "snapshotCreatedAt": "2026-06-03T14:25:31.449Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et opportunités limitées",
+    "text": "Marché tech en dégradation, signes de ralentissement et tension croissante",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "[RANT] les recruteurs tech...",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tq5kqy"
-    },
-    {
-      "title": "C'est possible de trouver une alternance en 2026?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tozvfb"
-    },
-    {
-      "title": "Je t'aime, moi non mlus",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1towb98"
-    },
-    {
       "title": "Ça existe les taff où un dev senior t’apprends à être dev senior ?",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1tr1uwq"
     },
     {
-      "title": "Ovid: \"Typing Was Never the Bottleneck\"",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tr1411"
+      "title": "Avec une formation d'ingénieur en développement web et 3 ans de recherche, je peine toujours à trouver du travail et je commence à avoir des idées suicidaires",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1turti5"
     },
     {
-      "title": "Je dois créer une app from scratch pour un test technique",
+      "title": "[RANT] les recruteurs tech...",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1to82h1"
+      "itemRef": "https://reddit.com/comments/1tq5kqy"
+    },
+    {
+      "title": "Esn pas de mission = rupture co",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tvnvva"
+    },
+    {
+      "title": "Ovid: \"Typing Was Never the Bottleneck\"",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tr1411"
     },
     {
       "title": "Actuellement en CDI Dev, questions propositions ESN",
@@ -45,6 +40,16 @@
       "title": "Perdu dans le plan de carrière (Data Engineer)",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1tpjhch"
+    },
+    {
+      "title": "Est ce encore utile d'envoyer des Curriculum Vitae ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tunq45"
+    },
+    {
+      "title": "Comment distinguer un manque de compétences d'un burnout ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tut5yy"
     },
     {
       "title": "Est ce possible de faire un job étudiant / job d'été en tant que dev ?",
@@ -6288,6 +6293,27 @@
         "negative_surprise": 0.352613,
         "optimistic_anticipation": 0.215824,
         "pessimistic_anticipation": 0.470439
+      }
+    },
+    {
+      "createdAt": "2026-06-03T14:25:31.449Z",
+      "count": 10,
+      "confidenceMass": 8.465888,
+      "emotions": {
+        "joy": 0.082188,
+        "trust": 0.261329,
+        "anger": 0.241033,
+        "fear": 0.376094,
+        "sadness": 0.450295,
+        "disgust": 0.156403
+      },
+      "tonalities": {
+        "positive": 0.133665,
+        "negative": 0.630496,
+        "positive_surprise": 0.017718,
+        "negative_surprise": 0.354308,
+        "optimistic_anticipation": 0.198041,
+        "pessimistic_anticipation": 0.55847
       }
     }
   ]
