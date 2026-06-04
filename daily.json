@@ -1,35 +1,40 @@
 {
-  "generatedAt": "2026-06-03T14:26:09.841Z",
-  "snapshotCreatedAt": "2026-06-03T14:25:31.449Z",
+  "generatedAt": "2026-06-04T12:42:33.891Z",
+  "snapshotCreatedAt": "2026-06-04T12:42:04.153Z",
   "report": {
-    "text": "Marché tech en dégradation, signes de ralentissement et tension croissante",
+    "text": "Marché tech en dégradation, tensions et recul des opportunités",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Ça existe les taff où un dev senior t’apprends à être dev senior ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tr1uwq"
-    },
-    {
-      "title": "Avec une formation d'ingénieur en développement web et 3 ans de recherche, je peine toujours à trouver du travail et je commence à avoir des idées suicidaires",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1turti5"
-    },
-    {
-      "title": "[RANT] les recruteurs tech...",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tq5kqy"
-    },
-    {
       "title": "Esn pas de mission = rupture co",
-      "weight": "1",
+      "weight": "4",
       "itemRef": "https://reddit.com/comments/1tvnvva"
     },
     {
+      "title": "Comment distinguer un manque de compétences d'un burnout ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1tut5yy"
+    },
+    {
+      "title": "Avec une formation d'ingénieur en développement web et 3 ans de recherche, je peine toujours à trouver du travail et je commence à avoir des idées suicidaires",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1turti5"
+    },
+    {
       "title": "Ovid: \"Typing Was Never the Bottleneck\"",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1tr1411"
+    },
+    {
+      "title": "[RANT] les recruteurs tech...",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1tq5kqy"
+    },
+    {
+      "title": "Ça existe les taff où un dev senior t’apprends à être dev senior ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tr1uwq"
     },
     {
       "title": "Actuellement en CDI Dev, questions propositions ESN",
@@ -37,24 +42,9 @@
       "itemRef": "https://reddit.com/comments/1tqwl7e"
     },
     {
-      "title": "Perdu dans le plan de carrière (Data Engineer)",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tpjhch"
-    },
-    {
       "title": "Est ce encore utile d'envoyer des Curriculum Vitae ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1tunq45"
-    },
-    {
-      "title": "Comment distinguer un manque de compétences d'un burnout ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tut5yy"
-    },
-    {
-      "title": "Est ce possible de faire un job étudiant / job d'été en tant que dev ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tqvqhh"
     }
   ],
   "sentimentHistory": [
@@ -6314,6 +6304,27 @@
         "negative_surprise": 0.354308,
         "optimistic_anticipation": 0.198041,
         "pessimistic_anticipation": 0.55847
+      }
+    },
+    {
+      "createdAt": "2026-06-04T12:42:04.153Z",
+      "count": 8,
+      "confidenceMass": 14.619309,
+      "emotions": {
+        "joy": 0.052889,
+        "trust": 0.184829,
+        "anger": 0.264104,
+        "fear": 0.467703,
+        "sadness": 0.477405,
+        "disgust": 0.17145
+      },
+      "tonalities": {
+        "positive": 0.120245,
+        "negative": 0.647197,
+        "positive_surprise": 0.005472,
+        "negative_surprise": 0.385741,
+        "optimistic_anticipation": 0.178733,
+        "pessimistic_anticipation": 0.606694
       }
     }
   ]
