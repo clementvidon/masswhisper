@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-06-05T12:34:07.377Z",
-  "snapshotCreatedAt": "2026-06-05T12:33:35.819Z",
+  "generatedAt": "2026-06-06T11:23:09.834Z",
+  "snapshotCreatedAt": "2026-06-06T11:22:35.723Z",
   "report": {
-    "text": "Marché tech sous pression, baisse des opportunités et prudence marquée",
+    "text": "Marché tech sous pression, perspectives dégradées et prudence marquée",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Esn pas de mission = rupture co",
+      "title": "Marché schizophrène ou imposteur",
       "weight": "3",
-      "itemRef": "https://reddit.com/comments/1tvnvva"
+      "itemRef": "https://reddit.com/comments/1twjsdf"
     },
     {
       "title": "Avec une formation d'ingénieur en développement web et 3 ans de recherche, je peine toujours à trouver du travail et je commence à avoir des idées suicidaires",
@@ -17,19 +17,14 @@
       "itemRef": "https://reddit.com/comments/1turti5"
     },
     {
-      "title": "Ça existe les taff où un dev senior t’apprends à être dev senior ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tr1uwq"
+      "title": "Est ce encore utile d'envoyer des Curriculum Vitae ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1tunq45"
     },
     {
-      "title": "Marché schizophrène ou imposteur",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1twjsdf"
-    },
-    {
-      "title": "Ovid: \"Typing Was Never the Bottleneck\"",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tr1411"
+      "title": "Esn pas de mission = rupture co",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1tvnvva"
     },
     {
       "title": "Quel choix de master prendre avec le marché actuel (Génie Logiciel ou Systèmes Embarqués) ?",
@@ -37,14 +32,19 @@
       "itemRef": "https://reddit.com/comments/1twujyh"
     },
     {
-      "title": "Est ce encore utile d'envoyer des Curriculum Vitae ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tunq45"
-    },
-    {
       "title": "Comment distinguer un manque de compétences d'un burnout ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1tut5yy"
+    },
+    {
+      "title": "Vos salaires dans l'informatique",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ty41lk"
+    },
+    {
+      "title": "Encore des coding game ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1txmxtk"
     }
   ],
   "sentimentHistory": [
@@ -6346,6 +6346,27 @@
         "negative_surprise": 0.405992,
         "optimistic_anticipation": 0.116396,
         "pessimistic_anticipation": 0.683951
+      }
+    },
+    {
+      "createdAt": "2026-06-06T11:22:35.723Z",
+      "count": 8,
+      "confidenceMass": 12.603633,
+      "emotions": {
+        "joy": 0.053812,
+        "trust": 0.185994,
+        "anger": 0.31322,
+        "fear": 0.432421,
+        "sadness": 0.522605,
+        "disgust": 0.194608
+      },
+      "tonalities": {
+        "positive": 0.082548,
+        "negative": 0.676854,
+        "positive_surprise": 0.015147,
+        "negative_surprise": 0.460721,
+        "optimistic_anticipation": 0.1446,
+        "pessimistic_anticipation": 0.663584
       }
     }
   ]
