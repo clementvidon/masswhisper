@@ -1,45 +1,25 @@
 {
-  "generatedAt": "2026-06-08T14:04:24.282Z",
-  "snapshotCreatedAt": "2026-06-08T14:03:08.611Z",
+  "generatedAt": "2026-06-09T12:33:54.306Z",
+  "snapshotCreatedAt": "2026-06-09T12:33:04.033Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et prudence renforcées",
+    "text": "Marché tech sous pression, recrutements ralentis et vigilance accrue",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Avis à ceux qui s’intéressent à ce domaine",
-      "weight": "4",
-      "itemRef": "https://reddit.com/comments/1tyttzs"
-    },
-    {
-      "title": "Avec une formation d'ingénieur en développement web et 3 ans de recherche, je peine toujours à trouver du travail et je commence à avoir des idées suicidaires",
+      "title": "Domaine IT les moins saturés en junior/mid svp ?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1turti5"
-    },
-    {
-      "title": "Vos salaires dans l'informatique",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ty41lk"
-    },
-    {
-      "title": "Comment distinguer un manque de compétences d'un burnout ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tut5yy"
+      "itemRef": "https://reddit.com/comments/1tzgevs"
     },
     {
       "title": "Encore des coding game ?",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1txmxtk"
     },
     {
-      "title": "Marché schizophrène ou imposteur",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1twjsdf"
-    },
-    {
-      "title": "BUT informatique post-bac.",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tyuj0l"
+      "title": "Vos salaires dans l'informatique",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1ty41lk"
     },
     {
       "title": "Quel choix de master prendre avec le marché actuel (Génie Logiciel ou Systèmes Embarqués) ?",
@@ -47,14 +27,29 @@
       "itemRef": "https://reddit.com/comments/1twujyh"
     },
     {
-      "title": "Est ce encore utile d'envoyer des Curriculum Vitae ?",
+      "title": "Marché schizophrène ou imposteur",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tunq45"
+      "itemRef": "https://reddit.com/comments/1twjsdf"
     },
     {
-      "title": "Domaine IT les moins saturés en junior/mid svp ?",
+      "title": "Avec une formation d'ingénieur en développement web et 3 ans de recherche, je peine toujours à trouver du travail et je commence à avoir des idées suicidaires",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tzgevs"
+      "itemRef": "https://reddit.com/comments/1turti5"
+    },
+    {
+      "title": "Esn pas de mission = rupture co",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tvnvva"
+    },
+    {
+      "title": "BUT informatique post-bac.",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tyuj0l"
+    },
+    {
+      "title": "Comment distinguer un manque de compétences d'un burnout ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tut5yy"
     }
   ],
   "sentimentHistory": [
@@ -6419,6 +6414,27 @@
         "negative_surprise": 0.443622,
         "optimistic_anticipation": 0.137241,
         "pessimistic_anticipation": 0.687937
+      }
+    },
+    {
+      "createdAt": "2026-06-09T12:33:04.033Z",
+      "count": 9,
+      "confidenceMass": 11.610767,
+      "emotions": {
+        "joy": 0.061666,
+        "trust": 0.218689,
+        "anger": 0.231064,
+        "fear": 0.414215,
+        "sadness": 0.357081,
+        "disgust": 0.115694
+      },
+      "tonalities": {
+        "positive": 0.09748,
+        "negative": 0.594022,
+        "positive_surprise": 0.007967,
+        "negative_surprise": 0.372491,
+        "optimistic_anticipation": 0.172092,
+        "pessimistic_anticipation": 0.569733
       }
     }
   ]
