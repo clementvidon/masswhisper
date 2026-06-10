@@ -1,25 +1,30 @@
 {
-  "generatedAt": "2026-06-09T12:33:54.306Z",
-  "snapshotCreatedAt": "2026-06-09T12:33:04.033Z",
+  "generatedAt": "2026-06-10T12:53:25.104Z",
+  "snapshotCreatedAt": "2026-06-10T12:52:51.236Z",
   "report": {
-    "text": "Marché tech sous pression, recrutements ralentis et vigilance accrue",
+    "text": "Marché tech en dégradation, tensions et réductions d’opportunités.",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Domaine IT les moins saturés en junior/mid svp ?",
+      "title": "Marché schizophrène ou imposteur",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1tzgevs"
-    },
-    {
-      "title": "Encore des coding game ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1txmxtk"
+      "itemRef": "https://reddit.com/comments/1twjsdf"
     },
     {
       "title": "Vos salaires dans l'informatique",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1ty41lk"
+    },
+    {
+      "title": "Développeur indépendant depuis 16 ans, j'ai perdu le goût du métier",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u14ls2"
+    },
+    {
+      "title": "Domaine IT les moins saturés en junior/mid svp ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tzgevs"
     },
     {
       "title": "Quel choix de master prendre avec le marché actuel (Génie Logiciel ou Systèmes Embarqués) ?",
@@ -27,29 +32,14 @@
       "itemRef": "https://reddit.com/comments/1twujyh"
     },
     {
-      "title": "Marché schizophrène ou imposteur",
+      "title": "Valeur diplôme sur le marché du travail",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1twjsdf"
+      "itemRef": "https://reddit.com/comments/1txj22q"
     },
     {
-      "title": "Avec une formation d'ingénieur en développement web et 3 ans de recherche, je peine toujours à trouver du travail et je commence à avoir des idées suicidaires",
+      "title": "Encore des coding game ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1turti5"
-    },
-    {
-      "title": "Esn pas de mission = rupture co",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tvnvva"
-    },
-    {
-      "title": "BUT informatique post-bac.",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tyuj0l"
-    },
-    {
-      "title": "Comment distinguer un manque de compétences d'un burnout ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tut5yy"
+      "itemRef": "https://reddit.com/comments/1txmxtk"
     }
   ],
   "sentimentHistory": [
@@ -6435,6 +6425,27 @@
         "negative_surprise": 0.372491,
         "optimistic_anticipation": 0.172092,
         "pessimistic_anticipation": 0.569733
+      }
+    },
+    {
+      "createdAt": "2026-06-10T12:52:51.236Z",
+      "count": 7,
+      "confidenceMass": 7.30968,
+      "emotions": {
+        "joy": 0.056156,
+        "trust": 0.202732,
+        "anger": 0.337407,
+        "fear": 0.353043,
+        "sadness": 0.434219,
+        "disgust": 0.158814
+      },
+      "tonalities": {
+        "positive": 0.106525,
+        "negative": 0.639384,
+        "positive_surprise": 0.013374,
+        "negative_surprise": 0.389073,
+        "optimistic_anticipation": 0.173998,
+        "pessimistic_anticipation": 0.552741
       }
     }
   ]
