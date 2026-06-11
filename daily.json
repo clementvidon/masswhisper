@@ -1,25 +1,25 @@
 {
-  "generatedAt": "2026-06-10T12:53:25.104Z",
-  "snapshotCreatedAt": "2026-06-10T12:52:51.236Z",
+  "generatedAt": "2026-06-11T13:56:54.292Z",
+  "snapshotCreatedAt": "2026-06-11T13:55:57.986Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et réductions d’opportunités.",
+    "text": "Marché tech en net repli, tensions et prudence dominent",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Marché schizophrène ou imposteur",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1twjsdf"
+      "title": "Développeur indépendant depuis 16 ans, j'ai perdu le goût du métier",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1u14ls2"
     },
     {
       "title": "Vos salaires dans l'informatique",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1ty41lk"
     },
     {
-      "title": "Développeur indépendant depuis 16 ans, j'ai perdu le goût du métier",
+      "title": "Encore des coding game ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u14ls2"
+      "itemRef": "https://reddit.com/comments/1txmxtk"
     },
     {
       "title": "Domaine IT les moins saturés en junior/mid svp ?",
@@ -27,19 +27,34 @@
       "itemRef": "https://reddit.com/comments/1tzgevs"
     },
     {
+      "title": "Freelance / petite agence comment vous vous positionnez en 2026 face au marché ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u2enbc"
+    },
+    {
+      "title": "BUT informatique post-bac.",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1tyuj0l"
+    },
+    {
+      "title": "Offre d'embauche pour +25% mais...",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u2gekx"
+    },
+    {
+      "title": "Quelqu'un a deja trouvé un travail (hors stage/alternance) grâce à un projet perso?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u2dsgo"
+    },
+    {
       "title": "Quel choix de master prendre avec le marché actuel (Génie Logiciel ou Systèmes Embarqués) ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1twujyh"
     },
     {
-      "title": "Valeur diplôme sur le marché du travail",
+      "title": "Salaires pour les seniors backends/fullstack?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1txj22q"
-    },
-    {
-      "title": "Encore des coding game ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1txmxtk"
+      "itemRef": "https://reddit.com/comments/1u2j012"
     }
   ],
   "sentimentHistory": [
@@ -6446,6 +6461,27 @@
         "negative_surprise": 0.389073,
         "optimistic_anticipation": 0.173998,
         "pessimistic_anticipation": 0.552741
+      }
+    },
+    {
+      "createdAt": "2026-06-11T13:55:57.986Z",
+      "count": 10,
+      "confidenceMass": 12.622408,
+      "emotions": {
+        "joy": 0.062988,
+        "trust": 0.248929,
+        "anger": 0.179279,
+        "fear": 0.368436,
+        "sadness": 0.333031,
+        "disgust": 0.120702
+      },
+      "tonalities": {
+        "positive": 0.114506,
+        "negative": 0.594782,
+        "positive_surprise": 0.006338,
+        "negative_surprise": 0.332785,
+        "optimistic_anticipation": 0.216793,
+        "pessimistic_anticipation": 0.54511
       }
     }
   ]
