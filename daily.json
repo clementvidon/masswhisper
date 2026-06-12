@@ -1,25 +1,40 @@
 {
-  "generatedAt": "2026-06-11T13:56:54.292Z",
-  "snapshotCreatedAt": "2026-06-11T13:55:57.986Z",
+  "generatedAt": "2026-06-12T12:52:16.227Z",
+  "snapshotCreatedAt": "2026-06-12T12:51:38.121Z",
   "report": {
-    "text": "Marché tech en net repli, tensions et prudence dominent",
+    "text": "Marché tech sous pression, embauches ralenties et prudence accrue",
     "emoji": "🌧️"
   },
   "headlines": [
+    {
+      "title": "Offre d'embauche pour +25% mais...",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1u2gekx"
+    },
     {
       "title": "Développeur indépendant depuis 16 ans, j'ai perdu le goût du métier",
       "weight": "3",
       "itemRef": "https://reddit.com/comments/1u14ls2"
     },
     {
-      "title": "Vos salaires dans l'informatique",
+      "title": "Freelance / petite agence comment vous vous positionnez en 2026 face au marché ?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1ty41lk"
+      "itemRef": "https://reddit.com/comments/1u2enbc"
     },
     {
-      "title": "Encore des coding game ?",
+      "title": "Salaires pour les seniors backends/fullstack?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1u2j012"
+    },
+    {
+      "title": "Quelqu'un a deja trouvé un travail (hors stage/alternance) grâce à un projet perso?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1u2dsgo"
+    },
+    {
+      "title": "Vos salaires dans l'informatique",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1txmxtk"
+      "itemRef": "https://reddit.com/comments/1ty41lk"
     },
     {
       "title": "Domaine IT les moins saturés en junior/mid svp ?",
@@ -27,34 +42,9 @@
       "itemRef": "https://reddit.com/comments/1tzgevs"
     },
     {
-      "title": "Freelance / petite agence comment vous vous positionnez en 2026 face au marché ?",
+      "title": "Encore des coding game ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u2enbc"
-    },
-    {
-      "title": "BUT informatique post-bac.",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tyuj0l"
-    },
-    {
-      "title": "Offre d'embauche pour +25% mais...",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u2gekx"
-    },
-    {
-      "title": "Quelqu'un a deja trouvé un travail (hors stage/alternance) grâce à un projet perso?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u2dsgo"
-    },
-    {
-      "title": "Quel choix de master prendre avec le marché actuel (Génie Logiciel ou Systèmes Embarqués) ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1twujyh"
-    },
-    {
-      "title": "Salaires pour les seniors backends/fullstack?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u2j012"
+      "itemRef": "https://reddit.com/comments/1txmxtk"
     }
   ],
   "sentimentHistory": [
@@ -6482,6 +6472,27 @@
         "negative_surprise": 0.332785,
         "optimistic_anticipation": 0.216793,
         "pessimistic_anticipation": 0.54511
+      }
+    },
+    {
+      "createdAt": "2026-06-12T12:51:38.121Z",
+      "count": 8,
+      "confidenceMass": 15.188094,
+      "emotions": {
+        "joy": 0.072697,
+        "trust": 0.239239,
+        "anger": 0.175168,
+        "fear": 0.430209,
+        "sadness": 0.353476,
+        "disgust": 0.084123
+      },
+      "tonalities": {
+        "positive": 0.153415,
+        "negative": 0.530384,
+        "positive_surprise": 0.021549,
+        "negative_surprise": 0.242417,
+        "optimistic_anticipation": 0.239368,
+        "pessimistic_anticipation": 0.577533
       }
     }
   ]
