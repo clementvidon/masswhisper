@@ -1,11 +1,26 @@
 {
-  "generatedAt": "2026-06-13T11:52:36.423Z",
-  "snapshotCreatedAt": "2026-06-13T11:51:59.924Z",
+  "generatedAt": "2026-06-14T11:54:52.391Z",
+  "snapshotCreatedAt": "2026-06-14T11:54:13.113Z",
   "report": {
-    "text": "Marché tech sous pression, perspectives prudentes et recrutement ralenti",
+    "text": "Marché tech en net ralentissement, tensions et prudence renforcées",
     "emoji": "🌧️"
   },
   "headlines": [
+    {
+      "title": "J'en ai marre de toutes ces entreprises de pignoufs",
+      "weight": "4",
+      "itemRef": "https://reddit.com/comments/1u43mvh"
+    },
+    {
+      "title": "Refus ESN mais demande de références",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1u3xg88"
+    },
+    {
+      "title": "Développeur indépendant depuis 16 ans, j'ai perdu le goût du métier",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1u14ls2"
+    },
     {
       "title": "Offre d'embauche pour +25% mais...",
       "weight": "2",
@@ -17,29 +32,14 @@
       "itemRef": "https://reddit.com/comments/1u2j012"
     },
     {
-      "title": "J'en ai marre de toutes ces entreprises de pignoufs",
+      "title": "Reconversion?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u43mvh"
+      "itemRef": "https://reddit.com/comments/1u4vj9m"
     },
     {
       "title": "Freelance / petite agence comment vous vous positionnez en 2026 face au marché ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1u2enbc"
-    },
-    {
-      "title": "Développeur indépendant depuis 16 ans, j'ai perdu le goût du métier",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u14ls2"
-    },
-    {
-      "title": "BUT informatique post-bac.",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tyuj0l"
-    },
-    {
-      "title": "Refus ESN mais demande de références",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u3xg88"
     },
     {
       "title": "Quelqu'un a deja trouvé un travail (hors stage/alternance) grâce à un projet perso?",
@@ -6524,6 +6524,27 @@
         "negative_surprise": 0.254789,
         "optimistic_anticipation": 0.215082,
         "pessimistic_anticipation": 0.619226
+      }
+    },
+    {
+      "createdAt": "2026-06-14T11:54:13.113Z",
+      "count": 10,
+      "confidenceMass": 16.293804,
+      "emotions": {
+        "joy": 0.052148,
+        "trust": 0.193396,
+        "anger": 0.350718,
+        "fear": 0.429761,
+        "sadness": 0.456686,
+        "disgust": 0.233691
+      },
+      "tonalities": {
+        "positive": 0.114612,
+        "negative": 0.651105,
+        "positive_surprise": 0.01147,
+        "negative_surprise": 0.400751,
+        "optimistic_anticipation": 0.158483,
+        "pessimistic_anticipation": 0.623038
       }
     }
   ]
