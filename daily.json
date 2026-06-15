@@ -1,25 +1,20 @@
 {
-  "generatedAt": "2026-06-14T11:54:52.391Z",
-  "snapshotCreatedAt": "2026-06-14T11:54:13.113Z",
+  "generatedAt": "2026-06-15T15:43:54.089Z",
+  "snapshotCreatedAt": "2026-06-15T15:43:03.397Z",
   "report": {
-    "text": "Marché tech en net ralentissement, tensions et prudence renforcées",
+    "text": "Marché tech en dégradation, tension et prudence accrues",
     "emoji": "🌧️"
   },
   "headlines": [
     {
       "title": "J'en ai marre de toutes ces entreprises de pignoufs",
-      "weight": "4",
+      "weight": "3",
       "itemRef": "https://reddit.com/comments/1u43mvh"
     },
     {
-      "title": "Refus ESN mais demande de références",
+      "title": "Reconversion?",
       "weight": "3",
-      "itemRef": "https://reddit.com/comments/1u3xg88"
-    },
-    {
-      "title": "Développeur indépendant depuis 16 ans, j'ai perdu le goût du métier",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1u14ls2"
+      "itemRef": "https://reddit.com/comments/1u4vj9m"
     },
     {
       "title": "Offre d'embauche pour +25% mais...",
@@ -27,19 +22,9 @@
       "itemRef": "https://reddit.com/comments/1u2gekx"
     },
     {
-      "title": "Salaires pour les seniors backends/fullstack?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u2j012"
-    },
-    {
-      "title": "Reconversion?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u4vj9m"
-    },
-    {
-      "title": "Freelance / petite agence comment vous vous positionnez en 2026 face au marché ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u2enbc"
+      "title": "Refus ESN mais demande de références",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1u3xg88"
     },
     {
       "title": "Quelqu'un a deja trouvé un travail (hors stage/alternance) grâce à un projet perso?",
@@ -47,14 +32,29 @@
       "itemRef": "https://reddit.com/comments/1u2dsgo"
     },
     {
-      "title": "Domaine IT les moins saturés en junior/mid svp ?",
+      "title": "10+ ans d'expérience, 1 entretien, 12 refus, 10 sans réponse",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1tzgevs"
+      "itemRef": "https://reddit.com/comments/1u5nsf2"
     },
     {
-      "title": "Idée de projet data engineering",
+      "title": "Freelance / petite agence comment vous vous positionnez en 2026 face au marché ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u3lag8"
+      "itemRef": "https://reddit.com/comments/1u2enbc"
+    },
+    {
+      "title": "Développeur indépendant depuis 16 ans, j'ai perdu le goût du métier",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u14ls2"
+    },
+    {
+      "title": "Freelances, quel est votre TJM ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u32m81"
+    },
+    {
+      "title": "CDI 70K au Luxembourg vs Freelance Île-de-France - Est-ce que je rate une opportunité ou est-ce que je me sacrifie pour rien ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u5jdtn"
     }
   ],
   "sentimentHistory": [
@@ -6545,6 +6545,27 @@
         "negative_surprise": 0.400751,
         "optimistic_anticipation": 0.158483,
         "pessimistic_anticipation": 0.623038
+      }
+    },
+    {
+      "createdAt": "2026-06-15T15:43:03.397Z",
+      "count": 13,
+      "confidenceMass": 18.136322,
+      "emotions": {
+        "joy": 0.057823,
+        "trust": 0.191129,
+        "anger": 0.31956,
+        "fear": 0.449814,
+        "sadness": 0.492125,
+        "disgust": 0.209856
+      },
+      "tonalities": {
+        "positive": 0.111799,
+        "negative": 0.645811,
+        "positive_surprise": 0.029355,
+        "negative_surprise": 0.397983,
+        "optimistic_anticipation": 0.141651,
+        "pessimistic_anticipation": 0.60763
       }
     }
   ]
