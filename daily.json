@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-06-15T15:43:54.089Z",
-  "snapshotCreatedAt": "2026-06-15T15:43:03.397Z",
+  "generatedAt": "2026-06-16T15:01:59.800Z",
+  "snapshotCreatedAt": "2026-06-16T15:01:02.564Z",
   "report": {
-    "text": "Marché tech en dégradation, tension et prudence accrues",
+    "text": "Marché tech sous pression, perspectives détériorées et recrutement ralenti",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "J'en ai marre de toutes ces entreprises de pignoufs",
+      "title": "10+ ans d'expérience, 1 entretien, 12 refus, 10 sans réponse",
       "weight": "3",
-      "itemRef": "https://reddit.com/comments/1u43mvh"
+      "itemRef": "https://reddit.com/comments/1u5nsf2"
     },
     {
-      "title": "Reconversion?",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1u4vj9m"
+      "title": "J'en ai marre de toutes ces entreprises de pignoufs",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1u43mvh"
     },
     {
       "title": "Offre d'embauche pour +25% mais...",
@@ -27,24 +27,19 @@
       "itemRef": "https://reddit.com/comments/1u3xg88"
     },
     {
-      "title": "Quelqu'un a deja trouvé un travail (hors stage/alternance) grâce à un projet perso?",
+      "title": "Reconversion?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u2dsgo"
+      "itemRef": "https://reddit.com/comments/1u4vj9m"
     },
     {
-      "title": "10+ ans d'expérience, 1 entretien, 12 refus, 10 sans réponse",
+      "title": "c'est ma faute ou c'est le marché ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u5nsf2"
+      "itemRef": "https://reddit.com/comments/1u6p6wf"
     },
     {
       "title": "Freelance / petite agence comment vous vous positionnez en 2026 face au marché ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1u2enbc"
-    },
-    {
-      "title": "Développeur indépendant depuis 16 ans, j'ai perdu le goût du métier",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u14ls2"
     },
     {
       "title": "Freelances, quel est votre TJM ?",
@@ -55,6 +50,11 @@
       "title": "CDI 70K au Luxembourg vs Freelance Île-de-France - Est-ce que je rate une opportunité ou est-ce que je me sacrifie pour rien ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1u5jdtn"
+    },
+    {
+      "title": "Quelqu'un a deja trouvé un travail (hors stage/alternance) grâce à un projet perso?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u2dsgo"
     }
   ],
   "sentimentHistory": [
@@ -6566,6 +6566,27 @@
         "negative_surprise": 0.397983,
         "optimistic_anticipation": 0.141651,
         "pessimistic_anticipation": 0.60763
+      }
+    },
+    {
+      "createdAt": "2026-06-16T15:01:02.564Z",
+      "count": 13,
+      "confidenceMass": 15.826931,
+      "emotions": {
+        "joy": 0.062832,
+        "trust": 0.193392,
+        "anger": 0.307059,
+        "fear": 0.454197,
+        "sadness": 0.438751,
+        "disgust": 0.181353
+      },
+      "tonalities": {
+        "positive": 0.1313,
+        "negative": 0.667008,
+        "positive_surprise": 0.037826,
+        "negative_surprise": 0.42362,
+        "optimistic_anticipation": 0.15689,
+        "pessimistic_anticipation": 0.579731
       }
     }
   ]
