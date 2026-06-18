@@ -1,60 +1,60 @@
 {
-  "generatedAt": "2026-06-17T13:40:04.169Z",
-  "snapshotCreatedAt": "2026-06-17T13:39:14.053Z",
+  "generatedAt": "2026-06-18T12:49:19.462Z",
+  "snapshotCreatedAt": "2026-06-18T12:48:38.554Z",
   "report": {
-    "text": "Marché tech en tension, perspectives dégradées et prudence accrue",
+    "text": "Marché tech sous pression, perspectives détériorées et postes rarefiés",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "c'est ma faute ou c'est le marché ?",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1u6p6wf"
-    },
-    {
-      "title": "Reconversion?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u4vj9m"
-    },
-    {
-      "title": "Refus ESN mais demande de références",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u3xg88"
-    },
-    {
-      "title": "Quelqu'un a deja trouvé un travail (hors stage/alternance) grâce à un projet perso?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u2dsgo"
-    },
-    {
-      "title": "J'en ai marre de toutes ces entreprises de pignoufs",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u43mvh"
-    },
-    {
       "title": "10+ ans d'expérience, 1 entretien, 12 refus, 10 sans réponse",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1u5nsf2"
     },
     {
-      "title": "Freelance / petite agence comment vous vous positionnez en 2026 face au marché ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u2enbc"
+      "title": "c'est ma faute ou c'est le marché ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1u6p6wf"
     },
     {
       "title": "Peur d'avoir fait tout ça pour rien",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1u7rkhi"
     },
     {
       "title": "Salaires juniors data en ESN : le PMSS comme levier de négociation, quelqu'un a déjà essayé ?",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1u84yc9"
+    },
+    {
+      "title": "C’est comment vos augmentations cette année?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1u7fzvj"
+    },
+    {
+      "title": "J'en ai marre de toutes ces entreprises de pignoufs",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1u43mvh"
+    },
+    {
+      "title": "Reconversion?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u4vj9m"
+    },
+    {
+      "title": "RANT: entretiens en ESN et refus",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u8bcou"
     },
     {
       "title": "Freelances, quel est votre TJM ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1u32m81"
+    },
+    {
+      "title": "Refus ESN mais demande de références",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u3xg88"
     }
   ],
   "sentimentHistory": [
@@ -6608,6 +6608,27 @@
         "negative_surprise": 0.359371,
         "optimistic_anticipation": 0.135767,
         "pessimistic_anticipation": 0.564321
+      }
+    },
+    {
+      "createdAt": "2026-06-18T12:48:38.554Z",
+      "count": 13,
+      "confidenceMass": 18.308801,
+      "emotions": {
+        "joy": 0.101317,
+        "trust": 0.176438,
+        "anger": 0.284567,
+        "fear": 0.410033,
+        "sadness": 0.425709,
+        "disgust": 0.199664
+      },
+      "tonalities": {
+        "positive": 0.139677,
+        "negative": 0.564683,
+        "positive_surprise": 0.11446,
+        "negative_surprise": 0.409227,
+        "optimistic_anticipation": 0.133207,
+        "pessimistic_anticipation": 0.51175
       }
     }
   ]
