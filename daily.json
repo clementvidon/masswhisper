@@ -1,35 +1,35 @@
 {
-  "generatedAt": "2026-06-18T12:49:19.462Z",
-  "snapshotCreatedAt": "2026-06-18T12:48:38.554Z",
+  "generatedAt": "2026-06-19T13:33:14.208Z",
+  "snapshotCreatedAt": "2026-06-19T13:32:24.453Z",
   "report": {
-    "text": "Marché tech sous pression, perspectives détériorées et postes rarefiés",
+    "text": "Marché tech sous pression, signes clairs de dégradation et d'inquiétude",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "10+ ans d'expérience, 1 entretien, 12 refus, 10 sans réponse",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u5nsf2"
-    },
-    {
-      "title": "c'est ma faute ou c'est le marché ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u6p6wf"
-    },
-    {
-      "title": "Peur d'avoir fait tout ça pour rien",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u7rkhi"
-    },
-    {
-      "title": "Salaires juniors data en ESN : le PMSS comme levier de négociation, quelqu'un a déjà essayé ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u84yc9"
+      "title": "RANT: entretiens en ESN et refus",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1u8bcou"
     },
     {
       "title": "C’est comment vos augmentations cette année?",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1u7fzvj"
+    },
+    {
+      "title": "Les sub americains ca me fait bader",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1u7byl6"
+    },
+    {
+      "title": "Thales ESN",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1u9081w"
+    },
+    {
+      "title": "Salaires juniors data en ESN : le PMSS comme levier de négociation, quelqu'un a déjà essayé ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1u84yc9"
     },
     {
       "title": "J'en ai marre de toutes ces entreprises de pignoufs",
@@ -38,23 +38,23 @@
     },
     {
       "title": "Reconversion?",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1u4vj9m"
     },
     {
-      "title": "RANT: entretiens en ESN et refus",
+      "title": "Product Owner informatique en 2026+ ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u8bcou"
+      "itemRef": "https://reddit.com/comments/1u8gq9k"
     },
     {
-      "title": "Freelances, quel est votre TJM ?",
+      "title": "10+ ans d'expérience, 1 entretien, 12 refus, 10 sans réponse",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u32m81"
+      "itemRef": "https://reddit.com/comments/1u5nsf2"
     },
     {
-      "title": "Refus ESN mais demande de références",
+      "title": "c'est ma faute ou c'est le marché ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u3xg88"
+      "itemRef": "https://reddit.com/comments/1u6p6wf"
     }
   ],
   "sentimentHistory": [
@@ -6629,6 +6629,27 @@
         "negative_surprise": 0.409227,
         "optimistic_anticipation": 0.133207,
         "pessimistic_anticipation": 0.51175
+      }
+    },
+    {
+      "createdAt": "2026-06-19T13:32:24.453Z",
+      "count": 14,
+      "confidenceMass": 20.658882,
+      "emotions": {
+        "joy": 0.109269,
+        "trust": 0.165027,
+        "anger": 0.376285,
+        "fear": 0.341547,
+        "sadness": 0.399208,
+        "disgust": 0.25806
+      },
+      "tonalities": {
+        "positive": 0.139174,
+        "negative": 0.585929,
+        "positive_surprise": 0.145361,
+        "negative_surprise": 0.399623,
+        "optimistic_anticipation": 0.118314,
+        "pessimistic_anticipation": 0.464775
       }
     }
   ]
