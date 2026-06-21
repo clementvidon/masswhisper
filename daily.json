@@ -1,35 +1,30 @@
 {
-  "generatedAt": "2026-06-20T11:54:26.876Z",
-  "snapshotCreatedAt": "2026-06-20T11:53:42.732Z",
+  "generatedAt": "2026-06-21T12:09:27.344Z",
+  "snapshotCreatedAt": "2026-06-21T12:08:53.207Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et opportunités limitées",
+    "text": "Marché tech en léger repli, tensions modestes et prudence accrue",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Je crois que je n’y arrive plus",
+      "title": "Ma boîte a recruté via reddit",
       "weight": "4",
+      "itemRef": "https://reddit.com/comments/1uab0tp"
+    },
+    {
+      "title": "N'allez pas au salon de l'emploi de VivaTech",
+      "weight": "4",
+      "itemRef": "https://reddit.com/comments/1uatffu"
+    },
+    {
+      "title": "Je crois que je n’y arrive plus",
+      "weight": "3",
       "itemRef": "https://reddit.com/comments/1u9uuxu"
     },
     {
-      "title": "Les sub americains ca me fait bader",
+      "title": "10+ ans d'expérience, 1 entretien, 12 refus, 10 sans réponse",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u7byl6"
-    },
-    {
-      "title": "RANT: entretiens en ESN et refus",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u8bcou"
-    },
-    {
-      "title": "C’est comment vos augmentations cette année?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u7fzvj"
-    },
-    {
-      "title": "Thales ESN",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u9081w"
+      "itemRef": "https://reddit.com/comments/1u5nsf2"
     },
     {
       "title": "c'est ma faute ou c'est le marché ?",
@@ -37,24 +32,29 @@
       "itemRef": "https://reddit.com/comments/1u6p6wf"
     },
     {
-      "title": "10+ ans d'expérience, 1 entretien, 12 refus, 10 sans réponse",
+      "title": "Junior Data/ML/IA en IDF, situation de négociation atypique, à quel salaire j'ouvre ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u5nsf2"
+      "itemRef": "https://reddit.com/comments/1u95at1"
     },
     {
-      "title": "Reconversion?",
+      "title": "Les sub americains ca me fait bader",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u4vj9m"
+      "itemRef": "https://reddit.com/comments/1u7byl6"
     },
     {
-      "title": "Ma boîte a recruté via reddit",
+      "title": "RANT: entretiens en ESN et refus",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uab0tp"
+      "itemRef": "https://reddit.com/comments/1u8bcou"
     },
     {
       "title": "Peur d'avoir fait tout ça pour rien",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1u7rkhi"
+    },
+    {
+      "title": "Salaires juniors data en ESN : le PMSS comme levier de négociation, quelqu'un a déjà essayé ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u84yc9"
     }
   ],
   "sentimentHistory": [
@@ -6671,6 +6671,27 @@
         "negative_surprise": 0.406333,
         "optimistic_anticipation": 0.131901,
         "pessimistic_anticipation": 0.466237
+      }
+    },
+    {
+      "createdAt": "2026-06-21T12:08:53.207Z",
+      "count": 14,
+      "confidenceMass": 23.115664,
+      "emotions": {
+        "joy": 0.174384,
+        "trust": 0.242913,
+        "anger": 0.282462,
+        "fear": 0.293245,
+        "sadness": 0.362174,
+        "disgust": 0.188235
+      },
+      "tonalities": {
+        "positive": 0.24525,
+        "negative": 0.526583,
+        "positive_surprise": 0.10991,
+        "negative_surprise": 0.370945,
+        "optimistic_anticipation": 0.188355,
+        "pessimistic_anticipation": 0.41475
       }
     }
   ]
