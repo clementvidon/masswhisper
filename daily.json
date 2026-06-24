@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-23T12:30:35.098Z",
-  "snapshotCreatedAt": "2026-06-23T12:29:46.758Z",
+  "generatedAt": "2026-06-24T12:17:06.467Z",
+  "snapshotCreatedAt": "2026-06-24T12:16:23.389Z",
   "report": {
     "text": "Marché tech en dégradation, tensions et recul des opportunités",
     "emoji": "🌧️"
@@ -8,8 +8,13 @@
   "headlines": [
     {
       "title": "Je ne sais plus quoi faire, je perds toute motivation.",
-      "weight": "4",
+      "weight": "3",
       "itemRef": "https://reddit.com/comments/1uciv9d"
+    },
+    {
+      "title": "Je crois que je n’y arrive plus",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1u9uuxu"
     },
     {
       "title": "N'allez pas au salon de l'emploi de VivaTech",
@@ -22,39 +27,34 @@
       "itemRef": "https://reddit.com/comments/1ubvwn9"
     },
     {
-      "title": "Recherche témoignages de developpeurs sortant de bootcamp depuis moins de 3 ans ayant trouvé un emploi",
+      "title": "Product Owner informatique en 2026+ ?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1ucg4hz"
+      "itemRef": "https://reddit.com/comments/1u8gq9k"
     },
     {
-      "title": "RANT: entretiens en ESN et refus",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u8bcou"
+      "title": "Thales ESN",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u9081w"
     },
     {
       "title": "Un article d'Anthropic fait les choux gras des influenceurs IA",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1ubtxfv"
     },
     {
-      "title": "Je crois que je n’y arrive plus",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u9uuxu"
-    },
-    {
-      "title": "Peur d'avoir fait tout ça pour rien",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u7rkhi"
-    },
-    {
-      "title": "Salaires juniors data en ESN : le PMSS comme levier de négociation, quelqu'un a déjà essayé ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u84yc9"
-    },
-    {
-      "title": "Junior Data/ML/IA en IDF, situation de négociation atypique, à quel salaire j'ouvre ?",
+      "title": "Un profil \"touche à tout\" ça fait vraiment si peur pour les entreprises ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u95at1"
+      "itemRef": "https://reddit.com/comments/1udoule"
+    },
+    {
+      "title": "C'est moi ou il y a un soucis avec les salaires des devs Symfony ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1udfrqg"
+    },
+    {
+      "title": "RANT: entretiens en ESN et refus",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1u8bcou"
     }
   ],
   "sentimentHistory": [
@@ -6734,6 +6734,27 @@
         "negative_surprise": 0.354712,
         "optimistic_anticipation": 0.135219,
         "pessimistic_anticipation": 0.520224
+      }
+    },
+    {
+      "createdAt": "2026-06-24T12:16:23.389Z",
+      "count": 14,
+      "confidenceMass": 20.217915,
+      "emotions": {
+        "joy": 0.074545,
+        "trust": 0.19357,
+        "anger": 0.292384,
+        "fear": 0.350952,
+        "sadness": 0.473953,
+        "disgust": 0.196382
+      },
+      "tonalities": {
+        "positive": 0.134311,
+        "negative": 0.669936,
+        "positive_surprise": 0.033094,
+        "negative_surprise": 0.413737,
+        "optimistic_anticipation": 0.120077,
+        "pessimistic_anticipation": 0.535315
       }
     }
   ]
