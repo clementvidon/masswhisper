@@ -1,25 +1,15 @@
 {
-  "generatedAt": "2026-06-24T12:17:06.467Z",
-  "snapshotCreatedAt": "2026-06-24T12:16:23.389Z",
+  "generatedAt": "2026-06-25T12:14:38.033Z",
+  "snapshotCreatedAt": "2026-06-25T12:13:48.992Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et recul des opportunités",
+    "text": "Marché tech en dégradation, recrutements ralentis et pressions croissantes",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Je ne sais plus quoi faire, je perds toute motivation.",
+      "title": "C'est moi ou il y a un soucis avec les salaires des devs Symfony ?",
       "weight": "3",
-      "itemRef": "https://reddit.com/comments/1uciv9d"
-    },
-    {
-      "title": "Je crois que je n’y arrive plus",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1u9uuxu"
-    },
-    {
-      "title": "N'allez pas au salon de l'emploi de VivaTech",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uatffu"
+      "itemRef": "https://reddit.com/comments/1udfrqg"
     },
     {
       "title": "En trois mois de recherche un seul entretien... Je cherche un job d'ingénieur en développement logiciel.",
@@ -27,19 +17,24 @@
       "itemRef": "https://reddit.com/comments/1ubvwn9"
     },
     {
-      "title": "Product Owner informatique en 2026+ ?",
+      "title": "N'allez pas au salon de l'emploi de VivaTech",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1u8gq9k"
+      "itemRef": "https://reddit.com/comments/1uatffu"
     },
     {
-      "title": "Thales ESN",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u9081w"
+      "title": "Votre avis sur France Travail",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1udjnq2"
     },
     {
-      "title": "Un article d'Anthropic fait les choux gras des influenceurs IA",
+      "title": "Je ne sais plus quoi faire, je perds toute motivation.",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1uciv9d"
+    },
+    {
+      "title": "Recherche témoignages de developpeurs sortant de bootcamp depuis moins de 3 ans ayant trouvé un emploi",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ubtxfv"
+      "itemRef": "https://reddit.com/comments/1ucg4hz"
     },
     {
       "title": "Un profil \"touche à tout\" ça fait vraiment si peur pour les entreprises ?",
@@ -47,14 +42,19 @@
       "itemRef": "https://reddit.com/comments/1udoule"
     },
     {
-      "title": "C'est moi ou il y a un soucis avec les salaires des devs Symfony ?",
+      "title": "Dépassée par le marché de l'emploi. Relance un business",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1udfrqg"
+      "itemRef": "https://reddit.com/comments/1uf459l"
     },
     {
-      "title": "RANT: entretiens en ESN et refus",
+      "title": "Je crois que je n’y arrive plus",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1u8bcou"
+      "itemRef": "https://reddit.com/comments/1u9uuxu"
+    },
+    {
+      "title": "L'IA évolue très vite et me fait peur",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ueml08"
     }
   ],
   "sentimentHistory": [
@@ -6755,6 +6755,27 @@
         "negative_surprise": 0.413737,
         "optimistic_anticipation": 0.120077,
         "pessimistic_anticipation": 0.535315
+      }
+    },
+    {
+      "createdAt": "2026-06-25T12:13:48.992Z",
+      "count": 13,
+      "confidenceMass": 17.930501,
+      "emotions": {
+        "joy": 0.059215,
+        "trust": 0.195833,
+        "anger": 0.298773,
+        "fear": 0.315245,
+        "sadness": 0.424175,
+        "disgust": 0.185661
+      },
+      "tonalities": {
+        "positive": 0.138149,
+        "negative": 0.645237,
+        "positive_surprise": 0.055796,
+        "negative_surprise": 0.441891,
+        "optimistic_anticipation": 0.12156,
+        "pessimistic_anticipation": 0.465055
       }
     }
   ]
