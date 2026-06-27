@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-26T12:09:13.636Z",
-  "snapshotCreatedAt": "2026-06-26T12:08:31.671Z",
+  "generatedAt": "2026-06-27T11:25:29.918Z",
+  "snapshotCreatedAt": "2026-06-27T11:24:51.728Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et réductions d’opportunités.",
+    "text": "Marché tech en dégradation, tensions et recul des opportunités",
     "emoji": "🌧️"
   },
   "headlines": [
@@ -12,19 +12,29 @@
       "itemRef": "https://reddit.com/comments/1ueiuly"
     },
     {
-      "title": "Dépassée par le marché de l'emploi. Relance un business",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1uf459l"
+      "title": "Un profil \"touche à tout\" ça fait vraiment si peur pour les entreprises ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1udoule"
     },
     {
       "title": "L'IA évolue très vite et me fait peur",
-      "weight": "3",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1ueml08"
     },
     {
       "title": "C'est moi ou il y a un soucis avec les salaires des devs Symfony ?",
-      "weight": "3",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1udfrqg"
+    },
+    {
+      "title": "Votre avis sur France Travail",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1udjnq2"
+    },
+    {
+      "title": "Dépassée par le marché de l'emploi. Relance un business",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1uf459l"
     },
     {
       "title": "Je ne sais plus quoi faire, je perds toute motivation.",
@@ -32,29 +42,19 @@
       "itemRef": "https://reddit.com/comments/1uciv9d"
     },
     {
-      "title": "N'allez pas au salon de l'emploi de VivaTech",
+      "title": "Quitter le salariat pour le freelancing",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uatffu"
-    },
-    {
-      "title": "Un article d'Anthropic fait les choux gras des influenceurs IA",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ubtxfv"
-    },
-    {
-      "title": "Recherche témoignages de developpeurs sortant de bootcamp depuis moins de 3 ans ayant trouvé un emploi",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ucg4hz"
-    },
-    {
-      "title": "Un profil \"touche à tout\" ça fait vraiment si peur pour les entreprises ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1udoule"
+      "itemRef": "https://reddit.com/comments/1ubeddb"
     },
     {
       "title": "En trois mois de recherche un seul entretien... Je cherche un job d'ingénieur en développement logiciel.",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1ubvwn9"
+    },
+    {
+      "title": "Angoisse : Trou dans le C.V",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ucy77i"
     }
   ],
   "sentimentHistory": [
@@ -6797,6 +6797,27 @@
         "negative_surprise": 0.463325,
         "optimistic_anticipation": 0.109989,
         "pessimistic_anticipation": 0.490789
+      }
+    },
+    {
+      "createdAt": "2026-06-27T11:24:51.728Z",
+      "count": 13,
+      "confidenceMass": 20.748074,
+      "emotions": {
+        "joy": 0.051569,
+        "trust": 0.201485,
+        "anger": 0.308908,
+        "fear": 0.368069,
+        "sadness": 0.424835,
+        "disgust": 0.245594
+      },
+      "tonalities": {
+        "positive": 0.126413,
+        "negative": 0.669343,
+        "positive_surprise": 0.036134,
+        "negative_surprise": 0.418968,
+        "optimistic_anticipation": 0.140774,
+        "pessimistic_anticipation": 0.50386
       }
     }
   ]
