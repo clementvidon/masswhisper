@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-27T11:25:29.918Z",
-  "snapshotCreatedAt": "2026-06-27T11:24:51.728Z",
+  "generatedAt": "2026-06-28T11:45:36.659Z",
+  "snapshotCreatedAt": "2026-06-28T11:44:56.690Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et recul des opportunités",
+    "text": "Marché tech en dégradation claire, tension et réductions d’embauches visibles",
     "emoji": "🌧️"
   },
   "headlines": [
@@ -12,14 +12,14 @@
       "itemRef": "https://reddit.com/comments/1ueiuly"
     },
     {
-      "title": "Un profil \"touche à tout\" ça fait vraiment si peur pour les entreprises ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1udoule"
+      "title": "L'IA évolue très vite et me fait peur",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1ueml08"
     },
     {
-      "title": "L'IA évolue très vite et me fait peur",
+      "title": "Recherche témoignages de developpeurs sortant de bootcamp depuis moins de 3 ans ayant trouvé un emploi",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1ueml08"
+      "itemRef": "https://reddit.com/comments/1ucg4hz"
     },
     {
       "title": "C'est moi ou il y a un soucis avec les salaires des devs Symfony ?",
@@ -27,34 +27,34 @@
       "itemRef": "https://reddit.com/comments/1udfrqg"
     },
     {
-      "title": "Votre avis sur France Travail",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1udjnq2"
-    },
-    {
       "title": "Dépassée par le marché de l'emploi. Relance un business",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1uf459l"
     },
     {
-      "title": "Je ne sais plus quoi faire, je perds toute motivation.",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uciv9d"
-    },
-    {
-      "title": "Quitter le salariat pour le freelancing",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1ubeddb"
-    },
-    {
       "title": "En trois mois de recherche un seul entretien... Je cherche un job d'ingénieur en développement logiciel.",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1ubvwn9"
     },
     {
-      "title": "Angoisse : Trou dans le C.V",
+      "title": "Votre avis sur France Travail",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ucy77i"
+      "itemRef": "https://reddit.com/comments/1udjnq2"
+    },
+    {
+      "title": "Un profil \"touche à tout\" ça fait vraiment si peur pour les entreprises ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1udoule"
+    },
+    {
+      "title": "Je ne sais plus quoi faire, je perds toute motivation.",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1uciv9d"
+    },
+    {
+      "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1uhgide"
     }
   ],
   "sentimentHistory": [
@@ -6818,6 +6818,27 @@
         "negative_surprise": 0.418968,
         "optimistic_anticipation": 0.140774,
         "pessimistic_anticipation": 0.50386
+      }
+    },
+    {
+      "createdAt": "2026-06-28T11:44:56.690Z",
+      "count": 13,
+      "confidenceMass": 19.908057,
+      "emotions": {
+        "joy": 0.055238,
+        "trust": 0.172109,
+        "anger": 0.362316,
+        "fear": 0.384916,
+        "sadness": 0.421606,
+        "disgust": 0.276592
+      },
+      "tonalities": {
+        "positive": 0.117225,
+        "negative": 0.727664,
+        "positive_surprise": 0.051523,
+        "negative_surprise": 0.450565,
+        "optimistic_anticipation": 0.151297,
+        "pessimistic_anticipation": 0.56908
       }
     }
   ]
