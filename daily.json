@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-06-28T11:45:36.659Z",
-  "snapshotCreatedAt": "2026-06-28T11:44:56.690Z",
+  "generatedAt": "2026-06-29T14:02:14.290Z",
+  "snapshotCreatedAt": "2026-06-29T14:01:25.104Z",
   "report": {
-    "text": "Marché tech en dégradation claire, tension et réductions d’embauches visibles",
+    "text": "Marché tech en dégradation, tensions et prudence marquées",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Les boites qui demandent des jours de travail en tant que test de recrutement, allez bien vous faire foutre",
-      "weight": "4",
-      "itemRef": "https://reddit.com/comments/1ueiuly"
+      "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1uhgide"
     },
     {
       "title": "L'IA évolue très vite et me fait peur",
@@ -17,9 +17,14 @@
       "itemRef": "https://reddit.com/comments/1ueml08"
     },
     {
-      "title": "Recherche témoignages de developpeurs sortant de bootcamp depuis moins de 3 ans ayant trouvé un emploi",
+      "title": "Dépassée par le marché de l'emploi. Relance un business",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1ucg4hz"
+      "itemRef": "https://reddit.com/comments/1uf459l"
+    },
+    {
+      "title": "Les boites qui demandent des jours de travail en tant que test de recrutement, allez bien vous faire foutre",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1ueiuly"
     },
     {
       "title": "C'est moi ou il y a un soucis avec les salaires des devs Symfony ?",
@@ -27,14 +32,19 @@
       "itemRef": "https://reddit.com/comments/1udfrqg"
     },
     {
-      "title": "Dépassée par le marché de l'emploi. Relance un business",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uf459l"
+      "title": "Un profil \"touche à tout\" ça fait vraiment si peur pour les entreprises ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1udoule"
     },
     {
-      "title": "En trois mois de recherche un seul entretien... Je cherche un job d'ingénieur en développement logiciel.",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1ubvwn9"
+      "title": "Consultants recrutés chez un client final : comment s'est concrétisé cette opportunité ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1uindbc"
+    },
+    {
+      "title": "Angoisse : Trou dans le C.V",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ucy77i"
     },
     {
       "title": "Votre avis sur France Travail",
@@ -42,19 +52,9 @@
       "itemRef": "https://reddit.com/comments/1udjnq2"
     },
     {
-      "title": "Un profil \"touche à tout\" ça fait vraiment si peur pour les entreprises ?",
+      "title": "Changer d'un poste de dev pour de la gestion de projet ou pas ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1udoule"
-    },
-    {
-      "title": "Je ne sais plus quoi faire, je perds toute motivation.",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uciv9d"
-    },
-    {
-      "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uhgide"
+      "itemRef": "https://reddit.com/comments/1ugwld8"
     }
   ],
   "sentimentHistory": [
@@ -6839,6 +6839,27 @@
         "negative_surprise": 0.450565,
         "optimistic_anticipation": 0.151297,
         "pessimistic_anticipation": 0.56908
+      }
+    },
+    {
+      "createdAt": "2026-06-29T14:01:25.104Z",
+      "count": 12,
+      "confidenceMass": 16.62005,
+      "emotions": {
+        "joy": 0.052621,
+        "trust": 0.201679,
+        "anger": 0.27735,
+        "fear": 0.464669,
+        "sadness": 0.465247,
+        "disgust": 0.20627
+      },
+      "tonalities": {
+        "positive": 0.13032,
+        "negative": 0.680938,
+        "positive_surprise": 0.027073,
+        "negative_surprise": 0.407211,
+        "optimistic_anticipation": 0.163437,
+        "pessimistic_anticipation": 0.622688
       }
     }
   ]
