@@ -1,35 +1,45 @@
 {
-  "generatedAt": "2026-06-29T14:02:14.290Z",
-  "snapshotCreatedAt": "2026-06-29T14:01:25.104Z",
+  "generatedAt": "2026-06-30T12:06:49.806Z",
+  "snapshotCreatedAt": "2026-06-30T12:05:50.631Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et prudence marquées",
+    "text": "Marché tech en dégradation, tensions et recul des opportunités",
     "emoji": "🌧️"
   },
   "headlines": [
-    {
-      "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1uhgide"
-    },
-    {
-      "title": "L'IA évolue très vite et me fait peur",
-      "weight": "3",
-      "itemRef": "https://reddit.com/comments/1ueml08"
-    },
-    {
-      "title": "Dépassée par le marché de l'emploi. Relance un business",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uf459l"
-    },
     {
       "title": "Les boites qui demandent des jours de travail en tant que test de recrutement, allez bien vous faire foutre",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1ueiuly"
     },
     {
+      "title": "L'IA évolue très vite et me fait peur",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1ueml08"
+    },
+    {
       "title": "C'est moi ou il y a un soucis avec les salaires des devs Symfony ?",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1udfrqg"
+    },
+    {
+      "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1uhgide"
+    },
+    {
+      "title": "Changer d'un poste de dev pour de la gestion de projet ou pas ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ugwld8"
+    },
+    {
+      "title": "Quitter une mission après 2 semaines : mauvais mouv ou choix raisonnable ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ugw1p7"
+    },
+    {
+      "title": "Dépassée par le marché de l'emploi. Relance un business",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1uf459l"
     },
     {
       "title": "Un profil \"touche à tout\" ça fait vraiment si peur pour les entreprises ?",
@@ -42,19 +52,9 @@
       "itemRef": "https://reddit.com/comments/1uindbc"
     },
     {
-      "title": "Angoisse : Trou dans le C.V",
+      "title": "Dev senior à Paris (85k), j'envisage de partir en province, vous l'avez fait ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ucy77i"
-    },
-    {
-      "title": "Votre avis sur France Travail",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1udjnq2"
-    },
-    {
-      "title": "Changer d'un poste de dev pour de la gestion de projet ou pas ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ugwld8"
+      "itemRef": "https://reddit.com/comments/1uiwsuz"
     }
   ],
   "sentimentHistory": [
@@ -6860,6 +6860,27 @@
         "negative_surprise": 0.407211,
         "optimistic_anticipation": 0.163437,
         "pessimistic_anticipation": 0.622688
+      }
+    },
+    {
+      "createdAt": "2026-06-30T12:05:50.631Z",
+      "count": 13,
+      "confidenceMass": 15.098767,
+      "emotions": {
+        "joy": 0.063317,
+        "trust": 0.194566,
+        "anger": 0.315608,
+        "fear": 0.384634,
+        "sadness": 0.393876,
+        "disgust": 0.214715
+      },
+      "tonalities": {
+        "positive": 0.138759,
+        "negative": 0.625033,
+        "positive_surprise": 0.034831,
+        "negative_surprise": 0.422669,
+        "optimistic_anticipation": 0.163754,
+        "pessimistic_anticipation": 0.51934
       }
     }
   ]
