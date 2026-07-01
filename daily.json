@@ -1,15 +1,35 @@
 {
-  "generatedAt": "2026-06-30T12:06:49.806Z",
-  "snapshotCreatedAt": "2026-06-30T12:05:50.631Z",
+  "generatedAt": "2026-07-01T12:31:47.881Z",
+  "snapshotCreatedAt": "2026-07-01T12:31:01.426Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et recul des opportunités",
+    "text": "Marché tech en dégradation modérée, dossiers et recrutements sous pression",
     "emoji": "🌧️"
   },
   "headlines": [
     {
+      "title": "Refus après l'entretien Tech Culture chez Mistral AI",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1uitwfi"
+    },
+    {
+      "title": "Dev senior à Paris (85k), j'envisage de partir en province, vous l'avez fait ?",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1uiwsuz"
+    },
+    {
       "title": "Les boites qui demandent des jours de travail en tant que test de recrutement, allez bien vous faire foutre",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1ueiuly"
+    },
+    {
+      "title": "Consultants recrutés chez un client final : comment s'est concrétisé cette opportunité ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1uindbc"
+    },
+    {
+      "title": "Pourquoi il existe de tels écarts de salaire en ESN pour le même poste ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1uiu173"
     },
     {
       "title": "L'IA évolue très vite et me fait peur",
@@ -17,44 +37,24 @@
       "itemRef": "https://reddit.com/comments/1ueml08"
     },
     {
-      "title": "C'est moi ou il y a un soucis avec les salaires des devs Symfony ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1udfrqg"
-    },
-    {
-      "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uhgide"
-    },
-    {
-      "title": "Changer d'un poste de dev pour de la gestion de projet ou pas ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ugwld8"
-    },
-    {
-      "title": "Quitter une mission après 2 semaines : mauvais mouv ou choix raisonnable ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ugw1p7"
-    },
-    {
       "title": "Dépassée par le marché de l'emploi. Relance un business",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1uf459l"
     },
     {
-      "title": "Un profil \"touche à tout\" ça fait vraiment si peur pour les entreprises ?",
+      "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1udoule"
+      "itemRef": "https://reddit.com/comments/1uhgide"
     },
     {
-      "title": "Consultants recrutés chez un client final : comment s'est concrétisé cette opportunité ?",
+      "title": "J'ai l'impression d'avoir fait une overdose de programmation que faire ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uindbc"
+      "itemRef": "https://reddit.com/comments/1ujt8tc"
     },
     {
-      "title": "Dev senior à Paris (85k), j'envisage de partir en province, vous l'avez fait ?",
+      "title": "Changer d'un poste de dev pour de la gestion de projet ou pas ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uiwsuz"
+      "itemRef": "https://reddit.com/comments/1ugwld8"
     }
   ],
   "sentimentHistory": [
@@ -6881,6 +6881,27 @@
         "negative_surprise": 0.422669,
         "optimistic_anticipation": 0.163754,
         "pessimistic_anticipation": 0.51934
+      }
+    },
+    {
+      "createdAt": "2026-07-01T12:31:01.426Z",
+      "count": 12,
+      "confidenceMass": 17.667641,
+      "emotions": {
+        "joy": 0.064893,
+        "trust": 0.211496,
+        "anger": 0.226649,
+        "fear": 0.369833,
+        "sadness": 0.424464,
+        "disgust": 0.184846
+      },
+      "tonalities": {
+        "positive": 0.196043,
+        "negative": 0.560542,
+        "positive_surprise": 0.0428,
+        "negative_surprise": 0.399293,
+        "optimistic_anticipation": 0.207691,
+        "pessimistic_anticipation": 0.449462
       }
     }
   ]
