@@ -1,40 +1,40 @@
 {
-  "generatedAt": "2026-07-02T12:07:16.736Z",
-  "snapshotCreatedAt": "2026-07-02T12:06:36.564Z",
+  "generatedAt": "2026-07-03T12:06:38.933Z",
+  "snapshotCreatedAt": "2026-07-03T12:06:04.149Z",
   "report": {
-    "text": "Marché tech en dégradation, contractions et prudence marquées",
+    "text": "Marché tech en tension, perspectives dégradées et prudence accrue",
     "emoji": "🌧️"
   },
   "headlines": [
+    {
+      "title": "Transition ou rester dans le développement logiciel !",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1ukuv73"
+    },
     {
       "title": "Refus après l'entretien Tech Culture chez Mistral AI",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1uitwfi"
     },
     {
-      "title": "Dev senior à Paris (85k), j'envisage de partir en province, vous l'avez fait ?",
+      "title": "J'ai l'impression d'avoir fait une overdose de programmation que faire ?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uiwsuz"
+      "itemRef": "https://reddit.com/comments/1ujt8tc"
     },
     {
       "title": "Pourquoi il existe de tels écarts de salaire en ESN pour le même poste ?",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1uiu173"
     },
     {
+      "title": "Quitter une mission après 2 semaines : mauvais mouv ou choix raisonnable ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ugw1p7"
+    },
+    {
       "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
-      "weight": "2",
+      "weight": "1",
       "itemRef": "https://reddit.com/comments/1uhgide"
-    },
-    {
-      "title": "Salaire après avoir construit un logiciel de A à Z pour une start up",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uitgaq"
-    },
-    {
-      "title": "Transition ou rester dans le développement logiciel !",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ukuv73"
     },
     {
       "title": "Consultants recrutés chez un client final : comment s'est concrétisé cette opportunité ?",
@@ -42,19 +42,14 @@
       "itemRef": "https://reddit.com/comments/1uindbc"
     },
     {
-      "title": "J'ai l'impression d'avoir fait une overdose de programmation que faire ?",
+      "title": "Dev senior à Paris (85k), j'envisage de partir en province, vous l'avez fait ?",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ujt8tc"
+      "itemRef": "https://reddit.com/comments/1uiwsuz"
     },
     {
-      "title": "Changer d'un poste de dev pour de la gestion de projet ou pas ?",
+      "title": "Salaire après avoir construit un logiciel de A à Z pour une start up",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ugwld8"
-    },
-    {
-      "title": "Quitter une mission après 2 semaines : mauvais mouv ou choix raisonnable ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ugw1p7"
+      "itemRef": "https://reddit.com/comments/1uitgaq"
     }
   ],
   "sentimentHistory": [
@@ -6923,6 +6918,27 @@
         "negative_surprise": 0.350042,
         "optimistic_anticipation": 0.255667,
         "pessimistic_anticipation": 0.481619
+      }
+    },
+    {
+      "createdAt": "2026-07-03T12:06:04.149Z",
+      "count": 9,
+      "confidenceMass": 11.917414,
+      "emotions": {
+        "joy": 0.071302,
+        "trust": 0.245057,
+        "anger": 0.182976,
+        "fear": 0.400264,
+        "sadness": 0.428642,
+        "disgust": 0.089429
+      },
+      "tonalities": {
+        "positive": 0.226266,
+        "negative": 0.591536,
+        "positive_surprise": 0.041259,
+        "negative_surprise": 0.361449,
+        "optimistic_anticipation": 0.237037,
+        "pessimistic_anticipation": 0.504436
       }
     }
   ]
