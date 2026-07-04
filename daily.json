@@ -1,25 +1,20 @@
 {
-  "generatedAt": "2026-07-03T12:06:38.933Z",
-  "snapshotCreatedAt": "2026-07-03T12:06:04.149Z",
+  "generatedAt": "2026-07-04T11:23:55.040Z",
+  "snapshotCreatedAt": "2026-07-04T11:23:23.871Z",
   "report": {
-    "text": "Marché tech en tension, perspectives dégradées et prudence accrue",
+    "text": "Marché tech en dégradation, tensions et réductions d’opportunités.",
     "emoji": "🌧️"
   },
   "headlines": [
-    {
-      "title": "Transition ou rester dans le développement logiciel !",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1ukuv73"
-    },
     {
       "title": "Refus après l'entretien Tech Culture chez Mistral AI",
       "weight": "2",
       "itemRef": "https://reddit.com/comments/1uitwfi"
     },
     {
-      "title": "J'ai l'impression d'avoir fait une overdose de programmation que faire ?",
+      "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1ujt8tc"
+      "itemRef": "https://reddit.com/comments/1uhgide"
     },
     {
       "title": "Pourquoi il existe de tels écarts de salaire en ESN pour le même poste ?",
@@ -27,14 +22,9 @@
       "itemRef": "https://reddit.com/comments/1uiu173"
     },
     {
-      "title": "Quitter une mission après 2 semaines : mauvais mouv ou choix raisonnable ?",
+      "title": "Transition ou rester dans le développement logiciel !",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ugw1p7"
-    },
-    {
-      "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uhgide"
+      "itemRef": "https://reddit.com/comments/1ukuv73"
     },
     {
       "title": "Consultants recrutés chez un client final : comment s'est concrétisé cette opportunité ?",
@@ -45,6 +35,11 @@
       "title": "Dev senior à Paris (85k), j'envisage de partir en province, vous l'avez fait ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1uiwsuz"
+    },
+    {
+      "title": "J'ai l'impression d'avoir fait une overdose de programmation que faire ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ujt8tc"
     },
     {
       "title": "Salaire après avoir construit un logiciel de A à Z pour une start up",
@@ -6939,6 +6934,27 @@
         "negative_surprise": 0.361449,
         "optimistic_anticipation": 0.237037,
         "pessimistic_anticipation": 0.504436
+      }
+    },
+    {
+      "createdAt": "2026-07-04T11:23:23.871Z",
+      "count": 8,
+      "confidenceMass": 8.9151,
+      "emotions": {
+        "joy": 0.09255,
+        "trust": 0.2503,
+        "anger": 0.164413,
+        "fear": 0.371567,
+        "sadness": 0.455515,
+        "disgust": 0.060656
+      },
+      "tonalities": {
+        "positive": 0.164298,
+        "negative": 0.575297,
+        "positive_surprise": 0.067254,
+        "negative_surprise": 0.364309,
+        "optimistic_anticipation": 0.224427,
+        "pessimistic_anticipation": 0.476763
       }
     }
   ]
