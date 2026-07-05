@@ -1,35 +1,20 @@
 {
-  "generatedAt": "2026-07-04T11:23:55.040Z",
-  "snapshotCreatedAt": "2026-07-04T11:23:23.871Z",
+  "generatedAt": "2026-07-05T11:27:33.947Z",
+  "snapshotCreatedAt": "2026-07-05T11:27:01.791Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et réductions d’opportunités.",
+    "text": "Marché tech en affaiblissement, recrutements plus restreints.",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Refus après l'entretien Tech Culture chez Mistral AI",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uitwfi"
-    },
-    {
-      "title": "Dev junior bac +5 : je ne sais plus quoi faire de mon avenir",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uhgide"
-    },
-    {
-      "title": "Pourquoi il existe de tels écarts de salaire en ESN pour le même poste ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uiu173"
-    },
-    {
       "title": "Transition ou rester dans le développement logiciel !",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1ukuv73"
     },
     {
-      "title": "Consultants recrutés chez un client final : comment s'est concrétisé cette opportunité ?",
+      "title": "Refus après l'entretien Tech Culture chez Mistral AI",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uindbc"
+      "itemRef": "https://reddit.com/comments/1uitwfi"
     },
     {
       "title": "Dev senior à Paris (85k), j'envisage de partir en province, vous l'avez fait ?",
@@ -40,6 +25,26 @@
       "title": "J'ai l'impression d'avoir fait une overdose de programmation que faire ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1ujt8tc"
+    },
+    {
+      "title": "Consultants recrutés chez un client final : comment s'est concrétisé cette opportunité ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1uindbc"
+    },
+    {
+      "title": "Que pensez-vous de l'ESN Exalt (notamment Exalt Azur)",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1umjvi8"
+    },
+    {
+      "title": "L'IA m'a volé mon job",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1unyavv"
+    },
+    {
+      "title": "Pourquoi il existe de tels écarts de salaire en ESN pour le même poste ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1uiu173"
     },
     {
       "title": "Salaire après avoir construit un logiciel de A à Z pour une start up",
@@ -6955,6 +6960,27 @@
         "negative_surprise": 0.364309,
         "optimistic_anticipation": 0.224427,
         "pessimistic_anticipation": 0.476763
+      }
+    },
+    {
+      "createdAt": "2026-07-05T11:27:01.791Z",
+      "count": 9,
+      "confidenceMass": 10.611446,
+      "emotions": {
+        "joy": 0.086393,
+        "trust": 0.265283,
+        "anger": 0.192511,
+        "fear": 0.431711,
+        "sadness": 0.404705,
+        "disgust": 0.086947
+      },
+      "tonalities": {
+        "positive": 0.19888,
+        "negative": 0.532441,
+        "positive_surprise": 0.028922,
+        "negative_surprise": 0.290062,
+        "optimistic_anticipation": 0.215437,
+        "pessimistic_anticipation": 0.546196
       }
     }
   ]
