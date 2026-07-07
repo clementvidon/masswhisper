@@ -1,40 +1,15 @@
 {
-  "generatedAt": "2026-07-06T13:42:12.602Z",
-  "snapshotCreatedAt": "2026-07-06T13:41:33.583Z",
+  "generatedAt": "2026-07-07T12:25:03.497Z",
+  "snapshotCreatedAt": "2026-07-07T12:24:26.736Z",
   "report": {
-    "text": "Marché tech en dégradation, opportunités réduites et tension accrue",
+    "text": "Marché tech en dégradation, tensions et recul des opportunités",
     "emoji": "🌧️"
   },
   "headlines": [
     {
       "title": "L'IA m'a volé mon job",
-      "weight": "5",
+      "weight": "4",
       "itemRef": "https://reddit.com/comments/1unyavv"
-    },
-    {
-      "title": "Dev senior à Paris (85k), j'envisage de partir en province, vous l'avez fait ?",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uiwsuz"
-    },
-    {
-      "title": "Refus après l'entretien Tech Culture chez Mistral AI",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uitwfi"
-    },
-    {
-      "title": "Transition ou rester dans le développement logiciel !",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ukuv73"
-    },
-    {
-      "title": "Pourquoi il existe de tels écarts de salaire en ESN pour le même poste ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uiu173"
-    },
-    {
-      "title": "J'ai l'impression d'avoir fait une overdose de programmation que faire ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ujt8tc"
     },
     {
       "title": "Que pensez-vous de l'ESN Exalt (notamment Exalt Azur)",
@@ -42,9 +17,19 @@
       "itemRef": "https://reddit.com/comments/1umjvi8"
     },
     {
-      "title": "Salaire après avoir construit un logiciel de A à Z pour une start up",
+      "title": "On me propose un poste de CTO au prix d'un stagiaire",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uitgaq"
+      "itemRef": "https://reddit.com/comments/1up24ta"
+    },
+    {
+      "title": "Transition ou rester dans le développement logiciel !",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ukuv73"
+    },
+    {
+      "title": "J'ai l'impression d'avoir fait une overdose de programmation que faire ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ujt8tc"
     }
   ],
   "sentimentHistory": [
@@ -6997,6 +6982,27 @@
         "negative_surprise": 0.417482,
         "optimistic_anticipation": 0.163718,
         "pessimistic_anticipation": 0.545093
+      }
+    },
+    {
+      "createdAt": "2026-07-07T12:24:26.736Z",
+      "count": 5,
+      "confidenceMass": 7.565963,
+      "emotions": {
+        "joy": 0.05,
+        "trust": 0.191033,
+        "anger": 0.320624,
+        "fear": 0.424165,
+        "sadness": 0.463565,
+        "disgust": 0.141227
+      },
+      "tonalities": {
+        "positive": 0.125172,
+        "negative": 0.680147,
+        "positive_surprise": 0,
+        "negative_surprise": 0.257494,
+        "optimistic_anticipation": 0.096604,
+        "pessimistic_anticipation": 0.621808
       }
     }
   ]
