@@ -1,14 +1,19 @@
 {
-  "generatedAt": "2026-07-10T12:23:01.623Z",
-  "snapshotCreatedAt": "2026-07-10T12:22:27.306Z",
+  "generatedAt": "2026-07-11T11:00:47.669Z",
+  "snapshotCreatedAt": "2026-07-11T11:00:10.461Z",
   "report": {
-    "text": "Marché tech sous pression, dégradé avec tensions et retraits",
+    "text": "Marché tech dégradé, tensions et recul des opportunités.",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "L'IA m'a volé mon job",
+      "title": "J'en ai marre de lire des offres d'emploi comme ça...",
       "weight": "3",
+      "itemRef": "https://reddit.com/comments/1uqtk6v"
+    },
+    {
+      "title": "L'IA m'a volé mon job",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1unyavv"
     },
     {
@@ -17,19 +22,24 @@
       "itemRef": "https://reddit.com/comments/1up24ta"
     },
     {
-      "title": "Que pensez-vous de l'ESN Exalt (notamment Exalt Azur)",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1umjvi8"
-    },
-    {
-      "title": "J'en ai marre de lire des offres d'emploi comme ça...",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uqtk6v"
-    },
-    {
       "title": "Je me sens impuissante face aux personnes qui ont fait de bonnes études…",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1uqthnf"
+    },
+    {
+      "title": "Retour d'expérience : ce que ça donne de l'autre côté du process de recrutement sur LinkedIn en 2026 (POV recruteur tech)",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1usoyke"
+    },
+    {
+      "title": "6 ans d'expérience = insuffisant ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1usvr9u"
+    },
+    {
+      "title": "Questions sur mon revenu freelance",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1uq5azg"
     },
     {
       "title": "Besoin de conseils sur ma carrière… je suis perdu je suis lassé et je commence à perdre la motivation",
@@ -7050,6 +7060,27 @@
         "negative_surprise": 0.429769,
         "optimistic_anticipation": 0.073286,
         "pessimistic_anticipation": 0.59695
+      }
+    },
+    {
+      "createdAt": "2026-07-11T11:00:10.461Z",
+      "count": 8,
+      "confidenceMass": 12.17896,
+      "emotions": {
+        "joy": 0.061085,
+        "trust": 0.168674,
+        "anger": 0.42605,
+        "fear": 0.352716,
+        "sadness": 0.418035,
+        "disgust": 0.284466
+      },
+      "tonalities": {
+        "positive": 0.106725,
+        "negative": 0.73045,
+        "positive_surprise": 0.036549,
+        "negative_surprise": 0.4604,
+        "optimistic_anticipation": 0.068485,
+        "pessimistic_anticipation": 0.477563
       }
     }
   ]
