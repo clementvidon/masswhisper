@@ -1,20 +1,15 @@
 {
-  "generatedAt": "2026-07-16T11:36:53.338Z",
-  "snapshotCreatedAt": "2026-07-16T11:36:21.947Z",
+  "generatedAt": "2026-07-17T11:18:58.626Z",
+  "snapshotCreatedAt": "2026-07-17T11:18:32.542Z",
   "report": {
     "text": "Marché tech en dégradation modérée, tensions et prudence dominent",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Des avis sur Cleeven ?",
+      "title": "2 ans à développer des SaaS solo, mais toujours pas assez d’expérience pour les recruteurs ?",
       "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uw3g68"
-    },
-    {
-      "title": "Retour d'expérience : ce que ça donne de l'autre côté du process de recrutement sur LinkedIn en 2026 (POV recruteur tech)",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1usoyke"
+      "itemRef": "https://reddit.com/comments/1ux0jnu"
     },
     {
       "title": "(Ingénieur/Data Scientist) Impression de stagner en grand groupe apres 4 ans, partir ?",
@@ -22,19 +17,24 @@
       "itemRef": "https://reddit.com/comments/1uw9h8z"
     },
     {
-      "title": "Ingénieur Infra avec 4+ - Chomage",
-      "weight": "2",
-      "itemRef": "https://reddit.com/comments/1uvhrsl"
-    },
-    {
       "title": "6 ans d'expérience = insuffisant ?",
-      "weight": "1",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1usvr9u"
     },
     {
-      "title": "2 ans à développer des SaaS solo, mais toujours pas assez d’expérience pour les recruteurs ?",
+      "title": "Ingénieur Infra avec 4+ - Chomage",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ux0jnu"
+      "itemRef": "https://reddit.com/comments/1uvhrsl"
+    },
+    {
+      "title": "Retour d'expérience : ce que ça donne de l'autre côté du process de recrutement sur LinkedIn en 2026 (POV recruteur tech)",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1usoyke"
+    },
+    {
+      "title": "Des avis sur Cleeven ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1uw3g68"
     },
     {
       "title": "Faire confiance à EID?",
@@ -7181,6 +7181,27 @@
         "negative_surprise": 0.473102,
         "optimistic_anticipation": 0.209477,
         "pessimistic_anticipation": 0.533913
+      }
+    },
+    {
+      "createdAt": "2026-07-17T11:18:32.542Z",
+      "count": 7,
+      "confidenceMass": 9.445088,
+      "emotions": {
+        "joy": 0.06148,
+        "trust": 0.279092,
+        "anger": 0.233756,
+        "fear": 0.321312,
+        "sadness": 0.338243,
+        "disgust": 0.157597
+      },
+      "tonalities": {
+        "positive": 0.187254,
+        "negative": 0.599165,
+        "positive_surprise": 0.106882,
+        "negative_surprise": 0.410302,
+        "optimistic_anticipation": 0.263587,
+        "pessimistic_anticipation": 0.540652
       }
     }
   ]
