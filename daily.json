@@ -1,11 +1,31 @@
 {
-  "generatedAt": "2026-07-18T10:59:10.104Z",
-  "snapshotCreatedAt": "2026-07-18T10:58:40.769Z",
+  "generatedAt": "2026-07-19T11:07:32.363Z",
+  "snapshotCreatedAt": "2026-07-19T11:07:02.455Z",
   "report": {
-    "text": "Marché tech sous pression, recrutement ralenti et prudence accrue",
+    "text": "Marché tech plutôt dégradé, tensions et prudence dominent",
     "emoji": "🌧️"
   },
   "headlines": [
+    {
+      "title": "C'est ça un salaire d'ingénieur ?",
+      "weight": "3",
+      "itemRef": "https://reddit.com/comments/1uz7ag4"
+    },
+    {
+      "title": "Comment on fait pour trouver, en tant que développeur, une boîte avec un projet à impact social ou environnemental positif ?",
+      "weight": "2",
+      "itemRef": "https://reddit.com/comments/1uz4g33"
+    },
+    {
+      "title": "2 ans à développer des SaaS solo, mais toujours pas assez d’expérience pour les recruteurs ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1ux0jnu"
+    },
+    {
+      "title": "Faire confiance à EID?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1uw32t7"
+    },
     {
       "title": "Ingénieur Infra avec 4+ - Chomage",
       "weight": "1",
@@ -17,29 +37,14 @@
       "itemRef": "https://reddit.com/comments/1uw9h8z"
     },
     {
-      "title": "C'est ça un salaire d'ingénieur ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uz7ag4"
-    },
-    {
       "title": "Des avis sur Cleeven ?",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1uw3g68"
     },
     {
-      "title": "2 ans à développer des SaaS solo, mais toujours pas assez d’expérience pour les recruteurs ?",
+      "title": "Questions de carrière pour le futur dans l'informatique...",
       "weight": "1",
-      "itemRef": "https://reddit.com/comments/1ux0jnu"
-    },
-    {
-      "title": "Comment on fait pour trouver, en tant que développeur, une boîte avec un projet à impact social ou environnemental positif ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uz4g33"
-    },
-    {
-      "title": "Faire confiance à EID?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uw32t7"
+      "itemRef": "https://reddit.com/comments/1uza2xr"
     }
   ],
   "sentimentHistory": [
@@ -7223,6 +7228,27 @@
         "negative_surprise": 0.446154,
         "optimistic_anticipation": 0.278632,
         "pessimistic_anticipation": 0.61453
+      }
+    },
+    {
+      "createdAt": "2026-07-19T11:07:02.455Z",
+      "count": 8,
+      "confidenceMass": 11.40821,
+      "emotions": {
+        "joy": 0.074384,
+        "trust": 0.273416,
+        "anger": 0.197316,
+        "fear": 0.465347,
+        "sadness": 0.451018,
+        "disgust": 0.168112
+      },
+      "tonalities": {
+        "positive": 0.133926,
+        "negative": 0.624673,
+        "positive_surprise": 0.044445,
+        "negative_surprise": 0.440493,
+        "optimistic_anticipation": 0.229492,
+        "pessimistic_anticipation": 0.598697
       }
     }
   ]
