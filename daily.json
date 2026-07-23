@@ -1,20 +1,15 @@
 {
-  "generatedAt": "2026-07-22T11:45:01.910Z",
-  "snapshotCreatedAt": "2026-07-22T11:44:34.909Z",
+  "generatedAt": "2026-07-23T11:48:50.505Z",
+  "snapshotCreatedAt": "2026-07-23T11:48:13.137Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et recul des opportunités",
+    "text": "Marché tech en repli, conditions perceptiblement détériorées et prudentes",
     "emoji": "🌧️"
   },
   "headlines": [
     {
       "title": "C'est ça un salaire d'ingénieur ?",
-      "weight": "3",
+      "weight": "2",
       "itemRef": "https://reddit.com/comments/1uz7ag4"
-    },
-    {
-      "title": "Comment on fait pour trouver, en tant que développeur, une boîte avec un projet à impact social ou environnemental positif ?",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1uz4g33"
     },
     {
       "title": "Reconversion à 30 ans",
@@ -25,6 +20,36 @@
       "title": "Questions de carrière pour le futur dans l'informatique...",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1uza2xr"
+    },
+    {
+      "title": "Ya a-t-il une baisse des salaires des développeurs ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1v3idsh"
+    },
+    {
+      "title": "Peur viscérale pour trouver un travail après mon alternance",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1v39k7i"
+    },
+    {
+      "title": "Partager du code professionnel en entretien",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1v3j9zg"
+    },
+    {
+      "title": "Comment on fait pour trouver, en tant que développeur, une boîte avec un projet à impact social ou environnemental positif ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1uz4g33"
+    },
+    {
+      "title": "BUT Informatique (DACS), DevOps ou Master NLP ? J'ai l'impression d'être à un tournant et j'aimerais vos avis.",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1v1ur18"
+    },
+    {
+      "title": "Accepter un CDI sachant qu'on risque de le quitter rapidement pour monter ma boîte ?",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1v2q75a"
     }
   ],
   "sentimentHistory": [
@@ -7292,6 +7317,27 @@
         "negative_surprise": 0.425794,
         "optimistic_anticipation": 0.165496,
         "pessimistic_anticipation": 0.521607
+      }
+    },
+    {
+      "createdAt": "2026-07-23T11:48:13.137Z",
+      "count": 9,
+      "confidenceMass": 8.804674,
+      "emotions": {
+        "joy": 0.075077,
+        "trust": 0.233208,
+        "anger": 0.201213,
+        "fear": 0.385299,
+        "sadness": 0.365296,
+        "disgust": 0.119227
+      },
+      "tonalities": {
+        "positive": 0.123514,
+        "negative": 0.572381,
+        "positive_surprise": 0.015463,
+        "negative_surprise": 0.430464,
+        "optimistic_anticipation": 0.234614,
+        "pessimistic_anticipation": 0.484667
       }
     }
   ]
