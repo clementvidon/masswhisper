@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-07-25T11:06:16.188Z",
-  "snapshotCreatedAt": "2026-07-25T11:05:56.212Z",
+  "generatedAt": "2026-07-26T11:16:26.808Z",
+  "snapshotCreatedAt": "2026-07-26T11:16:05.142Z",
   "report": {
-    "text": "Marché tech en dégradation, tensions et prudence accusées",
+    "text": "Marché tech prudent et sous pression, recrutements ralentis.",
     "emoji": "🌧️"
   },
   "headlines": [
     {
-      "title": "Reconversion à 30 ans",
-      "weight": "1",
-      "itemRef": "https://reddit.com/comments/1v2qttc"
-    },
-    {
       "title": "BUT Informatique (DACS), DevOps ou Master NLP ? J'ai l'impression d'être à un tournant et j'aimerais vos avis.",
       "weight": "1",
       "itemRef": "https://reddit.com/comments/1v1ur18"
+    },
+    {
+      "title": "Reconversion à 30 ans",
+      "weight": "1",
+      "itemRef": "https://reddit.com/comments/1v2qttc"
     }
   ],
   "sentimentHistory": [
@@ -7345,6 +7345,27 @@
         "negative_surprise": 0.232836,
         "optimistic_anticipation": 0.3,
         "pessimistic_anticipation": 0.634327
+      }
+    },
+    {
+      "createdAt": "2026-07-26T11:16:05.142Z",
+      "count": 2,
+      "confidenceMass": 1.3,
+      "emotions": {
+        "joy": 0.076923,
+        "trust": 0.253846,
+        "anger": 0.142308,
+        "fear": 0.492308,
+        "sadness": 0.346154,
+        "disgust": 0.056923
+      },
+      "tonalities": {
+        "positive": 0.2,
+        "negative": 0.492308,
+        "positive_surprise": 0,
+        "negative_surprise": 0.3,
+        "optimistic_anticipation": 0.353846,
+        "pessimistic_anticipation": 0.546154
       }
     }
   ]
